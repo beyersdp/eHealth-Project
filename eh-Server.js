@@ -31,7 +31,7 @@ var url = "mongodb://localhost:27017";
 server.use(session({ 
 	cookieName: 'session',
 	secret: 'crypto-string',
-	duration: 50*60*1000, 
+	duration: 5000*60*1000,
 	activeDuration: 5*30*1000 
 }));
 
@@ -46,7 +46,142 @@ server.listen(server.get('port'), '0.0.0.0', function() {
 
 /* / - Empfangen eines GET-Requests ueber Port 8080  */
 server.get('/', function(req, res){
-	// Der Server erhaelt ein GET-Request ohne konkrete Fileangabe. Es wird die Login-Seite als HTTP-Response zurueckgesendet
 	console.log("L2-Info: GET-REQUEST for / ");
 	res.sendFile(__dirname + "/views/" + "login.html");
 });
+
+
+
+/* /login - Empfangen eines POST-Requests ueber Port 8080  */
+server.post('/login', urlencodedParser, function(req, res){
+	console.log("L2-Info: POST-REQUEST for /login");
+	//console.log(req.body); //DEBUG Kontrollausgabe
+	
+	mongodbClient.connect(url, function(err, dbClient) {
+		if (err) throw err;
+		var db = dbClient.db('DigitalerFuehrungsassistent');
+		console.log("L2-Info: DB-Connection true");
+		
+		db.collection('Fuehrungskraft').find({mail: req.body.login_mail}).toArray(function(err, result) {
+			
+			if (result.length != 0 && bcrypt.compareSync(req.body.login_passwort, result[0].passwort)) {
+				console.log("L1-Info: Login true");
+				
+				//Kontrolle, ob angegebener HiOrg-Key valide
+				db.collection('HiOrgKey').find({key: req.body.login_key}).toArray(function(err, result) {
+					if (result.length == 0) {
+						console.log("L1-Info: HiOrg Key not valide");
+						res.sendFile(__dirname + "/views/" + "login_fail.html");
+				
+						dbClient.close();
+					}
+					
+					else {
+						console.log("L1-Info: HiOrg Key valide");
+						
+						//Cookie-Generierung
+						var salt = bcrypt.genSaltSync(10);
+						req.session.user = bcrypt.hashSync(req.body.login_mail, salt, function(err, hash) {
+							if (err) throw err;
+						});
+						
+						res.sendFile(__dirname + "/views/" + "mainpage.html");
+				
+						dbClient.close();
+					}
+				});
+				
+			}
+			
+			else {
+				console.log("L1-Info: Login false");
+				res.sendFile(__dirname + "/views/" + "login_fail.html");
+				
+				dbClient.close();
+			}
+		
+		});
+	});
+	
+	
+});
+
+
+
+/* /registration - Empfangen eines POST-Requests ueber Port 8080  */
+server.post('/registration', urlencodedParser, function(req, res){
+	console.log("L2-Info: POST-REQUEST for /registration");
+	//console.log(req.body); //DEBUG Kontrollausgabe
+	
+	var salt = bcrypt.genSaltSync(10);
+	var registration_passwort_hash = bcrypt.hashSync(req.body.registration_passwort, salt, function(err, hash) {
+		if (err) throw err;
+	});
+	
+	var registration_data = {titel: req.body.registration_titel,
+							 vorname: req.body.registration_vorname,
+							 nachname: req.body.registration_nachname,
+							 quali: req.body.registration_quali,
+							 hiorg: req.body.registration_hiorg,
+							 mail: req.body.registration_mail,
+							 tel: req.body.registration_tel,
+							 passwort: registration_passwort_hash,
+							 ist_EL: false};
+	
+	mongodbClient.connect(url, function(err, dbClient) {
+		if (err) throw err;
+		var db = dbClient.db('DigitalerFuehrungsassistent');
+		console.log("L2-Info: DB-Connection true");
+		
+		db.collection('Fuehrungskraft').find({mail: req.body.registration_mail}).toArray(function(err, db_check) {
+			//Kontrolle, ob fuer die angegebene E-Mail schon ein Konto existiert, mittels Suche in der Collection
+			
+			if (db_check.length != 0) {
+				//Datenkontrollobjekt beinhaltet daten fuer die angegebene E-Mail. Es existiert somit schon ein Konto
+				console.log("L1-Info: Registration false");
+				res.sendFile(__dirname + "/views/" + "registration_fail.html");
+				
+				dbClient.close();
+			}
+			
+			else {
+				db.collection('Fuehrungskraft').insertOne(registration_data, function(err, result) {
+					if (err) throw err;
+					console.log("L1-Info: Registration true");
+					console.log("L3-Info: REGISTRATION DATA ... ");
+					console.log("... END");
+					
+					//Cookie-Generierung
+					var salt = bcrypt.genSaltSync(10);
+					req.session.user = bcrypt.hashSync(req.body.registration_mail, salt, function(err, hash) {
+						if (err) throw err;
+					});
+						
+					res.sendFile(__dirname + "/views/" + "mainpage.html");
+					
+					dbClient.close();
+				});
+			}
+		});
+	});
+});
+
+
+
+/* /cookietest - Empfangen eines POST-Requests ueber Port 8080  */
+server.get('/cookietest', urlencodedParser, function(req, res){
+	console.log("L2-Info: POST-REQUEST for /cookietest");
+	
+	if(req.session && req.session.user) { 
+		console.log("L1-Info: Cookie true");
+		console.log("L3-Info: Cookie = " + req.session.user);
+		
+		res.send(req.session.user);
+	}
+	
+	else {
+		console.log("L1-Info: Cookie false");
+		res.send("Cookie false");
+	}
+	
+});	

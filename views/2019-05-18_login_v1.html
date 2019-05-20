@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<title>W3.CSS Template</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/w3.css">
+<link rel="stylesheet" href="css/w3-theme-blue-grey.css">
+<link rel='stylesheet' href="css/googlefonts.css">
+<link rel="stylesheet" href="css/font-awesome.min.css">
+<style>
+html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
+</style>
+<body class="w3-theme-15">
+
+<!-- Navbar -->
+<div class="w3-top">
+ <div class="w3-bar w3-theme-d2 w3-left-align w3-large">
+  <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-theme-d2" href="javascript:void(0);" onclick="openNav()"><i class="fa fa-bars"></i></a>
+  <!--<a href="#" class="w3-bar-item w3-button w3-padding-large w3-theme-d4"><i class="fa fa-home w3-margin-right"></i>Digitaler Führungsassistent</a>-->
+  
+  <div class="w3-dropdown-hover w3-hide-small"> <!--[w3-right"> style="float:right"] dann wäre es rechts oben in der Ecke und theoretisch würde das dropdown right-aligned sein..- funktioniert aber nicht-->
+   <button class="w3-button w3-padding-large" title="help"><i class="fa fa-question-circle w3-margin-right"></i>Digitaler Führungsassistent</i></button>     
+    <div class="w3-dropdown-content w3-card-4 w3-bar-block" >
+      <a href="#" class="w3-bar-item w3-button">Fragen zum Login</a>
+      <a href="#" class="w3-bar-item w3-button">Fragen zur Registration</a>
+      <a href="#" class="w3-bar-item w3-button">Datenschutz</a>
+	  <a href="#" class="w3-bar-item w3-button">Ansprechpartner</a>
+  </div>
+ </div>
+ </div>
+</div>
+
+<!-- Footer -->
+  <footer class="center w3-padding-64 w3-light-grey w3-small w3-center" id="footer">
+    <div class="w3-row-padding">
+        <h4>Login</h4>
+        <p>Wenn Sie schon registriert sind, können Sie sich hier anmelden:</p>
+        <form action="/action_page.php" target="_blank">
+		  <p><input class="w3-input w3-border" type="text" placeholder="Vorname" name="Vorname" style="margin-left:auto; margin-right:auto; width:300px;"required=""></p>
+          <p><input class="w3-input w3-border" type="text" placeholder="Nachname" name="Nachname" style="margin-left:auto; margin-right:auto; width:300px;"required=""></p>
+          <p><input class="w3-input w3-border" type="password" placeholder="Passwort" name="Passwort" style="margin-left:auto; margin-right:auto; width:300px;"required=""></p>
+          <p><input class="w3-input w3-border" type="password" placeholder="HiOrg-Kürzel" name="HiOrg-Kürzel" style="margin-left:auto; margin-right:auto; width:300px;"required=""></p>
+          <button style="margin-left:auto; margin-right:auto; width:300px;" type="submit" class="w3-button w3-block w3-blue-grey">Send</button>
+          <div class="container" style="background-color:#f1f1f1">
+			<!--<button type="button" class="cancelbtn">Abbrechen</button>-->
+			<span class="psw w3-hover-white"><a href="#">Passwort</a> vergessen?</span>
+		</form>
+      </div>
+	  
+	</div>
+	  
+	<div class="w3-row-padding">
+		<p></p>
+        <h4>Registration</h4>
+        <p>Falls Sie noch nicht registriert sind, tun Sie dies bitte hier:</p>
+        <form action="/action_page.php" target="_blank" style="margin-left:auto; margin-right:auto; width:300px;">
+		  <p><select class="w3-input w3-border" placeholder="Titel" name="Titel">
+			<option value="Herr">Herr</option>
+			<option value="Frau">Frau</option>
+		  </select></p>
+		  <p><input class="w3-input w3-border" type="text" placeholder="Vorname" name="Vorname" style="margin-left:auto; margin-right:auto; width:300px;" required=""></p>
+          <p><input class="w3-input w3-border" type="text" placeholder="Nachname" name="Nachname" style="margin-left:auto; margin-right:auto; width:300px;" required=""></p>
+          <p><input class="w3-input w3-border" type="text" placeholder="Hilfsorganisation" name="Hilfsorganisation" style="margin-left:auto; margin-right:auto; width:300px;" required=""></p>
+		  <p><input class="w3-input w3-border" type="text" placeholder="Führungsqualifikation" name="Führungsqualifikation" style="margin-left:auto; margin-right:auto; width:300px;" required=""></p>
+		  <p><input class="w3-input w3-border" type="email" placeholder="E-Mail" name="E-Mail" style="margin-left:auto; margin-right:auto; width:300px;" required=""></p> <!--praktisch für PW vergessen-->
+		  <p><input class="w3-input w3-border" type="tel" placeholder="Handynummer" name="Handynummer" pattern="[0-9]{4}-[0-9]{8}" style="margin-left:auto; margin-right:auto; width:300px;" required=""></p> <!--beim senden wird gewarnt Format einzuhalten-->
+		  <p><input class="w3-input w3-border" type="password" placeholder="Passwort" name="Passwort" style="margin-left:auto; margin-right:auto; width:300px;" required=""></p>
+          <p><input class="w3-input w3-border" type="password" placeholder="HiOrg-Kürzel" name="HiOrg-Kürzel" style="margin-left:auto; margin-right:auto; width:300px;" required=""></p>
+          <button type="submit" style="margin-left:auto; margin-right:auto; width:300px;" class="w3-button w3-block w3-blue-grey">Send</button>
+        </form>
+    </div>
+  </footer>
+
+<footer class="w3-container w3-theme-d5">
+  <p><i class="fa fa-copyright"></i> 2019</p>
+</footer>
+ 
+<script>
+// Accordion
+function myFunction(id) {
+  var x = document.getElementById(id);
+  if (x.className.indexOf("w3-show") == -1) {
+    x.className += " w3-show";
+    x.previousElementSibling.className += " w3-theme-d1";
+  } else { 
+    x.className = x.className.replace("w3-show", "");
+    x.previousElementSibling.className = 
+    x.previousElementSibling.className.replace(" w3-theme-d1", "");
+  }
+}
+
+// Used to toggle the menu on smaller screens when clicking on the menu button
+function openNav() {
+  var x = document.getElementById("navDemo");
+  if (x.className.indexOf("w3-show") == -1) {
+    x.className += " w3-show";
+  } else { 
+    x.className = x.className.replace(" w3-show", "");
+  }
+}
+
+</script>
+
+</body>
+</html> 

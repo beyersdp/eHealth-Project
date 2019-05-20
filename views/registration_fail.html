@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 
-<title>DF Login</title> 
+<title>ODW Login</title> 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"> <!--The viewport handles the layouts for variable devices -->
 <link rel="stylesheet" href="css/main.css">
@@ -32,7 +32,7 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif}
     </div>
     <div class="w3-third w3-center">
       <form class="w3-padding-96" method="POST" action="/login">
-        <p><input class="w3-input w3-border" type="text" placeholder="E-Mail" required name="login_mail"></p>
+        <p><input class="w3-input w3-border" type="text" placeholder="Benutzername" required name="login_name"></p>
         <p><input class="w3-input w3-border" type="password" placeholder="Passwort" required name="login_passwort"></p>
 		<p><input class="w3-input w3-border" type="text" placeholder="HiOrg-Schlüssel" required name="login_key"></p>
         <p>
@@ -55,6 +55,7 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif}
     </div>
     <div class="w3-third w3-center">
       <form class="w3-padding-96" method="POST" action="/registration">
+		<p style="color:red"><b>Es existiert bereits ein Konto für die angegebene E-Mail!</b></p>
         <p><input class="w3-input w3-border" type="text" placeholder="Titel" required name="registration_titel"></p>
 		<p><input class="w3-input w3-border" type="text" placeholder="Vorname" required name="registration_vorname"></p>
         <p><input class="w3-input w3-border" type="text" placeholder="Nachname" required name="registration_nachname"></p>
