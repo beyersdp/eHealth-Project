@@ -148,8 +148,6 @@ server.post('/registration', urlencodedParser, function(req, res){
 				db.collection('Fuehrungskraft').insertOne(registration_data, function(err, result) {
 					if (err) throw err;
 					console.log("L1-Info: Registration true");
-					console.log("L3-Info: REGISTRATION DATA ... ");
-					console.log("... END");
 					
 					//Cookie-Generierung
 					var salt = bcrypt.genSaltSync(10);
