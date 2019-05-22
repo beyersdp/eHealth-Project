@@ -1,0 +1,89 @@
+<!-- Navbar -->
+<div class="w3-top">
+ <div class="w3-bar w3-theme-d2 w3-left-align w3-large">
+  <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-theme-d2" href="javascript:void(0);" onclick="openNav()"><i class="fa fa-bars"></i></a>
+  <!--<a href="#" class="w3-bar-item w3-button w3-padding-large w3-theme-d4"><i class="fa fa-home w3-margin-right"></i>Digitaler Führungsassistent</a>-->
+  
+  <div class="w3-dropdown-hover w3-hide-small"> <!--[w3-right"> style="float:right"] dann wäre es rechts oben in der Ecke und theoretisch würde das dropdown right-aligned sein..- funktioniert aber nicht-->
+   <button class="w3-button w3-padding-large" title="help"><i class="fa fa-question-circle w3-margin-right"></i>Digitaler Führungsassistent</i></button>     
+    <div class="w3-dropdown-content w3-card-4 w3-bar-block" >
+      <a href="#" class="w3-bar-item w3-button">Fragen zum Login</a>
+      <a href="#" class="w3-bar-item w3-button">Fragen zur Registration</a>
+      <a href="#" class="w3-bar-item w3-button">Datenschutz</a>
+	  <a href="#" class="w3-bar-item w3-button">Ansprechpartner</a>
+  </div>
+ </div>
+ </div>
+</div>
+
+<!-- Footer -->
+  <footer class="center w3-padding-64 w3-light-grey w3-small w3-center" id="footer">
+    <div class="w3-row-padding">
+        <h4>Login</h4>
+        <p>Wenn Sie schon registriert sind, können Sie sich hier anmelden:</p>
+		<p style="color:red"><b>{{ loginFalse }}</b></p>
+        <form method="POST" action="/login">
+		  <p><input class="w3-input w3-border" type="text" placeholder="E-Mail" name="login_mail" style="margin-left:auto; margin-right:auto; width:300px;" required></p>
+          <p><input class="w3-input w3-border" type="password" placeholder="Passwort" name="login_passwort" style="margin-left:auto; margin-right:auto; width:300px;" required></p>
+          <p><input class="w3-input w3-border" type="text" placeholder="HiOrg-Schlüssel" name="login_key" style="margin-left:auto; margin-right:auto; width:300px;" required></p>
+          <button style="margin-left:auto; margin-right:auto; width:300px;" type="submit" class="w3-button w3-block w3-blue-grey">EINLOGGEN</button>
+          </form>
+		  <div class="container" style="background-color:#f1f1f1">
+			<br>
+			<span class="psw w3-hover-white"><a href="/passwort_vergessen">Passwort vergessen?</a></span>
+		  </div>
+	</div>
+	  
+	<div class="w3-row-padding">
+		<br>
+		<br>
+        <h4>Registration</h4>
+        <p>Falls Sie noch nicht registriert sind, tun Sie dies bitte hier:</p>
+		<p style="color:red"><b>{{ registrationFalse }}</b></p>
+        <form method="POST" action="/registration" style="margin-left:auto; margin-right:auto; width:300px;">
+		  <p><select class="w3-input w3-border" placeholder="Anrede" name="registration_titel">
+			<option value="" hidden>Anrede</option>
+			<option value="Herr">Herr</option>
+			<option value="Frau">Frau</option>
+		  </select></p>
+		  <p><input class="w3-input w3-border" type="text" placeholder="Vorname" name="registration_vorname" style="margin-left:auto; margin-right:auto; width:300px;" required></p>
+          <p><input class="w3-input w3-border" type="text" placeholder="Nachname" name="registration_nachname" style="margin-left:auto; margin-right:auto; width:300px;" required></p>
+		  <p><input class="w3-input w3-border" type="text" placeholder="Führungsqualifikation" name="registration_quali" style="margin-left:auto; margin-right:auto; width:300px;" required></p>
+          <p><input class="w3-input w3-border" type="text" placeholder="Hilfsorganisation" name="registration_hiorg" style="margin-left:auto; margin-right:auto; width:300px;" required></p>
+		  <p><input class="w3-input w3-border" type="email" placeholder="E-Mail" name="registration_mail" style="margin-left:auto; margin-right:auto; width:300px;" required></p>
+		  <p><input class="w3-input w3-border" type="tel" placeholder="Telefonnummer" name="registration_tel" style="margin-left:auto; margin-right:auto; width:300px;" required></p> <!--pattern="[0-9]{4}-[0-9]{8}"--> <!--beim senden wird gewarnt Format einzuhalten-->
+		  <p><input class="w3-input w3-border" type="password" placeholder="Passwort" name="registration_passwort" style="margin-left:auto; margin-right:auto; width:300px;" required></p>
+          <button type="submit" style="margin-left:auto; margin-right:auto; width:300px;" class="w3-button w3-block w3-blue-grey">REGISTRIEREN</button>
+        </form>
+    </div>
+  </footer>
+
+<footer class="w3-container w3-theme-d5">
+  <p><i class="fa fa-copyright"></i> 2019</p>
+</footer>
+ 
+<script>
+// Accordion
+function myFunction(id) {
+  var x = document.getElementById(id);
+  if (x.className.indexOf("w3-show") == -1) {
+    x.className += " w3-show";
+    x.previousElementSibling.className += " w3-theme-d1";
+  } else { 
+    x.className = x.className.replace("w3-show", "");
+    x.previousElementSibling.className = 
+    x.previousElementSibling.className.replace(" w3-theme-d1", "");
+  }
+}
+
+// Used to toggle the menu on smaller screens when clicking on the menu button
+function openNav() {
+  var x = document.getElementById("navDemo");
+  if (x.className.indexOf("w3-show") == -1) {
+    x.className += " w3-show";
+  } else { 
+    x.className = x.className.replace(" w3-show", "");
+  }
+}
+
+</script>

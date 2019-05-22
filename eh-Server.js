@@ -17,7 +17,7 @@ var shell = require('shelljs');
 var server = express();
 server.set('views', path.join(__dirname, 'views'));
 server.set('port', 8080);
-server.engine('hbs', hbs({extname: 'hbs', defaultLayout: 'layout', layoutsDir: __dirname + '/views/layouts/'}));
+server.engine('hbs', hbs({extname: 'hbs', defaultLayout: 'defaultLayout', layoutsDir: __dirname + '/views/layouts/'}));
 server.set('view engine', 'hbs');
 
 server.use(express.static('views'));
@@ -47,7 +47,9 @@ server.listen(server.get('port'), '0.0.0.0', function() {
 /* / - Empfangen eines GET-Requests ueber Port 8080  */
 server.get('/', function(req, res){
 	console.log("L2-Info: GET-REQUEST for / ");
-	res.sendFile(__dirname + "/views/" + "login.html");
+	res.render('login', {title: "Login - Digitaler Führungsassistent",
+						 loginFalse: "",
+						 registrationFalse: ""});
 });
 
 
@@ -71,7 +73,9 @@ server.post('/login', urlencodedParser, function(req, res){
 				db.collection('HiOrgKey').find({key: req.body.login_key}).toArray(function(err, result) {
 					if (result.length == 0) {
 						console.log("L1-Info: HiOrg Key not valide");
-						res.sendFile(__dirname + "/views/" + "login_fail.html");
+						res.render('login', {title: "Login - Digitaler Führungsassistent",
+											 loginFalse: "Der angegebene HiOrg-Schlüssel ist ungültig!",
+											 registrationFalse: ""});
 				
 						dbClient.close();
 					}
@@ -85,7 +89,7 @@ server.post('/login', urlencodedParser, function(req, res){
 							if (err) throw err;
 						});
 						
-						res.sendFile(__dirname + "/views/" + "mainpage.html");
+						res.render('mainpage', {title: "Einsatz - Digitaler Führungsassistent"});
 				
 						dbClient.close();
 					}
@@ -95,7 +99,9 @@ server.post('/login', urlencodedParser, function(req, res){
 			
 			else {
 				console.log("L1-Info: Login false");
-				res.sendFile(__dirname + "/views/" + "login_fail.html");
+				res.render('login', {title: "Login - Digitaler Führungsassistent",
+									 loginFalse: "Es existiert kein Konto zu diesen Daten!",
+									 registrationFalse: ""});
 				
 				dbClient.close();
 			}
@@ -105,6 +111,60 @@ server.post('/login', urlencodedParser, function(req, res){
 	
 	
 });
+
+
+
+/* /passwort_vergessen - Empfangen eines GET-Requests ueber Port 8080  */
+server.get('/passwort_vergessen', function(req, res){
+	console.log("L2-Info: GET-REQUEST for /passwort_vergessen");
+	
+	res.render('passwort_vergessen', {title: "Neues Passwort - Digitaler Führungsassistent"});
+});	
+
+
+
+/* /passwortNEU - Empfangen eines POST-Requests ueber Port 8080  */
+server.post('/passwortNeu', urlencodedParser, function(req, res){
+	console.log("L2-Info: GET-REQUEST for /passwortNEU");
+	
+	mongodbClient.connect(url, function(err, dbClient) {
+		if (err) throw err;
+		var db = dbClient.db('DigitalerFuehrungsassistent');
+		console.log("L2-Info: DB-Connection true");
+		
+		db.collection('Fuehrungskraft').find({mail: req.body.login_mail}).toArray(function(err, db_check) {
+			//Kontrolle, ob fuer die angegebene E-Mail schon ein Konto existiert, mittels Suche in der Collection
+
+			if (db_check.length == 1 && db_check[0].tel == req.body.login_tel) {
+				//Konto fuer angegebene E-Mail existiert und passt zur angegebenen Telefonnummer
+				
+				console.log("L1-Info: New Password true");
+				
+				var salt = bcrypt.genSaltSync(10);
+				var new_passwort_hash = bcrypt.hashSync(req.body.login_passwort, salt, function(err, hash) {
+					if (err) throw err;
+				});
+				
+				db.collection('Fuehrungskraft').update({mail: req.body.login_mail}, {$set: {passwort: new_passwort_hash}});
+				
+				res.render('login', {title: "Login - Digitaler Führungsassistent",
+									 loginFalse: "Ihr Passwort wurde erfolgreich geändert!",
+									 registrationFalse: ""});
+				
+				dbClient.close();
+			}	
+			
+			else {
+				//Kein Konto unter der angegebenen Mail und Telefonnummer
+				console.log("L1-Info: New Password false");
+				res.render('passwort_vergessen', {title: "Neues Passwort - Digitaler Führungsassistent",
+									              error: "E-Mail oder Telefonnummer sind unbekannt."});
+				
+				dbClient.close();
+			}
+		});
+	});
+});	
 
 
 
@@ -139,7 +199,9 @@ server.post('/registration', urlencodedParser, function(req, res){
 			if (db_check.length != 0) {
 				//Datenkontrollobjekt beinhaltet daten fuer die angegebene E-Mail. Es existiert somit schon ein Konto
 				console.log("L1-Info: Registration false");
-				res.sendFile(__dirname + "/views/" + "registration_fail.html");
+				res.render('login', {title: "Login - Digitaler Führungsassistent",
+									 loginFalse: "",
+									 registrationFalse: "Es existiert bereits ein Konto für die angegebene E-Mail!"});
 				
 				dbClient.close();
 			}
@@ -155,7 +217,7 @@ server.post('/registration', urlencodedParser, function(req, res){
 						if (err) throw err;
 					});
 						
-					res.sendFile(__dirname + "/views/" + "mainpage.html");
+					res.render('mainpage', {title: "Einsatz - Digitaler Führungsassistent"});
 					
 					dbClient.close();
 				});
@@ -166,9 +228,9 @@ server.post('/registration', urlencodedParser, function(req, res){
 
 
 
-/* /cookietest - Empfangen eines POST-Requests ueber Port 8080  */
-server.get('/cookietest', urlencodedParser, function(req, res){
-	console.log("L2-Info: POST-REQUEST for /cookietest");
+/* /cookietest - Empfangen eines GET-Requests ueber Port 8080  */
+server.get('/cookietest', function(req, res){
+	console.log("L2-Info: GET-REQUEST for /cookietest");
 	
 	if(req.session && req.session.user) { 
 		console.log("L1-Info: Cookie true");
