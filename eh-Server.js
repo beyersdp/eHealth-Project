@@ -245,3 +245,13 @@ server.get('/cookietest', function(req, res){
 	}
 	
 });	
+
+
+
+/* /mainpagetest - Empfangen eines GET-Requests ueber Port 8080  */
+server.get('/mainpagetest', function(req, res){
+	console.log("L2-Info: GET-REQUEST for /mainpagetest");
+	
+	res.render('mainpage', {title: "Einsatz - Digitaler Führungsassistent"});
+	
+});	
