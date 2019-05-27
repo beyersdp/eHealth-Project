@@ -1,0 +1,11 @@
+<form method="POST" action="/einsatz">
+	<input type="hidden" name="einsatz_id" value="{{ einsatz_id }}"></input>
+	<input type="text" placeholder="Sender (Drag & Drop)" name="einsatz_sender" value="{{ einsatz_sender }}"></input>
+	<input type="text" placeholder="Position" name="einsatz_position" value="{{ einsatz_position }}"></input>
+	<input type="text" placeholder="Meldebild" name="einsatz_meldebild" value="{{ einsatz_meldebild }}"></input>
+	<input type="text" placeholder="Anzahl an Verletzten" name="einsatz_anzVerletzte" value="{{ einsatz_anzVerletzte }}"></input>
+	<input type="text" placeholder="Beschreibung" name="einsatz_text" value="{{ einsatz_text }}"></input>
+	<input type="text" placeholder="Status" name="einsatz_status" value="{{ einsatz_status }}"></input>
+	<button type="submit">Senden</button>
+</form>
+

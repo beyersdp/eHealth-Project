@@ -3,6 +3,7 @@ var express = require('express');
 var path = require('path');
 var bodyParser = require('body-parser');
 var mongodb = require('mongodb');
+var ObjectID = require('mongodb').ObjectID;
 var hbs = require('express-handlebars');
 var handlebars = require('handlebars');
 var bcrypt = require('bcrypt');
@@ -58,7 +59,7 @@ server.post('/login', urlencodedParser, function(req, res){
 	console.log("L2-Info: POST-REQUEST for /login");
 	//console.log(req.body); //DEBUG Kontrollausgabe
 	
-	mongodbClient.connect(url, function(err, dbClient) {
+	mongodbClient.connect(url, { useNewUrlParser: true }, function(err, dbClient) {
 		if (err) throw err;
 		var db = dbClient.db('DigitalerFuehrungsassistent');
 		console.log("L2-Info: DB-Connection true");
@@ -87,6 +88,8 @@ server.post('/login', urlencodedParser, function(req, res){
 						req.session.user = bcrypt.hashSync(req.body.login_mail, salt, function(err, hash) {
 							if (err) throw err;
 						});
+						
+						db.collection('Fuehrungskraft').findOneAndUpdate({mail: req.body.login_mail}, {$set: {cookie: req.session.user}});
 						
 						res.render('mainpage', {title: "Einsatz - Digitaler Führungsassistent"});
 				
@@ -126,7 +129,7 @@ server.get('/passwort_vergessen', function(req, res){
 server.post('/passwortNeu', urlencodedParser, function(req, res){
 	console.log("L2-Info: GET-REQUEST for /passwortNEU");
 	
-	mongodbClient.connect(url, function(err, dbClient) {
+	mongodbClient.connect(url, { useNewUrlParser: true }, function(err, dbClient) {
 		if (err) throw err;
 		var db = dbClient.db('DigitalerFuehrungsassistent');
 		console.log("L2-Info: DB-Connection true");
@@ -144,7 +147,7 @@ server.post('/passwortNeu', urlencodedParser, function(req, res){
 					if (err) throw err;
 				});
 				
-				db.collection('Fuehrungskraft').update({mail: req.body.login_mail}, {$set: {passwort: new_passwort_hash}});
+				db.collection('Fuehrungskraft').updateOne({mail: req.body.login_mail}, {$set: {passwort: new_passwort_hash}});
 				
 				res.render('login', {title: "Login - Digitaler Führungsassistent",
 									 loginFalse: "Ihr Passwort wurde erfolgreich geändert!",
@@ -185,9 +188,10 @@ server.post('/registration', urlencodedParser, function(req, res){
 							 mail: req.body.registration_mail,
 							 tel: req.body.registration_tel,
 							 passwort: registration_passwort_hash,
+							 cookie: null,
 							 ist_EL: false};
 	
-	mongodbClient.connect(url, function(err, dbClient) {
+	mongodbClient.connect(url, { useNewUrlParser: true }, function(err, dbClient) {
 		if (err) throw err;
 		var db = dbClient.db('DigitalerFuehrungsassistent');
 		console.log("L2-Info: DB-Connection true");
@@ -209,20 +213,98 @@ server.post('/registration', urlencodedParser, function(req, res){
 				db.collection('Fuehrungskraft').insertOne(registration_data, function(err, result) {
 					if (err) throw err;
 					console.log("L1-Info: Registration true");
-					
-					//Cookie-Generierung
-					var salt = bcrypt.genSaltSync(10);
-					req.session.user = bcrypt.hashSync(req.body.registration_mail, salt, function(err, hash) {
-						if (err) throw err;
-					});
 						
-					res.render('mainpage', {title: "Einsatz - Digitaler Führungsassistent"});
+					res.render('login', {title: "Login - Digitaler Führungsassistent",
+										 loginFalse: "Login nach Registrierung nun möglich",
+										 registrationFalse: ""});
 					
 					dbClient.close();
 				});
 			}
 		});
 	});
+});
+
+
+
+/* /einsatz - Empfangen eines POST-Requests ueber Port 8080  */
+server.post('/einsatz', urlencodedParser, function(req, res){
+	console.log("L2-Info: POST-REQUEST for /einsatz");
+	console.log(req.body); //DEBUG Kontrollausgabe
+	
+	if(req.session && req.session.user) { 
+		console.log("L1-Info: Cookie true");
+		console.log(req.session.user);
+		
+		if(req.body.einsatz_id == "") { //ein neuer Einsatz soll aufgenommen werden, da noch keine ID existert
+			
+			mongodbClient.connect(url, { useNewUrlParser: true }, function(err, dbClient) {
+				if (err) throw err;
+				var db = dbClient.db('DigitalerFuehrungsassistent');
+				console.log("L2-Info: DB-Connection true");
+		
+				db.collection('Fuehrungskraft').find({cookie: req.session.user}).toArray(function(err, result) {
+					if (err) throw err;
+			
+					einsatz_data = {sender: req.body.einsatz_sender,
+									position: req.body.einsatz_position,
+									meldebild: req.body.einsatz_meldebild,
+									anzVerletzte: req.body.einsatz_anzVerletzte,
+									text: req.body.einsatz_text,
+									status: req.body.einsatz_status,
+									fuehrungskraft: result[0]};
+			
+					db.collection('Einsatz').insertOne(einsatz_data, function(err, inserted) {
+						if (err) throw err;
+
+						res.render('html_form_dummy', {title: "Einsatz - Digitaler Führungsassistent",
+													   einsatz_id: inserted.ops[0]._id,
+													   einsatz_sender: req.body.einsatz_sender,
+													   einsatz_position: req.body.einsatz_position,
+													   einsatz_meldebild: req.body.einsatz_meldebild,
+													   einsatz_anzVerletzte: req.body.einsatz_anzVerletzte,
+													   einsatz_text: req.body.einsatz_text,
+													   einsatz_status: req.body.einsatz_status});
+					});
+				});
+			});
+		}
+		
+		else { //ein vorhandener Einsatz soll bearbeitet werden, anhand der gesendeten ID
+			
+			mongodbClient.connect(url, { useNewUrlParser: true }, function(err, dbClient) {
+				if (err) throw err;
+				var db = dbClient.db('DigitalerFuehrungsassistent');
+				console.log("L2-Info: DB-Connection true");
+		
+				db.collection('Fuehrungskraft').find({cookie: req.session.user}).toArray(function(err, result) {
+					if (err) throw err;
+			
+					db.collection('Einsatz').findOneAndUpdate({_id: ObjectID(req.body.einsatz_id)}, {$set: {sender: req.body.einsatz_sender,
+																						position: req.body.einsatz_position,
+																						meldebild: req.body.einsatz_meldebild,
+																						anzVerletzte: req.body.einsatz_anzVerletzte,
+																						text: req.body.einsatz_text,
+																						status: req.body.einsatz_status,
+																						fuehrungskraft: result[0]}});
+																					
+					res.render('html_form_dummy', {title: "Einsatz - Digitaler Führungsassistent",
+											       einsatz_id: req.body.einsatz_id,
+												   einsatz_sender: req.body.einsatz_sender,
+												   einsatz_position: req.body.einsatz_position,
+												   einsatz_meldebild: req.body.einsatz_meldebild,
+												   einsatz_anzVerletzte: req.body.einsatz_anzVerletzte,
+											   	   einsatz_text: req.body.einsatz_text,
+												   einsatz_status: req.body.einsatz_status});
+				});
+			});
+		}
+	}
+	
+	else {
+		console.log("L1-Info: Cookie false");
+		res.send("Cookie false");
+	}
 });
 
 
@@ -252,5 +334,15 @@ server.get('/mainpagetest', function(req, res){
 	console.log("L2-Info: GET-REQUEST for /mainpagetest");
 	
 	res.render('mainpage', {title: "Einsatz - Digitaler Führungsassistent"});
+	
+});	
+
+
+
+/* /formtest - Empfangen eines GET-Requests ueber Port 8080  */
+server.get('/formtest', function(req, res){
+	console.log("L2-Info: GET-REQUEST for /formtest");
+	
+	res.render('html_form_dummy', {einsatz_id: ""});
 	
 });	
