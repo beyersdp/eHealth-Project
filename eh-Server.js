@@ -8,7 +8,6 @@ var handlebars = require('handlebars');
 var bcrypt = require('bcrypt');
 var session = require('client-sessions');
 var moment = require('moment');
-var uniqueRandom = require('unique-random');
 var shell = require('shelljs');
 
 
