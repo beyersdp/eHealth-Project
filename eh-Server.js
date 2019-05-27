@@ -234,7 +234,6 @@ server.post('/einsatz', urlencodedParser, function(req, res){
 	
 	if(req.session && req.session.user) { 
 		console.log("L1-Info: Cookie true");
-		console.log(req.session.user);
 		
 		if(req.body.einsatz_id == "") { //ein neuer Einsatz soll aufgenommen werden, da noch keine ID existert
 			
@@ -264,7 +263,8 @@ server.post('/einsatz', urlencodedParser, function(req, res){
 													   einsatz_meldebild: req.body.einsatz_meldebild,
 													   einsatz_anzVerletzte: req.body.einsatz_anzVerletzte,
 													   einsatz_text: req.body.einsatz_text,
-													   einsatz_status: req.body.einsatz_status});
+													   einsatz_status: req.body.einsatz_status,
+													   einsatz_fuehrungskraft: result[0].nachname});
 					});
 				});
 			});
@@ -295,7 +295,8 @@ server.post('/einsatz', urlencodedParser, function(req, res){
 												   einsatz_meldebild: req.body.einsatz_meldebild,
 												   einsatz_anzVerletzte: req.body.einsatz_anzVerletzte,
 											   	   einsatz_text: req.body.einsatz_text,
-												   einsatz_status: req.body.einsatz_status});
+												   einsatz_status: req.body.einsatz_status,
+												   einsatz_fuehrungskraft: result[0].nachname});
 				});
 			});
 		}
@@ -305,6 +306,7 @@ server.post('/einsatz', urlencodedParser, function(req, res){
 		console.log("L1-Info: Cookie false");
 		res.send("Cookie false");
 	}
+// TODO: Timestamp zum Einsatz hinzufuegen in DB und auf mainpage visualisieren
 });
 
 
