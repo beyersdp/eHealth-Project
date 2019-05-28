@@ -240,7 +240,7 @@ Collection: Funkspruch
       <x>520</x>
       <y>300</y>
       <w>170</w>
-      <h>200</h>
+      <h>210</h>
     </coordinates>
     <panel_attributes>lt=.
 Collection: Einsatz
@@ -252,6 +252,7 @@ Collection: Einsatz
 - anzVerletzte: String
 - text: String
 - status: String
+- timestamp: String
 - rettungsmittel: Object
 - rettungskraft: Object
 - fuehrungskraft: Object
@@ -265,10 +266,10 @@ Collection: Einsatz
       <x>520</x>
       <y>280</y>
       <w>200</w>
-      <h>230</h>
+      <h>240</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
-    <additional_attributes>10.0;20.0;10.0;10.0;180.0;10.0;180.0;210.0;170.0;210.0</additional_attributes>
+    <additional_attributes>10.0;20.0;10.0;10.0;180.0;10.0;180.0;220.0;170.0;220.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
@@ -276,10 +277,10 @@ Collection: Einsatz
       <x>530</x>
       <y>270</y>
       <w>200</w>
-      <h>230</h>
+      <h>240</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
-    <additional_attributes>10.0;20.0;10.0;10.0;180.0;10.0;180.0;210.0;170.0;210.0</additional_attributes>
+    <additional_attributes>10.0;20.0;10.0;10.0;180.0;10.0;180.0;220.0;170.0;220.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>

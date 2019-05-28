@@ -230,7 +230,7 @@ server.post('/registration', urlencodedParser, function(req, res){
 /* /einsatz - Empfangen eines POST-Requests ueber Port 8080  */
 server.post('/einsatz', urlencodedParser, function(req, res){
 	console.log("L2-Info: POST-REQUEST for /einsatz");
-	console.log(req.body); //DEBUG Kontrollausgabe
+	//console.log(req.body); //DEBUG Kontrollausgabe
 	
 	if(req.session && req.session.user) { 
 		console.log("L1-Info: Cookie true");
@@ -244,13 +244,14 @@ server.post('/einsatz', urlencodedParser, function(req, res){
 		
 				db.collection('Fuehrungskraft').find({cookie: req.session.user}).toArray(function(err, result) {
 					if (err) throw err;
-			
+					
 					einsatz_data = {sender: req.body.einsatz_sender,
 									position: req.body.einsatz_position,
 									meldebild: req.body.einsatz_meldebild,
 									anzVerletzte: req.body.einsatz_anzVerletzte,
 									text: req.body.einsatz_text,
 									status: req.body.einsatz_status,
+									timestamp: moment().format('YYYYMMDDHHmmss'),
 									fuehrungskraft: result[0]};
 			
 					db.collection('Einsatz').insertOne(einsatz_data, function(err, inserted) {
@@ -264,6 +265,7 @@ server.post('/einsatz', urlencodedParser, function(req, res){
 													   einsatz_anzVerletzte: req.body.einsatz_anzVerletzte,
 													   einsatz_text: req.body.einsatz_text,
 													   einsatz_status: req.body.einsatz_status,
+													   einsatz_timestamp: moment(inserted.ops[0].timestamp, 'YYYYMMDDHHmmss').format('HH:mm:ss'),
 													   einsatz_fuehrungskraft: result[0].nachname});
 					});
 				});
@@ -286,17 +288,19 @@ server.post('/einsatz', urlencodedParser, function(req, res){
 																						anzVerletzte: req.body.einsatz_anzVerletzte,
 																						text: req.body.einsatz_text,
 																						status: req.body.einsatz_status,
-																						fuehrungskraft: result[0]}});
-																					
-					res.render('html_form_dummy', {title: "Einsatz - Digitaler Führungsassistent",
-											       einsatz_id: req.body.einsatz_id,
-												   einsatz_sender: req.body.einsatz_sender,
-												   einsatz_position: req.body.einsatz_position,
-												   einsatz_meldebild: req.body.einsatz_meldebild,
-												   einsatz_anzVerletzte: req.body.einsatz_anzVerletzte,
-											   	   einsatz_text: req.body.einsatz_text,
-												   einsatz_status: req.body.einsatz_status,
-												   einsatz_fuehrungskraft: result[0].nachname});
+																						fuehrungskraft: result[0]}}, function(err, updated){
+
+						res.render('html_form_dummy', {title: "Einsatz - Digitaler Führungsassistent",
+													   einsatz_id: req.body.einsatz_id,
+													   einsatz_sender: req.body.einsatz_sender,
+													   einsatz_position: req.body.einsatz_position,
+													   einsatz_meldebild: req.body.einsatz_meldebild,
+													   einsatz_anzVerletzte: req.body.einsatz_anzVerletzte,
+													   einsatz_text: req.body.einsatz_text,
+													   einsatz_status: req.body.einsatz_status,
+													   einsatz_timestamp: moment(updated.value.timestamp, 'YYYYMMDDHHmmss').format('HH:mm:ss'),
+													   einsatz_fuehrungskraft: result[0].nachname});
+					});
 				});
 			});
 		}
@@ -306,7 +310,46 @@ server.post('/einsatz', urlencodedParser, function(req, res){
 		console.log("L1-Info: Cookie false");
 		res.send("Cookie false");
 	}
-// TODO: Timestamp zum Einsatz hinzufuegen in DB und auf mainpage visualisieren
+});
+
+
+
+/* /funkspruch - Empfangen eines POST-Requests ueber Port 8080  */
+server.post('/funkspruch', urlencodedParser, function(req, res){
+	console.log("L2-Info: POST-REQUEST for /funkspruch");
+	console.log(req.body); //DEBUG Kontrollausgabe
+	
+	if(req.session && req.session.user) { 
+		console.log("L1-Info: Cookie true");
+		
+		mongodbClient.connect(url, { useNewUrlParser: true }, function(err, dbClient) {
+			if (err) throw err;
+			var db = dbClient.db('DigitalerFuehrungsassistent');
+			console.log("L2-Info: DB-Connection true");
+	
+			db.collection('Fuehrungskraft').find({cookie: req.session.user}).toArray(function(err, result) {
+				if (err) throw err;
+				
+				funkspruch_data = {sender: req.body.funkspruch_sender,
+								empfaenger: req.body.funkspruch_empfaenger,
+								kategorie: req.body.funkspruch_kategorie,
+								text: req.body.funkspruch_text,
+								timestamp: moment().format('YYYYMMDDHHmmss'),
+								fuehrungskraft: result[0]};
+		
+				db.collection('Funkspruch').insertOne(funkspruch_data, function(err, inserted) {
+					if (err) throw err;
+		
+					res.render('html_form_dummy', {title: "Einsatz Funk - Digitaler Führungsassistent",});
+				});
+			});
+		});
+	}
+
+	else {
+		console.log("L1-Info: Cookie false");
+		res.send("Cookie false");
+	}
 });
 
 
