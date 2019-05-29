@@ -29,3 +29,13 @@
 	<button type="submit">Speichern</button>
 </form>
 <br>
+
+<h3>Funkspruch Chronik</h3>
+<a href="/funkspruchCHRONIK"><button>SHOW</button></a>
+
+{{# if funkspruch}}
+	{{# each funkspruch}}
+		<p>{{ timestamp }}: [{{ kategorie }}] von {{ sender }} zu {{ empfaenger }} Nachricht: {{ text }} - Bearbeiter: {{ fuehrungskraft.nachname }}</p>
+	{{/each}}
+{{/if}}
+

@@ -267,6 +267,7 @@ server.post('/einsatz', urlencodedParser, function(req, res){
 													   einsatz_status: req.body.einsatz_status,
 													   einsatz_timestamp: moment(inserted.ops[0].timestamp, 'YYYYMMDDHHmmss').format('HH:mm:ss'),
 													   einsatz_fuehrungskraft: result[0].nachname});
+						dbClient.close();
 					});
 				});
 			});
@@ -300,6 +301,7 @@ server.post('/einsatz', urlencodedParser, function(req, res){
 													   einsatz_status: req.body.einsatz_status,
 													   einsatz_timestamp: moment(updated.value.timestamp, 'YYYYMMDDHHmmss').format('HH:mm:ss'),
 													   einsatz_fuehrungskraft: result[0].nachname});
+						dbClient.close();
 					});
 				});
 			});
@@ -317,7 +319,7 @@ server.post('/einsatz', urlencodedParser, function(req, res){
 /* /funkspruch - Empfangen eines POST-Requests ueber Port 8080  */
 server.post('/funkspruch', urlencodedParser, function(req, res){
 	console.log("L2-Info: POST-REQUEST for /funkspruch");
-	console.log(req.body); //DEBUG Kontrollausgabe
+	//console.log(req.body); //DEBUG Kontrollausgabe
 	
 	if(req.session && req.session.user) { 
 		console.log("L1-Info: Cookie true");
@@ -339,8 +341,9 @@ server.post('/funkspruch', urlencodedParser, function(req, res){
 		
 				db.collection('Funkspruch').insertOne(funkspruch_data, function(err, inserted) {
 					if (err) throw err;
-		
+				
 					res.render('html_form_dummy', {title: "Einsatz Funk - Digitaler Führungsassistent",});
+					dbClient.close();
 				});
 			});
 		});
@@ -352,6 +355,36 @@ server.post('/funkspruch', urlencodedParser, function(req, res){
 	}
 });
 
+
+
+/* /funkspruchCHRONIK - Empfangen eines POST-Requests ueber Port 8080  */
+server.get('/funkspruchCHRONIK', function(req, res){
+	console.log("L2-Info: GET-REQUEST for /funkspruchCHRONIK");
+	
+	if(req.session && req.session.user) { 
+		console.log("L1-Info: Cookie true");
+		
+		mongodbClient.connect(url, { useNewUrlParser: true }, function(err, dbClient) {
+			if (err) throw err;
+			var db = dbClient.db('DigitalerFuehrungsassistent');
+			console.log("L2-Info: DB-Connection true");
+	
+		db.collection('Funkspruch').find().sort({timestamp: 1}).toArray(function(err, result) {
+				if (err) throw err;
+				
+				res.render('html_form_dummy', {funkspruch: result});
+				console.log(result);
+			
+			});
+			dbClient.close();
+		});
+	}
+	
+	else {
+		console.log("L1-Info: Cookie false");
+		res.send("Cookie false");
+	}
+});
 
 
 /* /cookietest - Empfangen eines GET-Requests ueber Port 8080  */
@@ -388,6 +421,32 @@ server.get('/mainpagetest', function(req, res){
 server.get('/formtest', function(req, res){
 	console.log("L2-Info: GET-REQUEST for /formtest");
 	
-	res.render('html_form_dummy', {einsatz_id: ""});
+	res.render('html_form_dummy');
 	
 });	
+
+
+/* Relevant fuer umfassendere Routing-Aufgaben */
+var cb1 = function (req, res, next) {
+	console.log("CB1");
+	
+	mongodbClient.connect(url, { useNewUrlParser: true }, function(err, dbClient) {
+			if (err) throw err;
+			var db = dbClient.db('DigitalerFuehrungsassistent');
+			console.log("L2-Info: DB-Connection true");
+			dbClient.close();
+			next();
+	});
+}
+var cb2 = function (req, res, next) {
+	console.log("CB2");
+	req.gehtdas = "ja";
+	next();
+}
+var cb3 = function (req, res) {
+	console.log("CB3");
+	console.log(req.gehtdas);
+	res.send("klappt...")
+}
+
+server.get('/routentest', [cb1, cb2, cb3]);
