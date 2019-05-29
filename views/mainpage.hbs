@@ -3,59 +3,47 @@
 <script type="text/javascript" src="script/einsatz.js"></script>
 <script type="text/javascript" src="script/fahrzeuge.js"></script>
 <script type="text/javascript" src="script/helfer.js"></script>
-<script type="text/javascript" src="script/moment.js">
+<script type="text/javascript" src="script/moment.js"></script>
 
 <!-- Navbar -->
-<div class="w3-top" style="z-index: 5000">
- <div class="w3-bar w3-theme-d2 w3-left-align w3-large">
-  <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-theme-d2" href="javascript:void(0);" onclick="openNav()"><i class="fa fa-bars"></i></a>
-  <a  class="w3-bar-item  w3-padding-large w3-theme-d4"><i class="fa fa-home w3-margin-right"></i>Digitaler Führungsassistent</a>
-  
-  <!-- Navbar Buttons Drop Down Menu -->
-  <!-- 1 Funktion = ueber Einstellungen sind nochmals alle moeglichen Aktionen, wie zum Beispiel das Anlegen eines Einsatzes aufgelistet und hierueber ebenfalls ausfuehrbar -->
-  <div class="w3-dropdown-hover w3-hide-small">
-    <button class="w3-button w3-padding-large" title="Einstellungen"><i class="fa fa-gear"></i></button>     
-    <div class="w3-dropdown-content w3-card-4 w3-bar-block" style="width:300px">
-      <a href="#" class="w3-bar-item w3-button">Führungsposition ändern</a>
-      <a href="#" class="w3-bar-item w3-button"><i class="fa fa-medkit fa-fw w3-margin-right"><span class="fa fa-exclamation w3-right w3-small"></span></i> Einsatz anlegen</a>
-	  <a href="#" class="w3-bar-item w3-button"><i class="fa fa-comments w3-margin-right"><span class="fa fa-file-text-o w3-right w3-small"></span></i>Funkspruch anlegen</a>
-	  <a href="#" class="w3-bar-item w3-button"><i class="fa fa-plus w3-small w3-margin-right"> <span class="fa fa-ambulance w3-right w3-large"></span></i>Rettungsmittel hinzufügen</a>
-	  <a href="#" class="w3-bar-item w3-button"><i class="fa fa-plus w3-small w3-margin-right"> <span class="fa fa-ambulance w3-right w3-large"></span></i>Sanitätsposten hinzufügen</a>
-	  <a href="#" class="w3-bar-item w3-button"><i class="fa fa-plus w3-small w3-margin-right"> <span class="fa fa-user-md w3-right w3-large"></span></i>Einsatzkräfte hinzufügen</a>
-    </div>
-  </div>
-  
-  <!-- 2 Funktion = Ueber dieses Icon gelangt man zu all den wichtigen Informationen des Goßeinsatzes -->
-  <div>
-	<a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Informationen zum Großeinsatz"><i class="fa fa-info-circle"></i></a>
-  </div>
-	
-  <!-- 3 Funktion = Funktionalität, um den Großeinsatz zu beenden und gleichzeitig die automatische Berichterstellung zu starten. -->	
-  <div>
-	<a onclick="gesamteinsatzBeenden()" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Großeinsatz beenden & automatischen Bericht starten"><i class="fa fa-power-off"> <span class="fa fa-file-text-o w3-right w3-small"></span></i></a>
-  </div>
+<div class="w3-top" id="top">
+	<div class="w3-bar w3-theme-d5 w3-left-align w3-medium" id="navbar"> 
+		<a class="w3-bar-item w3-padding-larger w3-theme-d4">Digitaler Führungsassistent</a>
+		
+		<!-- 1 Funktion = ueber Einstellungen sind nochmals alle moeglichen Aktionen, wie zum Beispiel das Anlegen eines Einsatzes aufgelistet und hierueber ebenfalls ausfuehrbar -->
+		<div class="w3-dropdown-hover w3-hide-small" id="navbar_element1">
+			<button class="w3-button w3-padding-larger" title="Funktionalitäten"><i class="fa fa-gear fa-fw"></i>Funktionen</button>
+			<div class="w3-dropdown-content w3-card-4 w3-bar-block" style="width:300px" id="navbar_element1_dropdown">
+				<a href="#" class="w3-bar-item w3-button">Führungsposition ändern</a>
+				<a href="#" class="w3-bar-item w3-button"><i class="fa fa-medkit fa-fw w3-margin-right"><span class="fa fa-exclamation w3-right w3-small"></span></i> Einsatz anlegen</a>
+				<a href="#" class="w3-bar-item w3-button"><i class="fa fa-comments w3-margin-right"><span class="fa fa-file-text-o w3-right w3-small"></span></i>Funkspruch anlegen</a>
+				<a href="#" class="w3-bar-item w3-button"><i class="fa fa-plus w3-small w3-margin-right"> <span class="fa fa-ambulance w3-right w3-large"></span></i>Rettungsmittel hinzufügen</a>
+				<a href="#" class="w3-bar-item w3-button"><i class="fa fa-plus w3-small w3-margin-right"> <span class="fa fa-ambulance w3-right w3-large"></span></i>Sanitätsposten hinzufügen</a>
+				<a href="#" class="w3-bar-item w3-button"><i class="fa fa-plus w3-small w3-margin-right"> <span class="fa fa-user-md w3-right w3-large"></span></i>Einsatzkräfte hinzufügen</a>
+			</div> <!-- id="navbar_element1_dropdown -->
+		</div> <!-- id="navbar_element1" -->
+		
+		<!-- 2 Funktion = Ueber dieses Icon gelangt man zu all den wichtigen Informationen des Großeinsatzes -->
+		<div class="w3-dropdown-hover w3-hide-small" id="navbar_element2">
+			<button class="w3-button w3-padding-larger" title="Details zum Gesamteinsatz"><i class="fa fa-info-circle fa-fw"></i>Informationen</button>
+			<div class="w3-dropdown-content w3-card-4 w3-bar-block" style="width:300px" id="navbar_element2_dropdown">
+				<a href="#" class="w3-bar-item w3-button">Steckbrief Gesamteinsatz</a>
+				<a href="#" class="w3-bar-item w3-button">Chronik Individualeinsätze</a>
+				<a href="#" class="w3-bar-item w3-button">Steckbrief Funksprüche</a>
+			</div> <!-- id="navbar_element2_dropdown -->
+		</div> <!-- id="navbar_element2" -->
+		
+		<!-- 3 Funktion = Beenden und Bericht erstellen -->
+		<a onclick="gesamteinsatzBeenden()" class="w3-bar-item w3-button w3-padding-larger" title="Großeinsatz beenden & automatischen Bericht erstellen"><i class="fa fa-power-off fa-fw"></i>Beenden</a>
+		
+		<!-- Information ueber aktive Fuehrungskraft -->
+		<button class="w3-bar-item w3-button w3-hide-small w3-right w3-padding-larger" title="Funktionalitäten">{ Fuehrungskraft }</button>
+	  
+	</div> <!-- id="navbar" -->
+</div> <!-- id="top" -->
 
-  <!-- 4 Funktion = Help-Funktion (wird erstmal zurueckgestellt) -->
-  <!--<div class="w3-dropdown-hover w3-hide-small">
-    <button class="w3-button w3-padding-large" title="help"><i class="fa fa-question-circle"></i></button>
-    <div class="w3-dropdown-content w3-card-4 w3-bar-block" style="width:300px">
-      <a href="#" class="w3-bar-item w3-button"><i class="fa fa-id-card-o"></i> Rettungsmittel & Einsatzkräfte verwalten</a>
-      <a href="#" class="w3-bar-item w3-button"><i class="fa fa-medkit"></i> Einsatzverwaltung</a>
-      <a href="#" class="w3-bar-item w3-button"><i class="fa fa-comments"> <span class="fa fa-file-text-o w3-right w3-small"></span></i> Funksprüche dokumentieren</a>
-	  <a href="#" class="w3-bar-item w3-button"><i class="fa fa-globe"></i> Umgang mit der Karte</a>
-	  <a href="#" class="w3-bar-item w3-button">...</a>
-    </div>
-  </div>-->
-  
-  <!-- Right Label - zeigt an, welche Person die Führungsleitung besitzt -->
-  <div>
-	<a href="#" class="w3-bar-item w3-button w3-hide-small w3-right w3-padding-large w3-hover-white" title="Momentane Führungsleitung">
-    <img src="/w3images/avatar2.png" class="w3-circle" style="height:23px;width:23px" alt="[Führungsleitung]">
-	</a>
-  </div>
- </div>
-</div>
 
+<br>
 
 
 <!-- Page Container -->
@@ -64,136 +52,73 @@
   <div class="w3-row">
   
     <!-- Left Column -->
-    <div class="w3-col m2">
+    <div class="w3-col m2" id="left_column">
       
-      <!-- Einsatzverwaltung -->
-      <div class="w3-card w3-round">
-        <div class="w3-white">
-          <button onclick="showDetails('neuer_Notfalleinsatz')" class="w3-button w3-block w3-theme-l1 w3-hover-light-grey w3-left-align w3-card"><i class="fa fa-medkit fa-fw w3-margin-right"> <span class="fa fa-exclamation w3-right w3-small"></span></i>Einsatz anlegen</button>
+		<!-- Einsatzverwaltung -->
+		<div class="w3-card w3-round" id="einsatzNew">
+			<div class="w3-white">
+				<button onclick="showDetails('einsatzNew_input')" class="w3-button w3-block w3-theme-d2 w3-hover-light-grey w3-left-align w3-card"><i class="fa fa-plus w3-small"><span class="fa fa-medkit fa-fw w3-margin-right"></span></i>Einsatz anlegen</button>
           
-		  <!-- Einsatz anlegen - Rolldown Menue -->
-		  <div id="neuer_Notfalleinsatz" class="w3-hide w3-container w3-light-grey">
-			<p>Bitte füllen Sie Folgendes aus:</p>
-			<form action="#">
-			<!--Sender, Position, Verdachtsdiagnose, Anzahl Verletzter, Notizen, Status [aufgenommen, Kräfte vor Ort, Kräfte nachgefordert, Transport in SAN-Stelle, Transport in Klinik, abgeschlossen], Rettungskräfte, Rettungsmittel, bearbeitende Führungskraft, Zeitpunkt, ID-->
-			  
-			  <p><input class="w3-input w3-border" type="text" placeholder="Sender angeben" name="einsatz_sender" style="margin-left:auto; margin-right:auto;"required=""></p>
-			  <p><input class="w3-input w3-border" type="number" placeholder="Anzahl Verletzter" name="einsatz_anzahl_verletzter" style="margin-left:auto; margin-right:auto;" min="1" required=""></p>
-			  <p><input class="w3-input w3-border" type="text" placeholder="Verdachtsdiagnose z.B. Herzinfarkt" name="einsatz_verdachtsdiagnose" style="margin-left:auto; margin-right:auto;"required=""></p>	  
-			  <p><input class="w3-input w3-border" type="text" placeholder="Notizen" name="einsatz_notizen" style="margin-left:auto; margin-right:auto;"></p>
-			  
-			  <p><input class="w3-input w3-border" type="text" placeholder="Einsatzkräfte zuteilen" name="einsatz_Einsatzkräfte_zuteilen" style="margin-left:auto; margin-right:auto;"required=""><input class="w3-input w3-border" type="text" placeholder="Einsatzkräfte zuteilen" name="einsatz_Einsatzkräfte_zuteilen" style="margin-left:auto; margin-right:auto;"></p>
-			  <button onclick="showDetails('plus_Einsatzkräfte')" class="w3-button w3-hover-white w3-left-align"><i class="fa fa-plus w3-small"> <span class="fa fa-user-md w3-right w3-large"></span></i>  Einsatzkräfte hinzufügen</button>
-			  <div id="plus_Einsatzkräfte" class="w3-hide w3-container w3-light-grey">
-				´<p><input class="w3-input w3-border" type="text" placeholder="Einsatzkräfte zuteilen" name="einsatz_einsatzkräfte_zuteilen_erweitert" style="margin-left:auto; margin-right:auto;"><input class="w3-input w3-border" type="text" placeholder="Einsatzkräfte zuteilen" name="einsatz_Einsatzkräfte_zuteilen" style="margin-left:auto; margin-right:auto;"></p>
-			  </div>
-			  <br>
-				
-			  <p><input class="w3-input w3-border" type="text" placeholder="Rettungsmittel zuteilen" name="einsatz_rettungsmittel_zuteilen" style="margin-left:auto; margin-right:auto;"></p>
-			  <button onclick="showDetails('plus_Rettungsmittel')" class="w3-button w3-hover-white w3-left-align"><i class="fa fa-plus w3-small"> <span class="fa fa-ambulance w3-right w3-large"></span></i> Rettungsmittel hinzufügen</button>
-				<div id="plus_Rettungsmittel" class="w3-hide w3-container w3-light-grey">
-					<p><input class="w3-input w3-border" type="text" placeholder="Rettungsmittel zuteilen" name="einsatz_rettungsmittel_zuteilen" style="margin-left:auto; margin-right:auto;"><input class="w3-input w3-border" type="text" placeholder="Rettungsmittel zuteilen" name="einsatz_rettungsmittel_zuteilen" style="margin-left:auto; margin-right:auto;"></p>
-				</div>
-				
-				<form action="#" style="margin-left:auto; margin-right:auto; width:300px;">
-				  <p><select class="w3-input w3-border" placeholder="Status" name="einsatz_status">
-					<option value="Herr">aufgenommen</option>
-					<option value="Frau">Kräfte vor Ort</option>
-					<option value="Frau">Kräfte nachgefordert</option>
-					<option value="Frau">Transport in SAN-Stelle</option>
-					<option value="Frau">Transport in Klinik</option>
-					<option value="Frau">abgeschlossen</option>
-				  </select></p>
-				  <!--passt hier type="text", wenn wirs zusätzlich auch über drag&drop lösen wollen? ODER einfach mit Autocomplete arbeiten: https://www.w3schools.com/howto/howto_js_autocomplete.asp ODER: über Select Box: https://www.w3schools.com/howto/howto_custom_select.asp ADD: Suchfeld https://www.w3schools.com/howto/howto_css_search_button.asp-->
-				  <p>Bitte setzen Sie eine entsprechende Markierung auf der Karte: <i class="fa fa-map-marker fa-fw w3-margin-right w3-red"></i></p> <!--TODO: via Drag&Drop-->
-				  <button style="margin-left:auto; margin-right:auto;" type="submit" class="w3-button w3-block w3-blue-grey">anlegen</button>
-				<br>
-				</form>
-			</form>
-			<!--automatisch erfasst werden müssen: bearbeitende Führungskraft, Zeitpunkt, ID, evtl. Sender-->
-          </div>
-
-		  <!-- Einsatzchronik -->
-          <button onclick="showDetails('Einsatz_Chronik')" class="w3-button w3-block w3-theme-l1 w3-hover-light-grey w3-left-align w3-card"><i class="fa fa-calendar-check-o fa-fw w3-margin-right"></i>Einsatz-Chronik</button>
-          <div id="Einsatz_Chronik" class="w3-hide w3-container w3-light-grey">
-            <p>Auflistung aller Einsätze: ...</p> <!-- nur, falls es nötig wäre abgeschlossene Einsätze auch noch einsehen zu können..-->
-          </div>
-		  <!-- evtl. mal nützlich:
-          <button onclick="myFunction('Demo3')" class="w3-button w3-block w3-theme-l1 w3-hover-light-grey w3-left-align w3-card"><i class="fa fa-users fa-fw w3-margin-right"></i>Hier kann man draufklicken!</button>
-          <div id="Demo3" class="w3-hide w3-container">
-			 <div class="w3-row-padding">
-			 <br>
-			   <div class="w3-half">
-				 <img src="./img/example.jpg" style="width:100%" class="w3-margin-bottom">
-			   </div>
-			   <div class="w3-half">
-				 <img src="./img/example.jpg" style="width:100%" class="w3-margin-bottom">
-			   </div>
-			   <div class="w3-half">
-				 <img src="./img/example.jpg" style="width:100%" class="w3-margin-bottom">
-			   </div>
-			   <div class="w3-half">
-				 <img src="./img/example.jpg" style="width:100%" class="w3-margin-bottom">
-			   </div>
-			   <div class="w3-half">
-				 <img src="./img/example.jpg" style="width:100%" class="w3-margin-bottom">
-			   </div>
-			   <div class="w3-half">
-				 <img src="./img/example.jpg" style="width:100%" class="w3-margin-bottom">
-			   </div>
-			 </div>
-          </div>
-		  -->
-		  
-		  <br>
-		  <!-- Auflistung der Einsaetze -->
-		  <div class="w3-container">
-		    <div class="w3-container w3-red w3-card w3-round">
-				<h5 class="w3-center">Bienenstich</h5>
-				<p style="font-size:12px"><i class="fa fa-clock-o fa-fw w3-margin-right"></i>18:53 <small> [seit 0min]</small></p>
-				<p><i class="fa fa-stethoscope fa-fw w3-margin-right"></i>Bienenstich</p>
-				<p><i class="fa fa-user-md fa-fw w3-margin-right"></i></p>
-				<p><i class="fa fa-ambulance fa-fw w3-margin-right"></i></p>
-				<p><i class="fa fa-map-marker fa-fw w3-margin-right"></i></p>
-				<!--zwei Buttons: einen, um alle Informationen bezüglich des Einsatzes zu sehen:-->
-				<button onclick="" style="margin-left:auto; margin-right:auto;" class="w3-button w3-padding-large w3-blue-grey w3-right"><i class="fa fa-question-circle"></i></button>
-				<!--und den anderen, um einen Noteinfalleinsatz noch weitere Hilfskräfte zuzuteilen (zB. noch nicht zugeteilt | oder weitere Kräfte werden angefordert-->
-				<button onclick="myFunction('neuer_Notfalleinsatz')" style="margin-left:auto; margin-right:auto;" class="w3-button w3-padding-large w3-blue-grey w3-right"><i class="fa fa-pencil"></i> zuteilen</button>
-		    </div>
-			<br>
-			
-			<div class="w3-container w3-white w3-card w3-round w3-border w3-border-red">
-			<h4 class="w3-center">Schulterschmerzen</h4>
-				<p><i class="fa fa-clock-o fa-fw w3-margin-right"></i>18:41 <small> [seit 12min]</small></p>
-				<p><i class="fa fa-stethoscope fa-fw w3-margin-right"></i>Schulterschmerzen</p>
-				<p><i class="fa fa-user-md fa-fw w3-margin-right"></i>Jonah Schuster</p>
-				<p><i class="fa fa-ambulance fa-fw w3-margin-right"></i>-</p>
-				<p><i class="fa fa-map-marker fa-fw w3-margin-right"></i>Ort bekannt</p>
-				<!--zwei Buttons: einen, um alle Informationen bezüglich des Einsatzes zu sehen:-->
-				<button onclick="" style="margin-left:auto; margin-right:auto;" class="w3-button w3-padding-large w3-blue-grey w3-right"><i class="fa fa-question-circle"></i></button>
-				<!--und den anderen, um einen Noteinfalleinsatz noch weitere Hilfskräfte zuzuteilen (zB. noch nicht zugeteilt | oder weitere Kräfte werden angefordert-->
-				<button onclick="myFunction('neuer_Notfalleinsatz')" style="margin-left:auto; margin-right:auto;" class="w3-button w3-padding-large w3-blue-grey w3-right"><i class="fa fa-pencil"></i> zuteilen</button>
-		    </div>
-			<br>
-			
-			<div class="w3-container w3-white w3-card w3-round w3-border w3-border-red">
-				<h4 class="w3-center">Kreislaufstillstand</h4>
-				<p><i class="fa fa-clock-o fa-fw w3-margin-right"></i>18:33 <small> [seit 20min]</small></p>
-				<p><i class="fa fa-stethoscope fa-fw w3-margin-right"></i>Kreislaufstillstand</p>
-				<p><i class="fa fa-user-md fa-fw w3-margin-right"></i>David Gondert, Tim Taler</p>
-				<p><i class="fa fa-ambulance fa-fw w3-margin-right"></i>63/85-1</p>
-				<p><i class="fa fa-map-marker fa-fw w3-margin-right"></i>Ort bekannt</p>
-				<!--zwei Buttons: einen, um alle Informationen bezüglich des Einsatzes zu sehen:-->
-				<button onclick="" style="margin-left:auto; margin-right:auto;" class="w3-button w3-padding-large w3-blue-grey w3-right"><i class="fa fa-question-circle"></i></button>
-				<!--und den anderen, um einen Noteinfalleinsatz noch weitere Hilfskräfte zuzuteilen (zB. noch nicht zugeteilt | oder weitere Kräfte werden angefordert-->
-				<button onclick="myFunction('neuer_Notfalleinsatz')" style="margin-left:auto; margin-right:auto;" class="w3-button w3-padding-large w3-blue-grey w3-right"><i class="fa fa-pencil"></i> zuteilen</button>
+				<!-- Einsatz anlegen - Rolldown Menue -->
+				<div class="w3-hide w3-container w3-light-grey" id="einsatzNew_input">
+					<p style="font-size:12px">Folgende Parameter erfassen:</p>
+					<form method="POST" action="/einsatz">
+						<p style="font-size:12px"><input class="w3-input w3-border" type="text"  placeholder="Sender (Drag & Drop)" name="einsatz_sender" style="margin-left:auto; margin-right:auto;"></p>
+						<p style="font-size:12px"><input class="w3-input w3-border" type="text" placeholder="Meldebild" name="einsatz_meldebild" style="margin-left:auto; margin-right:auto;"></p>
+						<p style="font-size:12px"><input class="w3-input w3-border" type="number" placeholder="Anzahl an Verletzten" name="einsatz_anzVerletzte" style="margin-left:auto; margin-right:auto;" min="1"></p>
+						<p style="font-size:12px"><input class="w3-input w3-border" type="text" placeholder="Beschreibung" name="einsatz_notizen" style="margin-left:auto; margin-right:auto;"></p>
+						<p style="font-size:12px; color:gray;">
+							<select class="w3-input w3-border" placeholder="Status" name="einsatz_status">
+								<option value="" hidden>Status</option>
+								<option>aufgenommen</option>
+								<option>Kräfte vor Ort</option>
+								<option>Kräfte nachgefordert</option>
+								<option>Transport in SAN-Stelle</option>
+								<option>Transport in Klinik</option>
+								<option>abgeschlossen</option>
+							</select>
+						</p>
+						<button style="margin-left:auto; margin-right:auto;" type="submit" class="w3-button w3-block w3-blue-grey">anlegen</button>
+						<br>
+					</form>
+				</div> <!-- id="einsatzNew_input" -->
 			</div>
-			<br>
-			
-		  </div>
-        </div>      
-      </div>
-      <br>
+		</div> <!-- id="einsatzNew" -->
+		 
+		<br>
+		
+		<!-- Auflistung der Einsaetze -->
+		<div class="w3-container w3-white w3-card w3-round" id="{{ einsatz_id }}">
+			<button class="w3-center w3-button w3-block w3-blue-grey">Bienenstich</button>
+			<p style="font-size:12px"><i class="fa fa-clock-o fa-fw w3-margin-right"></i>18:53 (seit 0 Minuten)</p>
+			<p style="font-size:12px"><i class="fa fa-ambulance fa-fw w3-margin-right"></i>63/23-1</p>
+			<p style="font-size:12px"><i class="fa fa-user-md fa-fw w3-margin-right"></i>63-1</p>
+			<p style="font-size:12px"><i class="fa fa-map-marker fa-fw w3-margin-right"></i>Birnenstraße 23</p>
+		</div> <!-- id="{{ einsatz_id }}" -->
+		
+		<br>
+		
+		<div class="w3-container w3-white w3-card w3-round" id="{{ einsatz_id }}">
+			<button class="w3-center w3-button w3-block w3-red">Schulterschmerzen</button>
+			<p style="font-size:12px"><i class="fa fa-clock-o fa-fw w3-margin-right"></i>18:56 (seit 0 Minuten)</p>
+			<p style="font-size:12px"><i class="fa fa-ambulance fa-fw w3-margin-right"></i></p>
+			<p style="font-size:12px"><i class="fa fa-user-md fa-fw w3-margin-right"></i></p>
+			<p style="font-size:12px"><i class="fa fa-map-marker fa-fw w3-margin-right"></i>Rathausplatz</p>
+		</div> <!-- id="{{ einsatz_id }}" -->
+		
+		<br>
+		
+		<div class="w3-container w3-white w3-card w3-round" id="{{ einsatz_id }}">
+			<button class="w3-center w3-button w3-block w3-blue-grey">Kreislaufstillstand</button>
+			<p style="font-size:12px"><i class="fa fa-clock-o fa-fw w3-margin-right"></i>18:45 (seit 0 Minuten)</p>
+			<p style="font-size:12px"><i class="fa fa-ambulance fa-fw w3-margin-right"></i>63/25-1, 1/82-1</p>
+			<p style="font-size:12px"><i class="fa fa-user-md fa-fw w3-margin-right"></i>Mobiler Trupp 1</p>
+			<p style="font-size:12px"><i class="fa fa-map-marker fa-fw w3-margin-right"></i>Bahnhofstraße 42</p>
+		</div> <!-- id="{{ einsatz_id }}" -->
+		
+		<br>
+		
+	
 
       <!-- Aufgaben -->
 	  <!-- 
@@ -257,27 +182,32 @@
     
     
     <!-- Middle Column -->
-    <div class="w3-col m8">
-		<div class="w3-container w3-card w3-white w3-round w3-margin"><br>
-			<!--z.B. Hochschule RT: ca. 48.4822735" N, 9.1874391" E-->
-			<div id="map" style="height: 400px;"></div>
-			<br>
-		</div> 
+	<div class="w3-col m8" id="middle_colum">
 	
-      <div class="w3-row-padding">
-        <div class="w3-col m12">
-          <div class="w3-card w3-round w3-white">
-            <div class="w3-container w3-padding">
-              <h6 class="w3-opacity">Geben Sie ein Schlagwort ein, um eine Aktion zu disponieren...</h6>
-              <p contenteditable="true" class="w3-border w3-padding"><i>Hier tippen...</p>
-              <button type="button" class="w3-button w3-theme"><i class="fa fa-pencil"></i> &nbsp;Eingabe öffnen</button> 
-            </div>
-          </div>
-        </div>
-      </div>
-      
-    <!-- End Middle Column -->
-    </div>
+		<div class="w3-row-padding">
+			<div class="w3-col m12">
+				<div class="w3-card w3-round w3-white">
+					<div class="w3-container w3-padding">
+						<div class="w3-border w3-padding" id="map" style="height: 400px;"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	
+		<br>
+	
+		<div class="w3-row-padding">
+			<div class="w3-col m12">
+				<div class="w3-card w3-round w3-white">
+					<div class="w3-container w3-padding">
+						<h6 class="w3-opacity">Geben Sie ein Schlagwort ein, um eine Aktion zu disponieren...</h6>
+						<p contenteditable="true" class="w3-border w3-padding"><i>Hier tippen...</p>
+					</div>
+				</div>
+			</div>
+		</div>
+ 
+    </div> <!-- id="middle_colum" -->
     
 	
     <!-- Right Column -->
@@ -444,7 +374,7 @@
 -->
 
 <footer class="w3-container w3-theme-d5">
-  <p>Digitaler Führungsassistent <i class="fa fa-copyright"></i> 2019</p>
+  <p><i class="fa fa-copyright"></i> 2019 E-Health Projekt (MeTI)</p>
 </footer>
 
 <script>
