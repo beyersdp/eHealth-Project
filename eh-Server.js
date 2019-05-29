@@ -373,10 +373,8 @@ server.get('/funkspruchCHRONIK', function(req, res){
 				if (err) throw err;
 				
 				res.render('html_form_dummy', {funkspruch: result});
-				console.log(result);
-			
+				dbClient.close();
 			});
-			dbClient.close();
 		});
 	}
 	

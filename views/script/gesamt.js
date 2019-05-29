@@ -29,3 +29,13 @@ function gesamteinsatzBeenden() {
   }
   document.getElementById("exit").innerHTML = txt;
 }
+
+// Aus default Date-String die Stunden, Minuten und Sekunden extrahieren
+function toHour(className) {
+	
+	var dateStrings = document.getElementsByClassName(className);
+	
+	Array.prototype.forEach.call(dateStrings, function(dateString) {
+		document.getElementById(dateString.id).innerHTML = moment(dateString.id, 'YYYYMMDDHHmmss').format('HH:mm:ss');
+	});
+}

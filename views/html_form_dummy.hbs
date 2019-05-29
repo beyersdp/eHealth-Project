@@ -1,3 +1,9 @@
+<script type="text/javascript" src="script/gesamt.js"></script>
+<script type="text/javascript" src="script/einsatz.js"></script>
+<script type="text/javascript" src="script/fahrzeuge.js"></script>
+<script type="text/javascript" src="script/helfer.js"></script>
+<script type="text/javascript" src="script/moment.js"></script>
+
 
 <h3>Einsatz anlegen / bearbeiten</h3>
 <form method="POST" action="/einsatz">
@@ -35,7 +41,10 @@
 
 {{# if funkspruch}}
 	{{# each funkspruch}}
-		<p>{{ timestamp }}: [{{ kategorie }}] von {{ sender }} zu {{ empfaenger }} Nachricht: {{ text }} - Bearbeiter: {{ fuehrungskraft.nachname }}</p>
+		<p><div class="funkspruch_timestamp" id="{{ timestamp }}" style="display: inline;"> </div> Uhr: [{{ kategorie }}] von {{ sender }} zu {{ empfaenger }} Nachricht: {{ text }} - Bearbeiter: {{ fuehrungskraft.nachname }}</p>
 	{{/each}}
 {{/if}}
 
+<script>
+	toHour("funkspruch_timestamp"); // Aus dem empfangenen Date-String die Uhrzeit pro Funkspruch extrahieren und anzeigen
+</script>
