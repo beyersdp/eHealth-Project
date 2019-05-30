@@ -6,7 +6,7 @@
 <script type="text/javascript" src="script/moment.js"></script>
 
 <!-- Navbar -->
-<div class="w3-top" id="top">
+<div class="w3-top" id="top" style="z-index: 5000">
 	<div class="w3-bar w3-theme-d5 w3-left-align w3-medium" id="navbar"> 
 		<a class="w3-bar-item w3-padding-larger w3-theme-d4">Digitaler Führungsassistent</a>
 		
@@ -15,8 +15,8 @@
 			<button class="w3-button w3-padding-larger" title="Funktionalitäten"><i class="fa fa-gear fa-fw"></i>Funktionen</button>
 			<div class="w3-dropdown-content w3-card-4 w3-bar-block" style="width:300px" id="navbar_element1_dropdown">
 				<a href="#" class="w3-bar-item w3-button">Führungsposition ändern</a>
-				<a href="#" class="w3-bar-item w3-button"><i class="fa fa-medkit fa-fw w3-margin-right"><span class="fa fa-exclamation w3-right w3-small"></span></i> Einsatz anlegen</a>
-				<a href="#" class="w3-bar-item w3-button"><i class="fa fa-comments w3-margin-right"><span class="fa fa-file-text-o w3-right w3-small"></span></i>Funkspruch anlegen</a>
+				<a href="#" class="w3-bar-item w3-button"><i class="fa fa-plus w3-small w3-margin-right"> <span class="fa fa-medkit w3-right w3-large"></span></i> Notfalleinsatz anlegen</a>
+				<a href="#" class="w3-bar-item w3-button"><i class="fa fa-plus w3-small"></i><i class="fa fa-comments w3-large w3-margin-right"> <span class="fa fa-file-text-o w3-right w3-small"></span></i>Funkspruch anlegen</a>
 				<a href="#" class="w3-bar-item w3-button"><i class="fa fa-plus w3-small w3-margin-right"> <span class="fa fa-ambulance w3-right w3-large"></span></i>Rettungsmittel hinzufügen</a>
 				<a href="#" class="w3-bar-item w3-button"><i class="fa fa-plus w3-small w3-margin-right"> <span class="fa fa-ambulance w3-right w3-large"></span></i>Sanitätsposten hinzufügen</a>
 				<a href="#" class="w3-bar-item w3-button"><i class="fa fa-plus w3-small w3-margin-right"> <span class="fa fa-user-md w3-right w3-large"></span></i>Einsatzkräfte hinzufügen</a>
@@ -27,9 +27,9 @@
 		<div class="w3-dropdown-hover w3-hide-small" id="navbar_element2">
 			<button class="w3-button w3-padding-larger" title="Details zum Gesamteinsatz"><i class="fa fa-info-circle fa-fw"></i>Informationen</button>
 			<div class="w3-dropdown-content w3-card-4 w3-bar-block" style="width:300px" id="navbar_element2_dropdown">
-				<a href="#" class="w3-bar-item w3-button">Steckbrief Gesamteinsatz</a>
-				<a href="#" class="w3-bar-item w3-button">Chronik Individualeinsätze</a>
-				<a href="#" class="w3-bar-item w3-button">Steckbrief Funksprüche</a>
+				<a href="#" class="w3-bar-item w3-button"><i class="fa fa-plus-square w3-large w3-margin-right"> <span class="fa fa-info-circle w3-right w3-small"></span></i>Steckbrief Gesamteinsatz</a>
+				<a href="#" class="w3-bar-item w3-button"><i class="fa fa-folder-open w3-large w3-margin-right"> <span class="fa fa-medkit w3-right w3-small"></span></i>Chronik Notfalleinsätze</a>
+				<a href="#" class="w3-bar-item w3-button"><i class="fa fa-folder-open w3-large w3-margin-right"> <span class="fa fa-comments w3-right w3-small"></span></i>Steckbrief Funksprüche</a>
 			</div> <!-- id="navbar_element2_dropdown -->
 		</div> <!-- id="navbar_element2" -->
 		
@@ -204,7 +204,7 @@
 					<div class="w3-card w3-round w3-white">
 						<div class="w3-container w3-padding">
 							<h6 class="w3-opacity">Geben Sie ein Schlagwort ein, um eine Aktion zu disponieren...</h6>
-							<p contenteditable="true" placeholder="Hier tippen..." class="w3-border w3-padding"></p>
+							<p style="font-size:12px"><input class="w3-input w3-border" type="text" placeholder="Hier tippen..."></p>
 						</div>
 					</div>
 				</div>
@@ -267,7 +267,7 @@
 			
 			<div class="w3-card w3-round" id="rettungskraftNew">
 				<div class="w3-white">
-					<button onclick="showDetails('rettungskraftNew_input')" class="w3-button w3-block w3-theme-d2 w3-hover-light-grey w3-left-align w3-card"><i class="fa fa-plus w3-small"><span class="fa fa-ambulance fa-fw w3-margin-right"></span></i>Rettungskraft</button>
+					<button onclick="showDetails('rettungskraftNew_input')" class="w3-button w3-block w3-theme-d2 w3-hover-light-grey w3-left-align w3-card"><i class="fa fa-plus w3-small"><span class="fa fa-user-md fa-fw w3-margin-right"></span></i>Rettungskraft</button>
 			  
 					<!-- Rettungsmittel - Rolldown Menue -->
 					<div class="w3-hide w3-container w3-light-grey" id="rettungskraftNew_input">
