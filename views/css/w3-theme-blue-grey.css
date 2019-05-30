@@ -20,3 +20,24 @@
 .w3-hover-theme:hover {color:#fff !important; background-color:#607d8b !important}
 .w3-hover-text-theme:hover {color:#607d8b !important}
 .w3-hover-border-theme:hover {border-color:#607d8b !important}
+
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #dfe5e8; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #dfe5e8; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #becbd2; 
+}

@@ -1,0 +1,123 @@
+<!-- Rettungskraefte und -mittel -->
+      <div class="w3-card w3-round">
+        <div class="w3-white">
+          <button onclick="showDetails('neue_Einsatzkraft')" class="w3-button w3-block w3-theme-l1 w3-hover-light-grey w3-left-align w3-card"><i class="fa fa-plus w3-small"> <span class="fa fa-user-md w3-right w3-large"></span></i> Neue Einsatzkräfte <br>hinzufügen</button>
+		  
+		  <!-- Rettungsmittel -->
+		  <button onclick="showDetails('neue_Rettungsmittel')" class="w3-button w3-block w3-theme-l1 w3-hover-light-grey w3-left-align w3-card"><i class="fa fa-plus w3-small"> <span class="fa fa-ambulance w3-right w3-large"></span></i> Neue Rettungsmittel <br>hinzufügen</button>
+		  <div id="neue_Rettungsmittel" class="w3-hide w3-container w3-light-grey">
+			<p>Bitte füllen Sie Folgendes aus:</p>
+			<form target="_blank">
+				
+				  <p><select class="w3-input w3-border" placeholder="Fahrzeug" name="rettungsmittel_fahrzeug">
+				    <option value="fahrzeug_sanitätsposten">Sanitätsposten</option>
+					<option value="fahrzeug_RTW">RTW</option>
+					<option value="fahrzeug_notarztwagen">Notarztwagen</option>
+					<option value="fahrzeug_">...</option>
+				  </select></p>
+			  
+			  <p><input class="w3-input w3-border" type="text" placeholder="Funkrufname" name="einsatzkraft_funkrufname" style="margin-left:auto; margin-right:auto;"></p>
+			  <button style="margin-left:auto; margin-right:auto;" type="submit" class="w3-button w3-block w3-blue-grey">speichern</button>
+			  <br>
+			</form>
+			<!--automatisch erfasst werden muss: Uhrzeit | Position wird serverseitig gesetzt. -->
+		  </div>
+		  
+		  <!-- Rettungskraefte -->
+		  <div id="neue_Einsatzkraft" class="w3-hide w3-container w3-light-grey">
+			<p>Bitte füllen Sie Folgendes aus:</p>
+			<form target="_blank">
+			  <form action="/action_page.php" target="_blank" style="margin-left:auto; margin-right:auto; width:300px;">
+			  <p><select class="w3-input w3-border" placeholder="medizinische Qualifikation" name="einsatzkraft_medizinische_qualifikation">
+				<option value="quali_SAN"> SAN (Sanitäter)</option>
+				<option value="quali_RH">  RH  (Rettungshelfer)</option>
+				<option value="quali_RSA"> RSA (Rettungssanitäter)</option>
+				<option value="quali_RA">  RA  (Rettungsassistent)</option>
+				<option value="quali_NFS"> NFS (Notfallsanitäter)</option>
+				<option value="quali_Arzt">Arzt</option>
+				<option value="quali_NA">  NA  (Notarzt)</option>
+				<option value="quali_erste_hilfe">Erste Hilfe (Praktikant)</option>
+			  </select></p>
+			  <p><input class="w3-input w3-border" type="text" placeholder="Vorname" name="einsatzkraft_vorname" style="margin-left:auto; margin-right:auto;"required=""></p>
+			  <p><input class="w3-input w3-border" type="text" placeholder="Nachname" name="einsatzkraft_nachname" style="margin-left:auto; margin-right:auto;"required=""></p>
+			  <p><input class="w3-input w3-border" type="number" placeholder="Alter 16" name="einsatzkraft_alter" style="margin-left:auto; margin-right:auto;" min="16" max="70" required=""></p> <!-- Alter >= 16Jahre)-->
+			  <p><input class="w3-input w3-border" type="text" placeholder="Funkrufname" name="einsatzkraft_funkrufname" style="margin-left:auto; margin-right:auto;"></p>
+			  <p><input class="w3-input w3-border" type="tel" placeholder="Handynummer" name="einsatzkraft_handynummer" pattern="[0-9]{4}-[0-9]{8}" style="margin-left:auto; margin-right:auto;"></p><p><input class="w3-input w3-border" type="text" placeholder="Position" name="rettungskraft_position" style="margin-left:auto; margin-right:auto;"></p>
+			  <button style="margin-left:auto; margin-right:auto;" type="submit" class="w3-button w3-block w3-blue-grey">speichern</button>
+			  <br>
+			</form>
+			<!--automatisch erfasst werden muss: Uhrzeit | Position wird serverseitig gesetzt. | NOTE: Ich hab statt Rettungskraft Einsatzkraft genommen, damit man bei der einsatzbedingten Situation während der Nutzung als User schneller Rettungsmittel von Rettungskräften unterscheiden kann..-->
+          </div>	  
+		  <br>
+		  
+		  
+		  
+		  <!-- Liste Rettungsmittel  und -helfer -->
+		  <div class="w3-container">
+			  
+			  <!-- Liste Rettungsmittel -->
+			  <div class="w3-card w3-round w3-white w3-center">
+				<div class="w3-container">
+				  <p><i class="fa fa-ambulance fa-fw w3-margin-right"></i><strong>Rettungsmittel</strong></p>
+				  <p>63/83-1</p>
+				  <p><button class="w3-button w3-block w3-theme-l4">Besatzung zugeteilt</button></p>
+				  <!--um alle Informationen bezüglich der Einsatzkraft zu sehen:-->
+				  <button onclick="" style="margin-left:auto; margin-right:auto;" class="w3-button w3-padding-large w3-blue-grey w3-right"><i class="fa fa-question-circle"></i></button>
+				</div>
+			  </div>
+			  <br>
+				  
+			  <div class="w3-card w3-round w3-white w3-center">
+				<div class="w3-container">
+				  <p><i class="fa fa-ambulance fa-fw w3-margin-right"></i><strong>Rettungsmittel</strong></p>
+				  <p>63/85-1</p>
+				  <p><button class="w3-button w3-block w3-red">Besatzung zuteilen</button></p>
+				  <!--um alle Informationen bezüglich der Einsatzkraft zu sehen:-->
+				  <button onclick="" style="margin-left:auto; margin-right:auto;" class="w3-button w3-padding-large w3-blue-grey w3-right"><i class="fa fa-question-circle"></i></button>
+				</div>
+			  </div>
+			  <br>
+			  
+			  <!-- Liste Rettungskraefte -->
+			  <div class="w3-card w3-round w3-white w3-center">
+				<div class="w3-container">
+				  <p><i class="fa fa-user-md fa-fw w3-margin-right"></i><strong>Notfallsanitäter</strong></p>
+				  <!--<img src="/w3images/avatar6.png" alt="Avatar" style="width:50%"><br>-->
+				  <span> Jonah Schuster</span>
+				  <div class="w3-row w3-opacity">
+					<div class="w3-half">
+					  <button class="w3-button w3-block w3-green w3-section" title="Accept"><i class="fa fa-check"></i></button>
+					</div>
+					<div class="w3-half">
+					  <button class="w3-button w3-block w3-red w3-section" title="Decline"><i class="fa fa-remove"></i></button>
+					</div>
+				  </div>
+				  <!--um alle Informationen bezüglich der Einsatzkraft zu sehen:-->
+				  <button onclick="" style="margin-left:auto; margin-right:auto;" class="w3-button w3-padding-large w3-blue-grey w3-right"><i class="fa fa-question-circle"></i></button>
+				</div>
+			  </div>
+			  <br>
+				  
+			  <div class="w3-card w3-round w3-white w3-center">
+				<div class="w3-container">
+				  <p><i class="fa fa-user-md fa-fw w3-margin-right"></i><strong>Sanitäteshelfer</strong></p>
+				  <!--<img src="/w3images/avatar6.png" alt="Avatar" style="width:50%"><br>-->
+				  <span>David Gondert</span>
+				  <div class="w3-row w3-opacity">
+					<div class="w3-half">
+					  <button class="w3-button w3-block w3-green w3-section" title="Accept"><i class="fa fa-check"></i></button>
+					</div>
+					<div class="w3-half">
+					  <button class="w3-button w3-block w3-red w3-section" title="Decline"><i class="fa fa-remove"></i></button>
+					</div>
+				  </div>
+				  <!--um alle Informationen bezüglich der Einsatzkraft zu sehen:-->
+				  <button onclick="" style="margin-left:auto; margin-right:auto;" class="w3-button w3-padding-large w3-blue-grey w3-right"><i class="fa fa-question-circle"></i></button>
+				</div>
+			  </div>
+			  <br>
+				  
+		  </div>
+		  
+		</div>
+	  </div>
