@@ -230,7 +230,7 @@ server.post('/registration', urlencodedParser, function(req, res){
 /* /einsatz - Empfangen eines POST-Requests ueber Port 8080  */
 server.post('/einsatz', urlencodedParser, function(req, res){
 	console.log("L2-Info: POST-REQUEST for /einsatz");
-	//console.log(req.body); //DEBUG Kontrollausgabe
+	console.log(req.body); //DEBUG Kontrollausgabe
 	
 	if(req.session && req.session.user) { 
 		console.log("L1-Info: Cookie true");
@@ -240,7 +240,7 @@ server.post('/einsatz', urlencodedParser, function(req, res){
 			mongodbClient.connect(url, { useNewUrlParser: true }, function(err, dbClient) {
 				if (err) throw err;
 				var db = dbClient.db('DigitalerFuehrungsassistent');
-				console.log("L2-Info: DB-Connection true");
+				console.log("L2-Info: DB-Connection true I");
 		
 				db.collection('Fuehrungskraft').find({cookie: req.session.user}).toArray(function(err, result) {
 					if (err) throw err;
@@ -256,18 +256,17 @@ server.post('/einsatz', urlencodedParser, function(req, res){
 			
 					db.collection('Einsatz').insertOne(einsatz_data, function(err, inserted) {
 						if (err) throw err;
-
-						res.render('html_form_dummy', {title: "Einsatz - Digitaler Führungsassistent",
-													   einsatz_id: inserted.ops[0]._id,
-													   einsatz_sender: req.body.einsatz_sender,
-													   einsatz_position: req.body.einsatz_position,
-													   einsatz_meldebild: req.body.einsatz_meldebild,
-													   einsatz_anzVerletzte: req.body.einsatz_anzVerletzte,
-													   einsatz_text: req.body.einsatz_text,
-													   einsatz_status: req.body.einsatz_status,
-													   einsatz_timestamp: moment(inserted.ops[0].timestamp, 'YYYYMMDDHHmmss').format('HH:mm:ss'),
-													   einsatz_fuehrungskraft: result[0].nachname});
-						dbClient.close();
+						
+						db.collection('Einsatz').find().sort({timestamp: 1}).toArray(function(err, queryEinsatz) {
+							if (err) throw err;
+							console.log(result);
+						
+							res.render('mainpage', {title: "Einsatz - Digitaler Führungsassistent",
+													einsatz: queryEinsatz,
+													fuehrungskraft_nachname: result[0].nachname,
+													fuehrungskraft_quali: result[0].quali});
+							dbClient.close();
+						});
 					});
 				});
 			});
@@ -278,7 +277,7 @@ server.post('/einsatz', urlencodedParser, function(req, res){
 			mongodbClient.connect(url, { useNewUrlParser: true }, function(err, dbClient) {
 				if (err) throw err;
 				var db = dbClient.db('DigitalerFuehrungsassistent');
-				console.log("L2-Info: DB-Connection true");
+				console.log("L2-Info: DB-Connection true II");
 		
 				db.collection('Fuehrungskraft').find({cookie: req.session.user}).toArray(function(err, result) {
 					if (err) throw err;
@@ -422,6 +421,7 @@ server.get('/formtest', function(req, res){
 	res.render('html_form_dummy');
 	
 });	
+
 
 
 /* Relevant fuer umfassendere Routing-Aufgaben */

@@ -40,3 +40,42 @@ function toHour(className) {
 	});
 }
 
+// Einem HTML-Form ein weiteres Input-Feld hinzufuegen
+function addInputField(id) {
+
+	var newParagraph = document.createElement("p");
+	newParagraph.style = "font-size:12px";
+	
+	var newInput = document.createElement("input");
+	newInput.className = "w3-input w3-border dropElement";
+	newInput.type = "text";
+	newInput.placeholder = "Tippen oder Drag&Drop";
+	newInput.name = "einsatz_kraefte";
+	newInput.value = "";
+	newInput.style= "margin-left:auto; margin-right:auto;"
+	
+	newInput.addEventListener('dragover', handleDragOver, false);
+	newInput.addEventListener('dragenter', handleDragEnter, false);
+	newInput.addEventListener('dragleave', handleDragLeave, false);
+	newInput.addEventListener('drop', handleDrop, false);
+	newInput.addEventListener('dragend', handleDragEnd, false);
+	
+	newParagraph.appendChild(newInput);
+	console.log(newParagraph);
+	
+	document.getElementById(id).appendChild(newParagraph);
+	
+}
+
+// Datalist erweitern nach Form-Eingabe
+function addDataList(listName, v) {
+	console.log("hier");
+	var newOption = document.createElement("option");
+	newOption.innerHTML = v;
+	document.getElementById(listName).appendChild(newOption);
+	
+	console.log(document.getElementById(listName));
+}
+
+// Direkt startende Funktionen:
+toHour('timestamp');

@@ -1,10 +1,3 @@
-<!-- Include von externen Funktionen -->
-<script type="text/javascript" src="script/gesamt.js"></script>
-<script type="text/javascript" src="script/einsatz.js"></script>
-<script type="text/javascript" src="script/fahrzeuge.js"></script>
-<script type="text/javascript" src="script/helfer.js"></script>
-<script type="text/javascript" src="script/moment.js"></script>
-
 <!-- Navbar -->
 <div class="w3-top" id="top" style="z-index: 5000">
 	<div class="w3-bar w3-theme-d5 w3-left-align w3-medium" id="navbar"> 
@@ -38,7 +31,7 @@
 		<a onclick="gesamteinsatzBeenden()" class="w3-bar-item w3-button w3-padding-larger" title="Großeinsatz beenden & automatischen Bericht erstellen"><i class="fa fa-power-off fa-fw"></i>Beenden</a>
 		
 		<!-- Information ueber aktive Fuehrungskraft -->
-		<button class="w3-bar-item w3-button w3-hide-small w3-right w3-padding-larger" title="Funktionalitäten">{ Fuehrungskraft }</button>
+		<button class="w3-bar-item w3-button w3-hide-small w3-right w3-padding-larger" title="Funktionalitäten">{{ fuehrungskraft_nachname }} ({{ fuehrungskraft_quali }})</button>
 	  
 	</div> <!-- id="navbar" -->
 </div> <!-- id="top" -->
@@ -94,16 +87,21 @@
 			  
 					<!-- Einsatz anlegen - Rolldown Menue -->
 					<div class="w3-hide w3-container w3-light-grey" id="einsatzNew_input">
-						<p style="font-size:12px">Folgende Parameter erfassen:</p>
-						<form method="POST" action="/einsatz">
-							<p style="font-size:12px"><input class="w3-input w3-border dropElement" type="text"  placeholder="Sender (Drag & Drop)" name="einsatz_sender" value="" style="margin-left:auto; margin-right:auto;"></p>
+						<form method="POST" action="/einsatz" id="einsatzNew_input_form">
+							<input type="hidden" name="einsatz_id" value="{{ einsatz_id }}"></input>
+							<p style="font-size:12px">Ersteller des Einsatzauftrags:</p>
+							<p style="font-size:12px"><input class="w3-input w3-border dropElement" list="funkruf" type="text"  placeholder="Sender (Drag & Drop)" name="einsatz_sender" value="" style="margin-left:auto; margin-right:auto;"></p>
+							<p style="font-size:12px">Aktuelle Verdachtsdiagnose:</p>
 							<p style="font-size:12px"><input class="w3-input w3-border" type="text" placeholder="Meldebild" name="einsatz_meldebild" style="margin-left:auto; margin-right:auto;"></p>
+							<p style="font-size:12px">Anzahl verletzter Personen:</p>
 							<p style="font-size:12px"><input class="w3-input w3-border" type="number" placeholder="Anzahl an Verletzten" name="einsatz_anzVerletzte" style="margin-left:auto; margin-right:auto;" min="1"></p>
-							<p style="font-size:12px"><input class="w3-input w3-border" type="text" placeholder="Beschreibung" name="einsatz_notizen" style="margin-left:auto; margin-right:auto;"></p>
+							<p style="font-size:12px">Erweiterte Informationen:</p>
+							<p style="font-size:12px"><input class="w3-input w3-border" type="text" placeholder="Beschreibung" name="einsatz_text" style="margin-left:auto; margin-right:auto;"></p>
+							<p style="font-size:12px">Aktueller Bearbeitungsgrad:</p>
 							<p style="font-size:12px; color:gray;">
 								<select class="w3-input w3-border" placeholder="Status" name="einsatz_status">
 									<option value="" hidden>Status</option>
-									<option>aufgenommen</option>
+									<option>eingegangen</option>
 									<option>Kräfte vor Ort</option>
 									<option>Kräfte nachgefordert</option>
 									<option>Transport in SAN-Stelle</option>
@@ -111,10 +109,14 @@
 									<option>abgeschlossen</option>
 								</select>
 							</p>
+							<p style="font-size:12px">Zugeteilte Kräfte:<i class="fa fa-plus fa-fw w3-small w3-margin-right" onclick="addInputField('div_einsatzNew')"></i></p>
+							<p style="font-size:12px"><input class="w3-input w3-border dropElement" type="text"  placeholder="Tippen oder Drag&Drop" name="einsatz_kraefte" value="" style="margin-left:auto; margin-right:auto;"></p>
+							<div id="div_einsatzNew">
+							</div>
 							<!-- + Rettungsmittel und Position>-->
 							<button style="margin-left:auto; margin-right:auto;" type="submit" class="w3-button w3-block w3-blue-grey">Speichern</button>
 							<br>
-						</form>
+						</form> <!-- id="einsatzNew_input_form" -->
 					</div> <!-- id="einsatzNew_input" -->
 				</div>
 			</div> <!-- id="einsatzNew" -->
@@ -123,35 +125,19 @@
 			
 			<div class="w3-card w3-round w3-theme-l4" style="overflow-y:scroll; height:500px;" id="left_scrollbar"><p></p>
 				<!-- Auflistung der Einsaetze -->
-				<div class="w3-container w3-white w3-card w3-round w3-hover-shadow" id="{{ einsatz_id }}">
-					<button class="w3-center w3-button w3-block w3-blue-grey">Bienenstich</button>
-					<p style="font-size:12px"><i class="fa fa-clock-o fa-fw w3-margin-right"></i>18:53 (seit 0 Minuten)</p>
-					<p style="font-size:12px"><i class="fa fa-ambulance fa-fw w3-margin-right"></i>63/23-1</p>
-					<p style="font-size:12px"><i class="fa fa-user-md fa-fw w3-margin-right"></i>63-1</p>
-					<p style="font-size:12px"><i class="fa fa-map-marker fa-fw w3-margin-right"></i>Birnenstraße 23</p>
-				</div> <!-- id="{{ einsatz_id }}" -->
-				
-				<p></p>
-				
-				<div class="w3-container w3-white w3-card w3-round w3-hover-shadow" id="{{ einsatz_id }}">
-					<button class="w3-center w3-button w3-block w3-red">Schulterschmerzen</button>
-					<p style="font-size:12px"><i class="fa fa-clock-o fa-fw w3-margin-right"></i>18:56 (seit 0 Minuten)</p>
-					<p style="font-size:12px"><i class="fa fa-ambulance fa-fw w3-margin-right"></i></p>
+				{{# if einsatz}}
+				{{# each einsatz}}
+				<div class="w3-container w3-white w3-card w3-round w3-hover-shadow" id="{{ _id }}">
+					<button class="w3-center w3-button w3-block w3-blue-grey">{{ meldebild }}</button>
+					<p style="font-size:12px"><i class="fa fa-clock-o fa-fw w3-margin-right"></i>{{ timestamp }}</p>
+					<p style="font-size:12px"><i class="fa fa-ambulance fa-fw w3-margin-right"></i>{{ sender }}</p>
 					<p style="font-size:12px"><i class="fa fa-user-md fa-fw w3-margin-right"></i></p>
-					<p style="font-size:12px"><i class="fa fa-map-marker fa-fw w3-margin-right"></i>Rathausplatz</p>
-				</div> <!-- id="{{ einsatz_id }}" -->
-				
+					<p style="font-size:12px"><i class="fa fa-map-marker fa-fw w3-margin-right"></i>{{ standort }}</p>
+				</div> <!-- id="{{ _id }}" -->
+					
 				<p></p>
-				
-				<div class="w3-container w3-white w3-card w3-round w3-hover-shadow" id="{{ einsatz_id }}">
-					<button class="w3-center w3-button w3-block w3-blue-grey">Kreislaufstillstand</button>
-					<p style="font-size:12px"><i class="fa fa-clock-o fa-fw w3-margin-right"></i>18:45 (seit 0 Minuten)</p>
-					<p style="font-size:12px"><i class="fa fa-ambulance fa-fw w3-margin-right"></i>63/25-1, 1/82-1</p>
-					<p style="font-size:12px"><i class="fa fa-user-md fa-fw w3-margin-right"></i>Mobiler Trupp 1</p>
-					<p style="font-size:12px"><i class="fa fa-map-marker fa-fw w3-margin-right"></i>Bahnhofstraße 42</p>
-				</div> <!-- id="{{ einsatz_id }}" -->
-				
-				<p></p>
+				{{/each}}
+				{{/if}}
 			</div> <!-- id="left_scrollbar -->
 			
 	
@@ -346,7 +332,7 @@
 			<div class="w3-card w3-round w3-theme-l4" style="overflow-y:scroll; height:450px;" id="right_scrollbar"><p></p>
 				<!-- Auflistung der Einsaetze -->
 				<div class="dragElement w3-container w3-white w3-card w3-round w3-hover-shadow" draggable="true" id="{{ rettungsmittel_id }}">
-					<button class="dragElement w3-center w3-button w3-block w3-blue-grey" draggable="true">63/23-1 (RTW)</button>
+					<button class="w3-center w3-button w3-block w3-blue-grey">63/23-1 (RTW)</button>
 					<p style="font-size:12px"><i class="fa fa-user-md fa-fw w3-margin-right"></i>P. Beyersdorffer (SAN)</p>
 					<p style="font-size:12px"><i class="fa fa-user-md fa-fw w3-margin-right"></i>A. Müller (RS)</p>
 				</div> <!-- id="{{ rettungsmittel_id }}" -->
@@ -354,7 +340,7 @@
 				<p></p>
 				
 				<div class="dragElement w3-container w3-white w3-card w3-round w3-hover-shadow" draggable="true" id="{{ rettungsmittel_id }}">
-					<button class="dragElement w3-center w3-button w3-block w3-blue-grey" draggable="true">63/25-1 (KTW)</button>
+					<button class="w3-center w3-button w3-block w3-blue-grey">63/25-1 (KTW)</button>
 					<p style="font-size:12px"><i class="fa fa-user-md fa-fw w3-margin-right"></i>P. Storz (EH)</p>
 					<p style="font-size:12px"><i class="fa fa-user-md fa-fw w3-margin-right"></i>S. Wickner (EH)</p>
 				</div> <!-- id="{{ rettungsmittel_id }}" -->
@@ -362,7 +348,7 @@
 				<p></p>
 				
 				<div class="dragElement w3-container w3-white w3-card w3-round w3-hover-shadow" draggable="true" id="{{ posten_id }}">
-					<button class="dragElement w3-center w3-button w3-block w3-blue-grey" draggable="true">Mobiles SAN-Team 1</button>
+					<button class="w3-center w3-button w3-block w3-blue-grey">Mobiles SAN-Team 1</button>
 					<p style="font-size:12px"><i class="fa fa-user-md fa-fw w3-margin-right"></i>A. Wermter (NA)</p>
 					<p style="font-size:12px"><i class="fa fa-user-md fa-fw w3-margin-right"></i>S. Steddin (RA)</p>
 				</div> <!-- id="{{ posten_id }}" -->
@@ -381,6 +367,16 @@
 
 	</div> <!-- id="total_page" -->
 </div>
+
+<!-- Data lists -->
+<datalist id="funkruf">
+	<option>Einsatzleitung</option>
+	{{# if einsatz}}
+	{{# each einsatz}}
+	<option>{{ sender }}</option>
+	{{/each}}
+	{{/if}}
+</datalist>
 
 <script>
 	//beginning view of map [FYI: alternative "panTo"]
@@ -527,27 +523,24 @@
 	  // this/e.target is the source node.
 		
 		this.style.opacity = '1.0';
+		var dragElements = document.querySelectorAll('.dragElement');
 		[].forEach.call(dragElements, function (col) {
 			col.classList.remove('over');
 			
 		});
-	  
+		var dropElements = document.querySelectorAll('.dropElement');
 		[].forEach.call(dropElements, function (col) {
 			col.classList.remove('over');
 		});
 	}
 	
 	var dragElements = document.querySelectorAll('.dragElement');
-	console.log("dragElement");
-	console.log(dragElements);
 	[].forEach.call(dragElements, function(col) {
 	  col.addEventListener('dragstart', handleDragStart, false);
 	  col.addEventListener('dragend', handleDragEnd, false);
 	});
 	
 	var dropElements = document.querySelectorAll('.dropElement');
-	console.log("dropElement");
-	console.log(dropElements);
 	[].forEach.call(dropElements, function(col) {
 	  col.addEventListener('dragover', handleDragOver, false);
 	  col.addEventListener('dragenter', handleDragEnter, false);
@@ -555,5 +548,15 @@
 	  col.addEventListener('drop', handleDrop, false);
 	  col.addEventListener('dragend', handleDragEnd, false);
 	});
+	
+	
+	
 
 </script> <!-- id="dragAndDrop" -->
+
+<!-- Include von externen Funktionen -->
+<script type="text/javascript" src="script/gesamt.js"></script>
+<script type="text/javascript" src="script/einsatz.js"></script>
+<script type="text/javascript" src="script/fahrzeuge.js"></script>
+<script type="text/javascript" src="script/helfer.js"></script>
+<script type="text/javascript" src="script/moment.js"></script>
