@@ -64,19 +64,19 @@
 					<div class="w3-hide w3-container w3-light-grey" id="funkNew_input">
 						<p style="font-size:12px">Folgende Parameter erfassen:</p>
 						<form method="POST" action="/funkspruch">
-							<p style="font-size:12px"><input class="w3-input w3-border" type="text"  placeholder="Sender (Drag & Drop)" name="funk_sender" style="margin-left:auto; margin-right:auto;"></p>
-							<p style="font-size:12px"><input class="w3-input w3-border" type="text"  placeholder="Empfaenger (Drag & Drop)" name="funk_empfaenger" style="margin-left:auto; margin-right:auto;"></p>
-							<p style="font-size:12px"><input class="w3-input w3-border" type="text" placeholder="Text" name="funk_notizen" style="margin-left:auto; margin-right:auto;"></p>
+							<p style="font-size:12px"><input class="w3-input w3-border dropElement" type="text"  placeholder="Sender (Drag & Drop)" name="funkspruch_sender" value="" style="margin-left:auto; margin-right:auto;"></p>
+							<p style="font-size:12px"><input class="w3-input w3-border dropElement" type="text"  placeholder="Empfaenger (Drag & Drop)" name="funkspruch_empfaenger" value="" style="margin-left:auto; margin-right:auto;"></p>
 							<p style="font-size:12px; color:gray;">
-								<select class="w3-input w3-border" placeholder="Kategorie" name="funk_kategorie">
+								<select class="w3-input w3-border" placeholder="Kategorie" name="funkspruch_kategorie">
 									<option value="" hidden>Kategorie</option>
 									<option>Einsatz</option>
-									<option>Positionsänderung</option>
+									<option>Position</option>
 									<option>Lagemeldung</option>
+									<option>Frage</option>
 									<option>Verständigung</option>
-									<option>Sonstiges</option>
 								</select>
 							</p>
+							<p style="font-size:12px"><input class="w3-input w3-border" type="text" placeholder="Text" name="funkspruch_text" style="margin-left:auto; margin-right:auto;"></p>
 							<!-- + timestamp und Führungskraft>-->
 							<button style="margin-left:auto; margin-right:auto;" type="submit" class="w3-button w3-block w3-blue-grey">Speichern</button>
 							<br>
@@ -96,7 +96,7 @@
 					<div class="w3-hide w3-container w3-light-grey" id="einsatzNew_input">
 						<p style="font-size:12px">Folgende Parameter erfassen:</p>
 						<form method="POST" action="/einsatz">
-							<p style="font-size:12px"><input class="w3-input w3-border" type="text"  placeholder="Sender (Drag & Drop)" name="einsatz_sender" style="margin-left:auto; margin-right:auto;"></p>
+							<p style="font-size:12px"><input class="w3-input w3-border dropElement" type="text"  placeholder="Sender (Drag & Drop)" name="einsatz_sender" value="" style="margin-left:auto; margin-right:auto;"></p>
 							<p style="font-size:12px"><input class="w3-input w3-border" type="text" placeholder="Meldebild" name="einsatz_meldebild" style="margin-left:auto; margin-right:auto;"></p>
 							<p style="font-size:12px"><input class="w3-input w3-border" type="number" placeholder="Anzahl an Verletzten" name="einsatz_anzVerletzte" style="margin-left:auto; margin-right:auto;" min="1"></p>
 							<p style="font-size:12px"><input class="w3-input w3-border" type="text" placeholder="Beschreibung" name="einsatz_notizen" style="margin-left:auto; margin-right:auto;"></p>
@@ -345,31 +345,31 @@
 		
 			<div class="w3-card w3-round w3-theme-l4" style="overflow-y:scroll; height:450px;" id="right_scrollbar"><p></p>
 				<!-- Auflistung der Einsaetze -->
-				<div class="w3-container w3-white w3-card w3-round w3-hover-shadow" id="{{ rettungsmittel_id }}">
-					<button class="w3-center w3-button w3-block w3-blue-grey">63/23-1 (RTW)</button>
+				<div class="dragElement w3-container w3-white w3-card w3-round w3-hover-shadow" draggable="true" id="{{ rettungsmittel_id }}">
+					<button class="dragElement w3-center w3-button w3-block w3-blue-grey" draggable="true">63/23-1 (RTW)</button>
 					<p style="font-size:12px"><i class="fa fa-user-md fa-fw w3-margin-right"></i>P. Beyersdorffer (SAN)</p>
 					<p style="font-size:12px"><i class="fa fa-user-md fa-fw w3-margin-right"></i>A. Müller (RS)</p>
 				</div> <!-- id="{{ rettungsmittel_id }}" -->
 				
 				<p></p>
 				
-				<div class="w3-container w3-white w3-card w3-round w3-hover-shadow" id="{{ rettungsmittel_id }}">
-					<button class="w3-center w3-button w3-block w3-blue-grey">63/25-1 (KTW)</button>
+				<div class="dragElement w3-container w3-white w3-card w3-round w3-hover-shadow" draggable="true" id="{{ rettungsmittel_id }}">
+					<button class="dragElement w3-center w3-button w3-block w3-blue-grey" draggable="true">63/25-1 (KTW)</button>
 					<p style="font-size:12px"><i class="fa fa-user-md fa-fw w3-margin-right"></i>P. Storz (EH)</p>
 					<p style="font-size:12px"><i class="fa fa-user-md fa-fw w3-margin-right"></i>S. Wickner (EH)</p>
 				</div> <!-- id="{{ rettungsmittel_id }}" -->
 				
 				<p></p>
 				
-				<div class="w3-container w3-white w3-card w3-round w3-hover-shadow" id="{{ posten_id }}">
-					<button class="w3-center w3-button w3-block w3-blue-grey">Mobiles SAN-Team 1</button>
+				<div class="dragElement w3-container w3-white w3-card w3-round w3-hover-shadow" draggable="true" id="{{ posten_id }}">
+					<button class="dragElement w3-center w3-button w3-block w3-blue-grey" draggable="true">Mobiles SAN-Team 1</button>
 					<p style="font-size:12px"><i class="fa fa-user-md fa-fw w3-margin-right"></i>A. Wermter (NA)</p>
 					<p style="font-size:12px"><i class="fa fa-user-md fa-fw w3-margin-right"></i>S. Steddin (RA)</p>
 				</div> <!-- id="{{ posten_id }}" -->
 				
-				<p></p>
+				<p class="test"></p>
 				
-				<div class="w3-container w3-white w3-card w3-round w3-hover-shadow .w3-hover-div" id="{{ rettungskraft_id }}">
+				<div class="dragElement w3-container w3-white w3-card w3-round w3-hover-shadow .w3-hover-div" draggable="true" id="{{ rettungskraft_id }}">
 					<p style="font-size:12px"><i class="fa fa-user-md fa-fw w3-margin-right"></i>J. Schuster (NFS)</p>
 				</div> <!-- id="{{ rettungskraft_id }}" -->
 				
@@ -476,3 +476,84 @@
 		});
 	rtwMarker.bindPopup("<b>RTW 63/23-1</b><br>Status 3");
 </script>
+
+<script id="dragAndDrop">
+
+	function handleDragStart(e) {
+		this.style.opacity = '0.4';  // this / e.target is the source node.
+		
+		e.dataTransfer.effectAllowed = 'copy'; // none, copy, copyLink, copyMove, link, linkMove, move, all und uninitialized.
+		
+		if (this.childNodes.length > 1) { // Einzelne Rettungskraft
+			e.dataTransfer.setData('text', this.childNodes[1].innerText);
+		}
+		else { //Rettungsmittel oder Sanitaetsposten
+			e.dataTransfer.setData('text', this.innerText);
+		}
+	}
+	
+	function handleDragOver(e) {
+		if (e.preventDefault) {
+			e.preventDefault(); // Necessary. Allows us to drop.
+		}
+
+		e.dataTransfer.dropEffect = 'copy';  // none, copy, copyLink, copyMove, link, linkMove, move, all und uninitialized.
+
+		return false;
+	}
+	
+	function handleDragEnter(e) {
+		// this / e.target is the current hover target.
+		this.classList.add('over');
+	}
+	
+	function handleDragLeave(e) {
+		// this / e.target is previous target element.
+		this.classList.remove('over');  
+	}
+	
+	function handleDrop(e) {
+		// this / e.target is current target element.
+		if (e.stopPropagation) {
+			e.stopPropagation(); // stops the browser from redirecting.
+		}
+		
+		this.value = e.dataTransfer.getData('text');
+
+		return false;
+	}
+	
+	function handleDragEnd(e) {
+	  // this/e.target is the source node.
+		
+		this.style.opacity = '1.0';
+		[].forEach.call(dragElements, function (col) {
+			col.classList.remove('over');
+			
+		});
+	  
+		[].forEach.call(dropElements, function (col) {
+			col.classList.remove('over');
+		});
+	}
+	
+	var dragElements = document.querySelectorAll('.dragElement');
+	console.log("dragElement");
+	console.log(dragElements);
+	[].forEach.call(dragElements, function(col) {
+	  col.addEventListener('dragstart', handleDragStart, false);
+	  col.addEventListener('dragend', handleDragEnd, false);
+	});
+	
+	var dropElements = document.querySelectorAll('.dropElement');
+	console.log("dropElement");
+	console.log(dropElements);
+	[].forEach.call(dropElements, function(col) {
+	  col.addEventListener('dragover', handleDragOver, false);
+	  col.addEventListener('dragenter', handleDragEnter, false);
+	  col.addEventListener('dragleave', handleDragLeave, false);
+	  col.addEventListener('drop', handleDrop, false);
+	  col.addEventListener('dragend', handleDragEnd, false);
+	});
+
+</script> <!-- id="dragAndDrop" -->

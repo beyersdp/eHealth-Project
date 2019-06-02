@@ -39,3 +39,4 @@ function toHour(className) {
 		document.getElementById(dateString.id).innerHTML = moment(dateString.id, 'YYYYMMDDHHmmss').format('HH:mm:ss');
 	});
 }
+

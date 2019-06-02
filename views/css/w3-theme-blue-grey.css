@@ -41,3 +41,8 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #becbd2; 
 }
+
+/* Drop into elementr */
+.dropElement.over {
+	border: 2px dashed #4d636f !important;
+}
