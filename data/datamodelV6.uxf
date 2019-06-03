@@ -20,7 +20,7 @@ Collection: Rettungskraft
 - funkruf: String
 - tel: String
 - position: String
-- rettungsmittel: Object
+- rettungsmittel: Boolean
 
 </panel_attributes>
     <additional_attributes/>

@@ -36,7 +36,16 @@ function toHour(className) {
 	var dateStrings = document.getElementsByClassName(className);
 	
 	Array.prototype.forEach.call(dateStrings, function(dateString) {
-		document.getElementById(dateString.id).innerHTML = moment(dateString.id, 'YYYYMMDDHHmmss').format('HH:mm:ss');
+		console.log(dateString);
+		
+		
+		newIcon = document.createElement("i");
+		newIcon.className = "fa fa-clock-o fa-fw w3-margin-right";
+		
+		dateString.appendChild(newIcon);
+		console.log(dateString.innerHTML);
+		console.log(dateString.innerText);
+		dateString.innerText = moment(dateString.innerText, 'YYYYMMDDHHmmss').format('HH:mm:ss');
 	});
 }
 

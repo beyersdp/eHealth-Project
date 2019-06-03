@@ -245,6 +245,8 @@ server.post('/einsatz', urlencodedParser, function(req, res){
 				db.collection('Fuehrungskraft').find({cookie: req.session.user}).toArray(function(err, result) {
 					if (err) throw err;
 					
+					console.log(req.body.einsatz_kraefte);
+					
 					einsatz_data = {sender: req.body.einsatz_sender,
 									position: req.body.einsatz_position,
 									meldebild: req.body.einsatz_meldebild,
@@ -260,7 +262,7 @@ server.post('/einsatz', urlencodedParser, function(req, res){
 						db.collection('Einsatz').find().sort({timestamp: 1}).toArray(function(err, queryEinsatz) {
 							if (err) throw err;
 							console.log(result);
-						
+							
 							res.render('mainpage', {title: "Einsatz - Digitaler Führungsassistent",
 													einsatz: queryEinsatz,
 													fuehrungskraft_nachname: result[0].nachname,
@@ -332,17 +334,24 @@ server.post('/funkspruch', urlencodedParser, function(req, res){
 				if (err) throw err;
 				
 				funkspruch_data = {sender: req.body.funkspruch_sender,
-								empfaenger: req.body.funkspruch_empfaenger,
-								kategorie: req.body.funkspruch_kategorie,
-								text: req.body.funkspruch_text,
-								timestamp: moment().format('YYYYMMDDHHmmss'),
-								fuehrungskraft: result[0]};
+								   empfaenger: req.body.funkspruch_empfaenger,
+								   kategorie: req.body.funkspruch_kategorie,
+								   text: req.body.funkspruch_text,
+								   timestamp: moment().format('YYYYMMDDHHmmss'),
+								   fuehrungskraft: result[0]};
 		
 				db.collection('Funkspruch').insertOne(funkspruch_data, function(err, inserted) {
 					if (err) throw err;
-				
-					res.render('html_form_dummy', {title: "Einsatz Funk - Digitaler Führungsassistent",});
-					dbClient.close();
+					
+					db.collection('Einsatz').find().sort({timestamp: 1}).toArray(function(err, queryEinsatz) {
+						if (err) throw err;
+					
+						res.render('mainpage', {title: "Hauptseite - Digitaler Führungsassistent",
+												einsatz: queryEinsatz,
+												fuehrungskraft_nachname: result[0].nachname,
+												fuehrungskraft_quali: result[0].quali});
+						dbClient.close();
+					});
 				});
 			});
 		});
@@ -356,7 +365,103 @@ server.post('/funkspruch', urlencodedParser, function(req, res){
 
 
 
-/* /funkspruchCHRONIK - Empfangen eines POST-Requests ueber Port 8080  */
+/* /rettungskraft - Empfangen eines POST-Requests ueber Port 8080  */
+server.post('/rettungskraft', urlencodedParser, function(req, res){
+	console.log("L2-Info: POST-REQUEST for /rettungskraft");
+	//console.log(req.body); //DEBUG Kontrollausgabe
+	
+	if(req.session && req.session.user) { 
+		console.log("L1-Info: Cookie true");
+		
+		if(req.body.rettungskraft_id == "") { //eine neue Rettungskraft soll aufgenommen werden, da noch keine ID existert
+		
+			mongodbClient.connect(url, { useNewUrlParser: true }, function(err, dbClient) {
+				if (err) throw err;
+				var db = dbClient.db('DigitalerFuehrungsassistent');
+				console.log("L2-Info: DB-Connection true");
+				
+				var rettungskraft_data = {vorname: req.body.rettungskraft_vorname,
+										  nachname: req.body.rettungskraft_nachname,
+										  hiorg: req.body.rettungskraft_hiorg,
+										  quali: req.body.rettungskraft_quali,
+										  funkruf: req.body.rettungskraft_funkruf,
+										  tel: req.body.rettungskraft_tel,
+										  //position: req.body.rettungskraft_position,
+										  rettungsmittel: false};
+										  
+				db.collection('Rettungskraft').insertOne(rettungskraft_data, function(err, inserted) {
+					if (err) throw err;
+					
+					db.collection('Einsatz').find().sort({timestamp: 1}).toArray(function(err, queryEinsatz) {
+							if (err) throw err;
+							
+						db.collection('Fuehrungskraft').find({cookie: req.session.user}).toArray(function(err, queryFuehrungskraft) {
+							if (err) throw err;
+					
+							res.render('mainpage', {title: "Hauptseite - Digitaler Führungsassistent",
+													einsatz: queryEinsatz,
+													fuehrungskraft_nachname: queryFuehrungskraft[0].nachname,
+													fuehrungskraft_quali: queryFuehrungskraft[0].quali});
+							dbClient.close();
+						});
+					});
+				});
+			});
+		}
+		
+		else { //eine vorhandene Rettungskraft soll bearbeitet werden, anhand der gesendeten ID
+		
+		}
+							
+	}
+
+	else {
+		console.log("L1-Info: Cookie false");
+		res.send("Cookie false");
+	}
+});
+
+
+/* /rettungsmittel - Empfangen eines POST-Requests ueber Port 8080  */
+server.post('/rettungsmittel', urlencodedParser, function(req, res){
+	console.log("L2-Info: POST-REQUEST for /rettungsmittel");
+	console.log(req.body); //DEBUG Kontrollausgabe
+	
+	if(req.session && req.session.user) { 
+		console.log("L1-Info: Cookie true");
+	
+		if(req.body.rettungsmittel_id == "") { //ein neues Rettungsmittel soll angelegt werden, da noch keine ID existert
+			
+			mongodbClient.connect(url, { useNewUrlParser: true }, function(err, dbClient) {
+				if (err) throw err;
+				var db = dbClient.db('DigitalerFuehrungsassistent');
+				console.log("L2-Info: DB-Connection true I");
+		
+				db.collection('Rettungskraft').find({/*????*/}).toArray(function(err, queryRettungskrafte) {
+		
+					einsatz_data = {art: req.body.rettungsmittel_art,
+									funkruf: req.body.rettungsmittel_funkruf,
+									//position: req.body.rettungsmittel_position,
+									kraefte: queryRettungskrafte};
+				});
+			});		
+			res.send("In Arbeit...");
+		}
+		
+		else { //ein vorhandenes Rettungsmittel soll bearbeitet werden, anhand der gesendeten ID
+			res.send("In Arbeit...");
+		}
+	
+	}
+	else {
+		console.log("L1-Info: Cookie false");
+		res.send("Cookie false");
+	}
+});
+
+
+
+/* /funkspruchCHRONIK - Empfangen eines GET-Requests ueber Port 8080  */
 server.get('/funkspruchCHRONIK', function(req, res){
 	console.log("L2-Info: GET-REQUEST for /funkspruchCHRONIK");
 	
@@ -368,10 +473,11 @@ server.get('/funkspruchCHRONIK', function(req, res){
 			var db = dbClient.db('DigitalerFuehrungsassistent');
 			console.log("L2-Info: DB-Connection true");
 	
-		db.collection('Funkspruch').find().sort({timestamp: 1}).toArray(function(err, result) {
+			db.collection('Funkspruch').find().sort({timestamp: 1}).toArray(function(err, result) {
 				if (err) throw err;
 				
 				res.render('html_form_dummy', {funkspruch: result});
+				
 				dbClient.close();
 			});
 		});
@@ -404,12 +510,38 @@ server.get('/cookietest', function(req, res){
 
 
 
-/* /mainpagetest - Empfangen eines GET-Requests ueber Port 8080  */
-server.get('/mainpagetest', function(req, res){
-	console.log("L2-Info: GET-REQUEST for /mainpagetest");
+/* /mainpage - Empfangen eines GET-Requests ueber Port 8080  */
+server.get('/mainpage', function(req, res){
+	console.log("L2-Info: GET-REQUEST for /mainpage");
 	
-	res.render('mainpage', {title: "Einsatz - Digitaler Führungsassistent"});
+	if(req.session && req.session.user) { 
+		console.log("L1-Info: Cookie true");
+		
+		mongodbClient.connect(url, { useNewUrlParser: true }, function(err, dbClient) {
+			if (err) throw err;
+			var db = dbClient.db('DigitalerFuehrungsassistent');
+			console.log("L2-Info: DB-Connection true");
+		
+			db.collection('Fuehrungskraft').find({cookie: req.session.user}).toArray(function(err, result) {
+				if (err) throw err;
+				
+				db.collection('Einsatz').find().sort({timestamp: 1}).toArray(function(err, queryEinsatz) {
+					if (err) throw err;
+				
+					res.render('mainpage', {title: "Hauptseite - Digitaler Führungsassistent",
+											einsatz: queryEinsatz,
+											fuehrungskraft_nachname: result[0].nachname,
+											fuehrungskraft_quali: result[0].quali});
+					dbClient.close();
+				});
+			});
+		});
+	}
 	
+	else {
+		console.log("L1-Info: Cookie false");
+		res.send("Cookie false");
+	}
 });	
 
 
