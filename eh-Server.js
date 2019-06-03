@@ -89,11 +89,25 @@ server.post('/login', urlencodedParser, function(req, res){
 							if (err) throw err;
 						});
 						
-						db.collection('Fuehrungskraft').findOneAndUpdate({mail: req.body.login_mail}, {$set: {cookie: req.session.user}});
+						db.collection('Fuehrungskraft').findOneAndUpdate({mail: req.body.login_mail}, {$set: {cookie: req.session.user}}, function(err, result) {
+							if (err) throw err;
+							
+							db.collection('Einsatz').find().sort({timestamp: 1}).toArray(function(err, queryEinsatz) {
+								if (err) throw err;
+								
+								db.collection('Rettungskraft').find({rettungsmittel: false}).toArray(function(err, queryRettungskrafte) {
+									if (err) throw err;
+							
+									res.render('mainpage', {title: "Einsatz - Digitaler Führungsassistent",
+															einsatz: queryEinsatz,
+															rettungskraft: queryRettungskrafte,
+															fuehrungskraft_nachname: result.value.nachname,
+															fuehrungskraft_quali: result.value.quali});
 						
-						res.render('mainpage', {title: "Einsatz - Digitaler Führungsassistent"});
-				
-						dbClient.close();
+									dbClient.close();
+								});
+							});
+						});
 					}
 				});
 				
@@ -261,13 +275,17 @@ server.post('/einsatz', urlencodedParser, function(req, res){
 						
 						db.collection('Einsatz').find().sort({timestamp: 1}).toArray(function(err, queryEinsatz) {
 							if (err) throw err;
-							console.log(result);
 							
-							res.render('mainpage', {title: "Einsatz - Digitaler Führungsassistent",
-													einsatz: queryEinsatz,
-													fuehrungskraft_nachname: result[0].nachname,
-													fuehrungskraft_quali: result[0].quali});
-							dbClient.close();
+							db.collection('Rettungskraft').find({rettungsmittel: false}).toArray(function(err, queryRettungskrafte) {
+								if (err) throw err;
+							
+								res.render('mainpage', {title: "Einsatz - Digitaler Führungsassistent",
+														einsatz: queryEinsatz,
+														rettungskraft: queryRettungskrafte,
+														fuehrungskraft_nachname: result[0].nachname,
+														fuehrungskraft_quali: result[0].quali});
+								dbClient.close();
+							});
 						});
 					});
 				});
@@ -345,12 +363,17 @@ server.post('/funkspruch', urlencodedParser, function(req, res){
 					
 					db.collection('Einsatz').find().sort({timestamp: 1}).toArray(function(err, queryEinsatz) {
 						if (err) throw err;
+						
+						db.collection('Rettungskraft').find({rettungsmittel: false}).toArray(function(err, queryRettungskrafte) {
+								if (err) throw err;
 					
-						res.render('mainpage', {title: "Hauptseite - Digitaler Führungsassistent",
-												einsatz: queryEinsatz,
-												fuehrungskraft_nachname: result[0].nachname,
-												fuehrungskraft_quali: result[0].quali});
-						dbClient.close();
+							res.render('mainpage', {title: "Hauptseite - Digitaler Führungsassistent",
+													einsatz: queryEinsatz,
+													rettungskraft: queryRettungskrafte,
+													fuehrungskraft_nachname: result[0].nachname,
+													fuehrungskraft_quali: result[0].quali});
+							dbClient.close();
+						});
 					});
 				});
 			});
@@ -397,12 +420,17 @@ server.post('/rettungskraft', urlencodedParser, function(req, res){
 							
 						db.collection('Fuehrungskraft').find({cookie: req.session.user}).toArray(function(err, queryFuehrungskraft) {
 							if (err) throw err;
-					
-							res.render('mainpage', {title: "Hauptseite - Digitaler Führungsassistent",
-													einsatz: queryEinsatz,
-													fuehrungskraft_nachname: queryFuehrungskraft[0].nachname,
-													fuehrungskraft_quali: queryFuehrungskraft[0].quali});
-							dbClient.close();
+							
+							db.collection('Rettungskraft').find({rettungsmittel: false}).toArray(function(err, queryRettungskrafte) {
+								if (err) throw err;
+							
+								res.render('mainpage', {title: "Hauptseite - Digitaler Führungsassistent",
+														einsatz: queryEinsatz,
+														rettungskraft: queryRettungskrafte,
+														fuehrungskraft_nachname: queryFuehrungskraft[0].nachname,
+														fuehrungskraft_quali: queryFuehrungskraft[0].quali});
+								dbClient.close();
+							});
 						});
 					});
 				});
@@ -527,12 +555,17 @@ server.get('/mainpage', function(req, res){
 				
 				db.collection('Einsatz').find().sort({timestamp: 1}).toArray(function(err, queryEinsatz) {
 					if (err) throw err;
+					
+					db.collection('Rettungskraft').find({rettungsmittel: false}).toArray(function(err, queryRettungskrafte) {
+						if (err) throw err;
 				
-					res.render('mainpage', {title: "Hauptseite - Digitaler Führungsassistent",
-											einsatz: queryEinsatz,
-											fuehrungskraft_nachname: result[0].nachname,
-											fuehrungskraft_quali: result[0].quali});
-					dbClient.close();
+						res.render('mainpage', {title: "Hauptseite - Digitaler Führungsassistent",
+												einsatz: queryEinsatz,
+												rettungskraft: queryRettungskrafte,
+												fuehrungskraft_nachname: result[0].nachname,
+												fuehrungskraft_quali: result[0].quali});
+						dbClient.close();
+					});
 				});
 			});
 		});

@@ -57,8 +57,8 @@
 					<div class="w3-hide w3-container w3-light-grey" id="funkNew_input">
 						<p style="font-size:12px">Folgende Parameter erfassen:</p>
 						<form method="POST" action="/funkspruch">
-							<p style="font-size:12px"><input class="w3-input w3-border dropElement" type="text"  placeholder="Sender (Drag & Drop)" name="funkspruch_sender" value="" style="margin-left:auto; margin-right:auto;"></p>
-							<p style="font-size:12px"><input class="w3-input w3-border dropElement" type="text"  placeholder="Empfaenger (Drag & Drop)" name="funkspruch_empfaenger" value="" style="margin-left:auto; margin-right:auto;"></p>
+							<p style="font-size:12px"><input class="w3-input w3-border dropElement" list="funkrufDataList" type="text"  placeholder="Sender (Drag & Drop)" name="funkspruch_sender" value="" style="margin-left:auto; margin-right:auto;"></p>
+							<p style="font-size:12px"><input class="w3-input w3-border dropElement" list="funkrufDataList" type="text"  placeholder="Empfaenger (Drag & Drop)" name="funkspruch_empfaenger" value="" style="margin-left:auto; margin-right:auto;"></p>
 							<p style="font-size:12px; color:gray;">
 								<select class="w3-input w3-border" placeholder="Kategorie" name="funkspruch_kategorie">
 									<option value="" hidden>Kategorie</option>
@@ -88,9 +88,9 @@
 					<!-- Einsatz anlegen - Rolldown Menue -->
 					<div class="w3-hide w3-container w3-light-grey" id="einsatzNew_input">
 						<form method="POST" action="/einsatz" id="einsatzNew_input_form">
-							<input type="hidden" name="einsatz_id" value="{{ einsatz_id }}"></input>
+							<input type="hidden" name="einsatz_id" value=""></input>
 							<p style="font-size:12px">Ersteller des Einsatzauftrags:</p>
-							<p style="font-size:12px"><input class="w3-input w3-border dropElement" list="funkruf" type="text"  placeholder="Sender (Drag & Drop)" name="einsatz_sender" value="" style="margin-left:auto; margin-right:auto;"></p>
+							<p style="font-size:12px"><input class="w3-input w3-border dropElement" list="funkrufDataList" type="text"  placeholder="Sender (Drag & Drop)" name="einsatz_sender" value="" style="margin-left:auto; margin-right:auto;"></p>
 							<p style="font-size:12px">Aktuelle Verdachtsdiagnose:</p>
 							<p style="font-size:12px"><input class="w3-input w3-border" type="text" placeholder="Meldebild" name="einsatz_meldebild" style="margin-left:auto; margin-right:auto;"></p>
 							<p style="font-size:12px">Anzahl verletzter Personen:</p>
@@ -110,7 +110,7 @@
 								</select>
 							</p>
 							<p style="font-size:12px">Zugeteilte Kräfte:<i class="fa fa-plus fa-fw w3-small w3-margin-right" onclick="addInputField('div_einsatzNew')"></i></p>
-							<p style="font-size:12px"><input class="w3-input w3-border dropElement" type="text"  placeholder="Tippen oder Drag&Drop" name="einsatz_kraefte" value="" style="margin-left:auto; margin-right:auto;"></p>
+							<p style="font-size:12px"><input class="w3-input w3-border dropElement" list="funkrufDataList" type="text"  placeholder="Tippen oder Drag&Drop" name="einsatz_kraefte" value="" style="margin-left:auto; margin-right:auto;"></p>
 							<div id="div_einsatzNew">
 							</div>
 							<!-- + Rettungsmittel und Position>-->
@@ -254,7 +254,7 @@
 					<div class="w3-hide w3-container w3-light-grey" id="rettungsmittelNew_input">
 						<p style="font-size:12px">Folgende Parameter erfassen:</p>
 						<form method="POST" action="/rettungsmittel">
-							<input type="hidden" name="rettungsmittel_id" value="{{ rettungsmittel_id }}"></input>
+							<input type="hidden" name="rettungsmittel_id" value=""></input>
 							<p style="font-size:12px; color:gray;">
 								<select class="w3-input w3-border" placeholder="Fahrzeugart" name="rettungsmittel_art">
 									<option value="" hidden>Fahrzeugart</option>
@@ -268,7 +268,7 @@
 							</p>
 							<p style="font-size:12px"><input class="w3-input w3-border" type="text"  placeholder="Funkrufname" name="rettungsmittel_funkruf" style="margin-left:auto; margin-right:auto;"></p>
 							<p style="font-size:12px">Zugeteilte Kräfte:<i class="fa fa-plus fa-fw w3-small w3-margin-right" onclick="addInputField('div_rettungsmittelNew')"></i></p>
-							<p style="font-size:12px"><input class="w3-input w3-border dropElement" type="text"  placeholder="Tippen oder Drag&Drop" name="rettungsmittel_kraefte" value="" style="margin-left:auto; margin-right:auto;"></p>
+							<p style="font-size:12px"><input class="w3-input w3-border dropElement" list="funkrufDataList" type="text"  placeholder="Tippen oder Drag&Drop" name="rettungsmittel_kraefte" value="" style="margin-left:auto; margin-right:auto;"></p>
 							<div id="div_rettungsmittelNew">
 							</div>
 							<button style="margin-left:auto; margin-right:auto;" type="submit" class="w3-button w3-block w3-blue-grey">Speichern</button>
@@ -307,20 +307,20 @@
 					<div class="w3-hide w3-container w3-light-grey" id="rettungskraftNew_input">
 						<p style="font-size:12px">Folgende Parameter erfassen:</p>
 						<form method="POST" action="/rettungskraft">
-							<input type="hidden" name="rettungskraft_id" value="{{ rettungsmittel_id }}"></input>
+							<input type="hidden" name="rettungskraft_id" value=""></input>
 							<p style="font-size:12px"><input class="w3-input w3-border" type="text" placeholder="Vorname" name="rettungskraft_vorname" style="margin-left:auto; margin-right:auto;"></p>
 							<p style="font-size:12px"><input class="w3-input w3-border" type="text" placeholder="Nachname" name="rettungskraft_nachname" style="margin-left:auto; margin-right:auto;"></p>
 							<p style="font-size:12px"><input class="w3-input w3-border" type="text" placeholder="Hilfsorganisation" name="rettungskraft_hiorg" style="margin-left:auto; margin-right:auto;"></p>
 							<p style="font-size:12px; color:gray;">
 								<select class="w3-input w3-border" placeholder="Med. Qualifikation" name="rettungskraft_quali">
 									<option value="" hidden>Med. Qualifikation</option>
-									<option>Praktikant (Erste Hilfe)</option>
-									<option>Sanitätshelfer</option>
-									<option>Rettungshelfer</option>
-									<option>Rettungssanitäter</option>
-									<option>Rettungsassistent</option>
-									<option>Notfallsanitäter</option>
-									<option>Notarzt</option>
+									<option>Praktikant/-in (Erste Hilfe)</option>
+									<option>Sanitätshelfer/-in</option>
+									<option>Rettungshelfer/-in</option>
+									<option>Rettungssanitäter/-in</option>
+									<option>Rettungsassistent/-in</option>
+									<option>Notfallsanitäter/in</option>
+									<option>Notarzt/Notärztin</option>
 								</select>
 							</p>
 							<p style="font-size:12px"><input class="w3-input w3-border" type="text" placeholder="Telefonnummer" name="rettungskraft_tel" style="margin-left:auto; margin-right:auto;"></p>
@@ -359,11 +359,17 @@
 					<p style="font-size:12px"><i class="fa fa-user-md fa-fw w3-margin-right"></i>S. Steddin (RA)</p>
 				</div> <!-- id="{{ posten_id }}" -->
 				
-				<p class="test"></p>
-				
-				<div class="dragElement w3-container w3-white w3-card w3-round w3-hover-shadow .w3-hover-div" draggable="true" id="{{ rettungskraft_id }}">
-					<p style="font-size:12px"><i class="fa fa-user-md fa-fw w3-margin-right"></i>J. Schuster (NFS)</p>
-				</div> <!-- id="{{ rettungskraft_id }}" -->
+				{{# if rettungskraft}}
+				{{# each rettungskraft}}
+				<p></p>
+				<div class="dragElement w3-container w3-white w3-card w3-round w3-hover-shadow .w3-hover-div" draggable="true" id="{{ _id }}">
+					{{# if funkruf }}
+					<button class="funkruf w3-center w3-button w3-block w3-blue-grey">{{ funkruf }}</button>
+					{{/if}}
+					<p style="font-size:12px"><i class="fa fa-user-md fa-fw w3-margin-right"></i>{{ vorname }} {{ nachname }} <span class="medQuali">{{ quali }}</span></p>
+				</div> <!-- id="{{ _id }}" -->
+				{{/each}}
+				{{/if}}
 				
 				<br>
 			</div> <!-- id="right_scrollbar -->
@@ -375,13 +381,8 @@
 </div>
 
 <!-- Data lists -->
-<datalist id="funkruf">
+<datalist id="funkrufDataList">
 	<option>Einsatzleitung</option>
-	{{# if einsatz}}
-	{{# each einsatz}}
-	<option>{{ sender }}</option>
-	{{/each}}
-	{{/if}}
 </datalist>
 
 <script>

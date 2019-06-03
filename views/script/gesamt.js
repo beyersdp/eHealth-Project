@@ -36,15 +36,11 @@ function toHour(className) {
 	var dateStrings = document.getElementsByClassName(className);
 	
 	Array.prototype.forEach.call(dateStrings, function(dateString) {
-		console.log(dateString);
-		
-		
+
 		newIcon = document.createElement("i");
 		newIcon.className = "fa fa-clock-o fa-fw w3-margin-right";
 		
 		dateString.appendChild(newIcon);
-		console.log(dateString.innerHTML);
-		console.log(dateString.innerText);
 		dateString.innerText = moment(dateString.innerText, 'YYYYMMDDHHmmss').format('HH:mm:ss');
 	});
 }
@@ -57,6 +53,7 @@ function addInputField(id) {
 	
 	var newInput = document.createElement("input");
 	newInput.className = "w3-input w3-border dropElement";
+	newInput.setAttribute("list", "funkrufDataList");
 	newInput.type = "text";
 	newInput.placeholder = "Tippen oder Drag&Drop";
 	newInput.name = "einsatz_kraefte";
@@ -77,14 +74,51 @@ function addInputField(id) {
 }
 
 // Datalist erweitern nach Form-Eingabe
-function addDataList(listName, v) {
-	console.log("hier");
-	var newOption = document.createElement("option");
-	newOption.innerHTML = v;
-	document.getElementById(listName).appendChild(newOption);
+function addDataList(listName, className) {
 	
-	console.log(document.getElementById(listName));
+	var classElements = document.getElementsByClassName(className);
+	
+	Array.prototype.forEach.call(classElements, function(classElement) {
+		var newOption = document.createElement("option");
+		newOption.innerHTML = classElement.innerText;
+		document.getElementById(listName).appendChild(newOption);
+	});
+}
+
+// Medizinische Qualifikationen abkuerzen
+function shortQuali(className) {
+	
+	var qualiElements = document.getElementsByClassName(className);
+	
+	Array.prototype.forEach.call(qualiElements, function(qualiElement) {
+		
+		if (qualiElement.innerText == "Praktikant/-in (Erste Hilfe)") {
+			qualiElement.innerText = "(EH)"
+		}
+		if (qualiElement.innerText == "Sanitätshelfer/-in") {
+			qualiElement.innerText = "(SAN)"
+		}
+		if (qualiElement.innerText == "Rettungshelfer/-in") {
+			qualiElement.innerText = "(RH)"
+		}
+		if (qualiElement.innerText == "Rettungssanitäter/-in") {
+			qualiElement.innerText = "(RS)"
+		}
+		if (qualiElement.innerText == "Rettungsassistent/-in") {
+			qualiElement.innerText = "(RA)"
+		}
+		if (qualiElement.innerText == "Notfallsanitäter/in") {
+			qualiElement.innerText = "(NFS)"
+		}
+		if (qualiElement.innerText == "Notarzt/Notärztin") {
+			qualiElement.innerText = "(NA)"
+		}
+	});
 }
 
 // Direkt startende Funktionen:
 toHour('timestamp');
+shortQuali("medQuali");
+addDataList("funkrufDataList", "funkruf");
+
+
