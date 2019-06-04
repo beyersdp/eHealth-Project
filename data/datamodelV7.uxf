@@ -109,7 +109,7 @@ Collection: Rettungsmittel
 - art: String
 - funkruf: String
 - position: String
-- rettungskraft: Object
+- kraefte: Object
 
 </panel_attributes>
     <additional_attributes/>
@@ -336,7 +336,7 @@ Collection: Posten
 - _id: MongoDB-intern
 - funkruf: String
 - position: String
-- rettungskraft: Object
+- kraefte: Object
 
 </panel_attributes>
     <additional_attributes/>

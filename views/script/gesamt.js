@@ -46,7 +46,7 @@ function toHour(className) {
 }
 
 // Einem HTML-Form ein weiteres Input-Feld hinzufuegen
-function addInputField(id) {
+function addInputField(id, inputName) {
 
 	var newParagraph = document.createElement("p");
 	newParagraph.style = "font-size:12px";
@@ -56,7 +56,7 @@ function addInputField(id) {
 	newInput.setAttribute("list", "funkrufDataList");
 	newInput.type = "text";
 	newInput.placeholder = "Tippen oder Drag&Drop";
-	newInput.name = "einsatz_kraefte";
+	newInput.name = inputName;
 	newInput.value = "";
 	newInput.style= "margin-left:auto; margin-right:auto;"
 	
@@ -67,10 +67,8 @@ function addInputField(id) {
 	newInput.addEventListener('dragend', handleDragEnd, false);
 	
 	newParagraph.appendChild(newInput);
-	console.log(newParagraph);
 	
 	document.getElementById(id).appendChild(newParagraph);
-	
 }
 
 // Datalist erweitern nach Form-Eingabe

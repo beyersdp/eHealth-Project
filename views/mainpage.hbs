@@ -109,7 +109,7 @@
 									<option>abgeschlossen</option>
 								</select>
 							</p>
-							<p style="font-size:12px">Zugeteilte Kräfte:<i class="fa fa-plus fa-fw w3-small w3-margin-right" onclick="addInputField('div_einsatzNew')"></i></p>
+							<p style="font-size:12px">Zugeteilte Kräfte:<i class="fa fa-plus fa-fw w3-small w3-margin-right" onclick="addInputField('div_einsatzNew', 'einsatz_kraefte')"></i></p>
 							<p style="font-size:12px"><input class="w3-input w3-border dropElement" list="funkrufDataList" type="text"  placeholder="Tippen oder Drag&Drop" name="einsatz_kraefte" value="" style="margin-left:auto; margin-right:auto;"></p>
 							<div id="div_einsatzNew">
 							</div>
@@ -267,8 +267,8 @@
 								</select>
 							</p>
 							<p style="font-size:12px"><input class="w3-input w3-border" type="text"  placeholder="Funkrufname" name="rettungsmittel_funkruf" style="margin-left:auto; margin-right:auto;"></p>
-							<p style="font-size:12px">Zugeteilte Kräfte:<i class="fa fa-plus fa-fw w3-small w3-margin-right" onclick="addInputField('div_rettungsmittelNew')"></i></p>
-							<p style="font-size:12px"><input class="w3-input w3-border dropElement" list="funkrufDataList" type="text"  placeholder="Tippen oder Drag&Drop" name="rettungsmittel_kraefte" value="" style="margin-left:auto; margin-right:auto;"></p>
+							<p style="font-size:12px">Zugeteilte Kräfte:<i class="fa fa-plus fa-fw w3-small w3-margin-right" onclick="addInputField('div_rettungsmittelNew', 'rettungsmittel_kraefte')"></i></p>
+							<p style="font-size:12px"><input class="dropElement w3-input w3-border" list="funkrufDataList" type="text"  placeholder="Tippen oder Drag&Drop" name="rettungsmittel_kraefte" value="" style="margin-left:auto; margin-right:auto;"></p>
 							<div id="div_rettungsmittelNew">
 							</div>
 							<button style="margin-left:auto; margin-right:auto;" type="submit" class="w3-button w3-block w3-blue-grey">Speichern</button>
@@ -288,8 +288,12 @@
 					<div class="w3-hide w3-container w3-light-grey" id="postenNew_input">
 						<p style="font-size:12px">Folgende Parameter erfassen:</p>
 						<form method="POST" action="/posten">
+							<input type="hidden" name="posten_id" value=""></input>
 							<p style="font-size:12px"><input class="w3-input w3-border" type="text"  placeholder="Funkrufname" name="posten_funkruf" style="margin-left:auto; margin-right:auto;"></p>
-							<!-- + Rettungsmittel und Position>-->
+							<p style="font-size:12px">Zugeteilte Kräfte:<i class="fa fa-plus fa-fw w3-small w3-margin-right" onclick="addInputField('div_postenNew', 'posten_kraefte')"></i></p>
+							<p style="font-size:12px"><input class="dropElement w3-input w3-border" list="funkrufDataList" type="text"  placeholder="Tippen oder Drag&Drop" name="posten_kraefte" value="" style="margin-left:auto; margin-right:auto;"></p>
+							<div id="div_postenNew">
+							</div>
 							<button style="margin-left:auto; margin-right:auto;" type="submit" class="w3-button w3-block w3-blue-grey">Speichern</button>
 							<br>
 						</form>
@@ -324,7 +328,7 @@
 								</select>
 							</p>
 							<p style="font-size:12px"><input class="w3-input w3-border" type="text" placeholder="Telefonnummer" name="rettungskraft_tel" style="margin-left:auto; margin-right:auto;"></p>
-							<p style="font-size:12px"><input class="w3-input w3-border" type="text" placeholder="Funkrufname" name="rettungskraft_funkruf" style="margin-left:auto; margin-right:auto;"></p>
+							<p style="font-size:12px"><input class="w3-input w3-border" type="text" placeholder="Funkrufname (eindeutig!)" name="rettungskraft_funkruf" style="margin-left:auto; margin-right:auto;"></p>
 							<!-- + Rettungsmittel und Position>-->
 							<button style="margin-left:auto; margin-right:auto;" type="submit" class="w3-button w3-block w3-blue-grey">Speichern</button>
 							<br>
@@ -336,28 +340,36 @@
 			<p></p>
 		
 			<div class="w3-card w3-round w3-theme-l4" style="overflow-y:scroll; height:450px;" id="right_scrollbar"><p></p>
-				<!-- Auflistung der Einsaetze -->
-				<div class="dragElement w3-container w3-white w3-card w3-round w3-hover-shadow" draggable="true" id="{{ rettungsmittel_id }}">
-					<button class="w3-center w3-button w3-block w3-blue-grey">63/23-1</button>
-					<p style="font-size:12px"><i class="fa fa-user-md fa-fw w3-margin-right"></i>P. Beyersdorffer (SAN)</p>
-					<p style="font-size:12px"><i class="fa fa-user-md fa-fw w3-margin-right"></i>A. Müller (RS)</p>
-				</div> <!-- id="{{ rettungsmittel_id }}" -->
+				{{# if rettungsmittel }}
+				{{# each rettungsmittel }}
+				<div class="dragElement w3-container w3-white w3-card w3-round w3-hover-shadow" draggable="true" id="{{ _id }}">
+					<button class="funkruf w3-center w3-button w3-block w3-blue-grey">{{ funkruf }}</button>
+					<p style="font-size:12px"><i class="fa fa-ambulance fa-fw w3-margin-right"></i>{{ art }}</p>
+					{{# if kraefte }}
+					{{# each kraefte }}
+					<p style="font-size:12px"><i class="fa fa-user-md fa-fw w3-margin-right"></i>{{ funkruf }}</p>
+					{{/each}}
+					{{/if}}
+				</div> <!-- id="{{ _id }}" -->
 				
 				<p></p>
+				{{/each}}
+				{{/if}}
 				
-				<div class="dragElement w3-container w3-white w3-card w3-round w3-hover-shadow" draggable="true" id="{{ rettungsmittel_id }}">
-					<button class="w3-center w3-button w3-block w3-blue-grey">63/25-1</button>
-					<p style="font-size:12px"><i class="fa fa-user-md fa-fw w3-margin-right"></i>P. Storz (EH)</p>
-					<p style="font-size:12px"><i class="fa fa-user-md fa-fw w3-margin-right"></i>S. Wickner (EH)</p>
-				</div> <!-- id="{{ rettungsmittel_id }}" -->
+				{{# if posten }}
+				{{# each posten }}
+				<div class="dragElement w3-container w3-white w3-card w3-round w3-hover-shadow" draggable="true" id="{{ _id }}">
+					<button class="funkruf w3-center w3-button w3-block w3-blue-grey">{{ funkruf }}</button>
+					{{# if kraefte }}
+					{{# each kraefte }}
+					<p style="font-size:12px"><i class="fa fa-user-md fa-fw w3-margin-right"></i>{{ funkruf }}</p>
+					{{/each}}
+					{{/if}}
+				</div> <!-- id="{{ _id }}" -->
 				
 				<p></p>
-				
-				<div class="dragElement w3-container w3-white w3-card w3-round w3-hover-shadow" draggable="true" id="{{ posten_id }}">
-					<button class="w3-center w3-button w3-block w3-blue-grey">Mobiles SAN-Team 1</button>
-					<p style="font-size:12px"><i class="fa fa-user-md fa-fw w3-margin-right"></i>A. Wermter (NA)</p>
-					<p style="font-size:12px"><i class="fa fa-user-md fa-fw w3-margin-right"></i>S. Steddin (RA)</p>
-				</div> <!-- id="{{ posten_id }}" -->
+				{{/each}}
+				{{/if}}
 				
 				{{# if rettungskraft}}
 				{{# each rettungskraft}}
@@ -495,14 +507,13 @@
 
 	function handleDragStart(e) {
 		this.style.opacity = '0.4';  // this / e.target is the source node.
-		
 		e.dataTransfer.effectAllowed = 'copy'; // none, copy, copyLink, copyMove, link, linkMove, move, all und uninitialized.
 		
 		if (this.childNodes.length > 1) { // Einzelne Rettungskraft
 			e.dataTransfer.setData('text', this.childNodes[1].innerText);
 		}
 		else { //Rettungsmittel oder Sanitaetsposten
-			e.dataTransfer.setData('text', this.innerText);
+			e.dataTransfer.setData('text/html', this.innerText);
 		}
 	}
 	
