@@ -22,6 +22,7 @@
 			<button class="w3-button w3-padding-larger" title="Details zum Gesamteinsatz"><i class="fa fa-info-circle fa-fw"></i>Informationen</button>
 			<div class="w3-dropdown-content w3-card-4 w3-bar-block" style="width:300px" id="navbar_element2_dropdown">
 				<a href="#" class="w3-bar-item w3-button"><i class="fa fa-plus-square w3-large w3-margin-right"> <span class="fa fa-info-circle w3-right w3-small"></span></i> Steckbrief Gesamteinsatz</a>
+				<a href="#" class="w3-bar-item w3-button"><i class="fa fa-clipboard w3-right w3-small"></i>Gemeinsame Notizen</a>
 				<a href="#" class="w3-bar-item w3-button"><i class="fa fa-folder-open w3-large w3-margin-right"> <span class="fa fa-medkit w3-right w3-small"></span></i>Chronik Notfalleinsätze</a>
 				<a href="#" class="w3-bar-item w3-button"><i class="fa fa-folder-open w3-large w3-margin-right"> <span class="fa fa-comments w3-right w3-small"></span></i>Steckbrief Funksprüche</a>
 			</div> <!-- id="navbar_element2_dropdown -->
@@ -338,7 +339,7 @@
 			</div> <!-- id="rettungskraftNew" -->
 		
 			<p></p>
-		
+
 			<div class="w3-card w3-round w3-theme-l4" style="overflow-y:scroll; height:450px;" id="right_scrollbar"><p></p>
 				{{# if rettungsmittel }}
 				{{# each rettungsmittel }}
@@ -347,7 +348,7 @@
 					<p style="font-size:12px"><i class="fa fa-ambulance fa-fw w3-margin-right"></i>{{ art }}</p>
 					{{# if kraefte }}
 					{{# each kraefte }}
-					<p style="font-size:12px"><i class="fa fa-user-md fa-fw w3-margin-right"></i>{{ funkruf }}</p>
+					<p style="font-size:12px"><i class="fa fa-user-md fa-fw w3-margin-right"></i>{{ funkruf }} <span class="medQuali">{{ quali }}</span></p>
 					{{/each}}
 					{{/if}}
 				</div> <!-- id="{{ _id }}" -->
@@ -362,7 +363,7 @@
 					<button class="funkruf w3-center w3-button w3-block w3-blue-grey">{{ funkruf }}</button>
 					{{# if kraefte }}
 					{{# each kraefte }}
-					<p style="font-size:12px"><i class="fa fa-user-md fa-fw w3-margin-right"></i>{{ funkruf }}</p>
+					<p style="font-size:12px"><i class="fa fa-user-md fa-fw w3-margin-right"></i>{{ funkruf }} <span class="medQuali">{{ quali }}</span></p>
 					{{/each}}
 					{{/if}}
 				</div> <!-- id="{{ _id }}" -->
