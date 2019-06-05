@@ -266,45 +266,67 @@ server.post('/einsatz', urlencodedParser, function(req, res){
 				db.collection('Fuehrungskraft').find({cookie: req.session.user}).toArray(function(err, result) {
 					if (err) throw err;
 					
-					console.log(req.body.einsatz_kraefte);
+					if (Array.isArray(req.body.einsatz_kraefte)) {
+						var queryArray = req.body.einsatz_kraefte;
+					}
+					else {
+						var queryArray = req.body.einsatz_kraefte.split();
+					}
 					
-					einsatz_data = {sender: req.body.einsatz_sender,
-									position: req.body.einsatz_position,
-									meldebild: req.body.einsatz_meldebild,
-									anzVerletzte: req.body.einsatz_anzVerletzte,
-									text: req.body.einsatz_text,
-									status: req.body.einsatz_status,
-									timestamp: moment().format('YYYYMMDDHHmmss'),
-									fuehrungskraft: result[0]};
-			
-					db.collection('Einsatz').insertOne(einsatz_data, function(err, inserted) {
+					db.collection('Rettungskraft').find({funkruf: {$in: queryArray}}).toArray(function(err, queryRettungskrafte) {
 						if (err) throw err;
 						
-						db.collection('Einsatz').find().sort({timestamp: 1}).toArray(function(err, queryEinsatz) {
+						db.collection('Posten').find({funkruf: {$in: queryArray}}).toArray(function(err, queryPosten) {
 							if (err) throw err;
 							
-							db.collection('Rettungskraft').find({rettungsmittel: false}).toArray(function(err, queryRettungskrafte) {
+							db.collection('Rettungsmittel').find({funkruf: {$in: queryArray}}).toArray(function(err, queryRettungsmittel) {
 								if (err) throw err;
-								
-								db.collection('Rettungsmittel').find().toArray(function(err, queryRettungsmittel) {
+						
+								einsatz_data = {sender: req.body.einsatz_sender,
+												position: req.body.einsatz_position,
+												meldebild: req.body.einsatz_meldebild,
+												anzVerletzte: req.body.einsatz_anzVerletzte,
+												text: req.body.einsatz_text,
+												status: req.body.einsatz_status,
+												timestamp: moment().format('YYYYMMDDHHmmss'),
+												rettungskraefte: queryRettungskrafte,
+												posten: queryPosten,
+												rettungsmittel: queryRettungsmittel,
+												fuehrungskraft: result[0]};
+					
+								db.collection('Einsatz').insertOne(einsatz_data, function(err, inserted) {
 									if (err) throw err;
 									
-									db.collection('Posten').find().toArray(function(err, queryPosten) {
+									db.collection('Einsatz').find().sort({timestamp: 1}).toArray(function(err, queryEinsatz) {
 										if (err) throw err;
-							
-										res.render('mainpage', {title: "Einsatz - Digitaler Führungsassistent",
-																einsatz: queryEinsatz,
-																rettungskraft: queryRettungskrafte,
-																rettungsmittel: queryRettungsmittel,
-																posten: queryPosten,
-																fuehrungskraft_nachname: result[0].nachname,
-																fuehrungskraft_quali: result[0].quali});
-										dbClient.close();
+										
+										db.collection('Rettungskraft').find({rettungsmittel: false}).toArray(function(err, queryRettungskrafte) {
+											if (err) throw err;
+											
+											db.collection('Rettungsmittel').find().toArray(function(err, queryRettungsmittel) {
+												if (err) throw err;
+												
+												db.collection('Posten').find().toArray(function(err, queryPosten) {
+													if (err) throw err;
+										
+													res.render('mainpage', {title: "Einsatz - Digitaler Führungsassistent",
+																			einsatz: queryEinsatz,
+																			rettungskraft: queryRettungskrafte,
+																			rettungsmittel: queryRettungsmittel,
+																			posten: queryPosten,
+																			fuehrungskraft_nachname: result[0].nachname,
+																			fuehrungskraft_quali: result[0].quali});
+													dbClient.close();
+												});
+											});
+										});
 									});
 								});
 							});
 						});
 					});
+					
+					db.collection('Rettungskraft').updateMany({funkruf: {$in: queryArray}}, {$set: {rettungsmittel: true}});
 				});
 			});
 		}
@@ -518,7 +540,16 @@ server.post('/posten', urlencodedParser, function(req, res){
 				var db = dbClient.db('DigitalerFuehrungsassistent');
 				console.log("L2-Info: DB-Connection true I");
 				
-				db.collection('Rettungskraft').find({funkruf: {$in: req.body.posten_kraefte}}).toArray(function(err, queryRettungskrafte) {
+				if (Array.isArray(req.body.posten_kraefte)) {
+					var queryArray = req.body.posten_kraefte;
+				}
+				else {
+					var queryArray = req.body.posten_kraefte.split();
+				}
+				
+				db.collection('Rettungskraft').find({funkruf: {$in: queryArray}}).toArray(function(err, queryRettungskrafte) {
+					
+					console.log(queryRettungskrafte);
 					
 					posten_data = {funkruf: req.body.posten_funkruf,
 								   //position: req.body.posten_position,
@@ -558,7 +589,7 @@ server.post('/posten', urlencodedParser, function(req, res){
 					});
 				});
 				
-				db.collection('Rettungskraft').updateMany({funkruf: {$in: req.body.posten_kraefte}}, {$set: {rettungsmittel: true}});
+				db.collection('Rettungskraft').updateMany({funkruf: {$in: queryArray}}, {$set: {rettungsmittel: true}});
 			});
 		}
 		
@@ -590,7 +621,14 @@ server.post('/rettungsmittel', urlencodedParser, function(req, res){
 				var db = dbClient.db('DigitalerFuehrungsassistent');
 				console.log("L2-Info: DB-Connection true I");
 				
-				db.collection('Rettungskraft').find({funkruf: {$in: req.body.rettungsmittel_kraefte}}).toArray(function(err, queryRettungskrafte) {
+				if (Array.isArray(req.body.rettungsmittel_kraefte)) {
+					var queryArray = req.body.rettungsmittel_kraefte;
+				}
+				else {
+					var queryArray = req.body.rettungsmittel_kraefte.split();
+				}
+				
+				db.collection('Rettungskraft').find({funkruf: {$in: queryArray}}).toArray(function(err, queryRettungskrafte) {
 					
 					rettungsmittel_data = {art: req.body.rettungsmittel_art,
 									funkruf: req.body.rettungsmittel_funkruf,
@@ -630,7 +668,7 @@ server.post('/rettungsmittel', urlencodedParser, function(req, res){
 					});
 				});
 				
-				db.collection('Rettungskraft').updateMany({funkruf: {$in: req.body.rettungsmittel_kraefte}}, {$set: {rettungsmittel: true}});
+				db.collection('Rettungskraft').updateMany({funkruf: {$in: queryArray}}, {$set: {rettungsmittel: true}});
 			});
 		}
 		
