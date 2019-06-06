@@ -97,7 +97,7 @@
 						<form method="POST" action="/einsatz" id="einsatzNew_input_form" style="LINE-HEIGHT:5px;">
 							<input type="hidden" name="einsatz_id" value="{{ einsatz_id }}"></input>
 							<p style="font-size:10px"><i class="fa fa-pencil w3-small w3-margin-right"></i>Ersteller des Einsatzauftrags:</p>
-							<p style="font-size:12px"><input class="w3-input w3-border dropElement" list="funkruf" type="text"  placeholder="Sender (Drag & Drop)" name="einsatz_sender" value="" style="margin-left:auto; margin-right:auto;"></p>
+							<p style="font-size:12px"><input class="w3-input w3-border dropElement" list="funkrufDataList" type="text"  placeholder="Sender (Drag & Drop)" name="einsatz_sender" value="" style="margin-left:auto; margin-right:auto;"></p>
 							<p></p>
 							<p style="font-size:10px"><i class="fa fa-stethoscope w3-small w3-margin-right"></i>Aktuelle Verdachtsdiagnose:</p>
 							<p style="font-size:12px"><input class="w3-input w3-border" type="text" placeholder="Meldebild" name="einsatz_meldebild" style="margin-left:auto; margin-right:auto;"></p>
@@ -120,8 +120,8 @@
 									<option>abgeschlossen</option>
 								</select>
 							</p>
-							<p style="font-size:10px"><i class="fa fa-ambulance w3-small w3-margin-right"></i>Zugeteilte Kräfte:<i class="fa fa-plus fa-fw w3-small w3-margin-right" onclick="addInputField('div_einsatzNew')"></i></p>
-							<p style="font-size:12px"><input class="w3-input w3-border dropElement" type="text"  placeholder="Tippen oder Drag&Drop" name="einsatz_kraefte" value="" style="margin-left:auto; margin-right:auto;"></p>
+							<p style="font-size:10px"><i class="fa fa-ambulance w3-small w3-margin-right"></i>Zugeteilte Kräfte:<i class="fa fa-plus fa-fw w3-small w3-margin-right" onclick="addInputField('div_einsatzNew', 'einsatz_kraefte')"></i></p>
+							<p style="font-size:12px"><input class="w3-input w3-border dropElement" type="text"  list="funkrufDataList" placeholder="Tippen oder Drag&Drop" name="einsatz_kraefte" value="" style="margin-left:auto; margin-right:auto;"></p>
 							<div id="div_einsatzNew">
 							</div>
 							<!-- + Rettungsmittel und Position>-->
