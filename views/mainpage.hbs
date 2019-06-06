@@ -139,7 +139,7 @@
 				<!-- Auflistung der Einsaetze -->
 				
 				{{# each einsatz}}
-				<div class="w3-container w3-white w3-card w3-round w3-hover-shadow" id="{{ _id }}">
+				<div class="dragElement w3-container w3-white w3-card w3-round w3-hover-shadow" id="{{ _id }}" draggable="true">
 					<button class="w3-center w3-button w3-block w3-blue-grey">{{ meldebild }}</button>
 					<p style="font-size:12px"><i class="fa fa-clock-o fa-fw w3-margin-right"></i><span class="timestamp">{{ timestamp }}</span> Uhr</p>
 					<p style="font-size:12px"><i class="fa fa-ambulance fa-fw w3-margin-right"></i>{{ sender }}</p>
@@ -412,7 +412,7 @@
 				{{# if rettungsmittel }}
 				{{# each rettungsmittel }}
 				<div class="dragElement w3-container w3-white w3-card w3-round w3-hover-shadow" draggable="true" id="{{ _id }}">
-					<button onclick="updateRettungsmittel('{{ _id }}')" class="funkruf w3-center w3-button w3-block w3-blue-grey">{{ funkruf }}</button>
+					<button onclick="updateRettungsmittel('{{ _id }}')" class="funkruf w3-center w3-button w3-block w3-blue-grey" id="{{ funkruf }}">{{ funkruf }}</button>
 					<p style="font-size:12px"><i class="fa fa-ambulance fa-fw w3-margin-right"></i>{{ art }}</p>
 					{{# if kraefte }}
 					{{# each kraefte }}
@@ -428,7 +428,7 @@
 				{{# if posten }}
 				{{# each posten }}
 				<div class="dragElement w3-container w3-white w3-card w3-round w3-hover-shadow" draggable="true" id="{{ _id }}">
-					<button onclick="updatePosten('{{ _id }}')" class="funkruf w3-center w3-button w3-block w3-blue-grey">{{ funkruf }}</button>
+					<button onclick="updatePosten('{{ _id }}')" class="funkruf w3-center w3-button w3-block w3-blue-grey" id="{{ funkruf }}">{{ funkruf }}</button>
 					{{# if kraefte }}
 					{{# each kraefte }}
 					<p style="font-size:12px"><i class="fa fa-user-md fa-fw w3-margin-right"></i>{{ funkruf }} <span class="medQuali">{{ quali }}</span></p>
@@ -444,7 +444,7 @@
 				{{# each rettungskraft}}
 				<p></p>
 				<div class="dragElement w3-container w3-white w3-card w3-round w3-hover-shadow .w3-hover-div" draggable="true" id="{{ _id }}">
-					<button class="funkruf w3-center w3-button w3-block w3-blue-grey" onclick="updateRettungskraft('{{ _id }}')">{{ funkruf }}</button>
+					<button class="funkruf w3-center w3-button w3-block w3-blue-grey" onclick="updateRettungskraft('{{ _id }}')" id="{{ funkruf }}">{{ funkruf }}</button>
 					<p style="font-size:12px"><i class="fa fa-user-md fa-fw w3-margin-right"></i><span>{{ vorname }}</span> <span>{{ nachname }}</span> <span class="medQuali">{{ quali }}</span></p>
 					<p hidden>{{ hiorg }}</p>
 					<p hidden>{{ tel }}</p>
@@ -570,14 +570,10 @@
 		setBasemap(basemap);
 	}
 
-	map.ondragover = function (e) {
-		e.preventDefault();
-		console.log(e);
-	}
+
+// --------------------------------------------------------------------------------------------------------------------------------------
 </script>
-
-<script id="dragAndDrop">
-
+<script>
 	function handleDragStart(e) {
 		this.style.opacity = '0.4';  // this / e.target is the source node.
 		e.dataTransfer.effectAllowed = 'copy'; // none, copy, copyLink, copyMove, link, linkMove, move, all und uninitialized.
@@ -619,7 +615,11 @@
 		this.value = e.dataTransfer.getData('text');
 		
 		if (e.toElement.id == "map") {
-			console.log(e.dataTransfer.getData('text'));
+			console.log(document.getElementById(e.dataTransfer.getData('text')));
+			var coordinates = map.containerPointToLatLng(L.point([e.clientX,e.clientY]));
+			L.marker(coordinates, {draggable: true})
+				.addTo(map)
+				.bindPopup(e.dataTransfer.getData('text'));
 		}
 		
 		return false;
@@ -658,7 +658,7 @@
 	
 	
 
-</script> <!-- id="dragAndDrop" -->
+</script>
 
 <!-- Include von externen Funktionen -->
 <script type="text/javascript" src="script/moment.js"></script>
