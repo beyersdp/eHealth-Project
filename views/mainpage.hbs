@@ -22,7 +22,7 @@
 			<button class="w3-button w3-padding-larger" title="Details zum Gesamteinsatz"><i class="fa fa-info-circle fa-fw"></i>Informationen</button>
 			<div class="w3-dropdown-content w3-card-4 w3-bar-block" style="width:300px" id="navbar_element2_dropdown">
 				<a href="#" class="w3-bar-item w3-button"><i class="fa fa-plus-square w3-large w3-margin-right"> <span class="fa fa-info-circle w3-right w3-small"></span></i> Steckbrief Gesamteinsatz</a>
-				<a href="#" class="w3-bar-item w3-button"><i class="fa fa-clipboard w3-right w3-small"></i>Gemeinsame Notizen</a>
+				<a href="#" class="w3-bar-item w3-button"><i class="fa fa-folder-open w3-large w3-margin-right"> <span class="fa fa-clipboard w3-right w3-small"></span></i>Gemeinsame Notizen</a>
 				<a href="#" class="w3-bar-item w3-button"><i class="fa fa-folder-open w3-large w3-margin-right"> <span class="fa fa-medkit w3-right w3-small"></span></i>Chronik Notfalleinsätze</a>
 				<a href="#" class="w3-bar-item w3-button"><i class="fa fa-folder-open w3-large w3-margin-right"> <span class="fa fa-comments w3-right w3-small"></span></i>Steckbrief Funksprüche</a>
 			</div> <!-- id="navbar_element2_dropdown -->
@@ -267,6 +267,14 @@
 							<p> ....</p>
 						</div>
 						
+						<div id="gemeinsame_notizen" class="w3-container w3-display-container w3-padding w3-white w3-hide-small w3-round w3-border">
+							<span onclick="this.parentElement.style.display='hidden'" class="w3-button w3-theme-l3 w3-display-topright">
+							  <i class="fa fa-play"></i>
+							</span>							
+							<h6 class="w3-opacity"><i class="fa fa-folder-open w3-large w3-margin-right"> <span class="fa fa-clipboard w3-right w3-small"></span></i>Gemeinsame Notizen</h6>
+							<p> ....</p>
+						</div>
+						
 						<div id="chronik_notfalleinsaetze" class="w3-container w3-display-container w3-padding w3-white w3-hide-small w3-round w3-border">
 							<span onclick="this.parentElement.style.display='hidden' steckbrief_gesamteinsatz.style.display='inline'" class="w3-button w3-theme-l3 w3-display-topright">
 							  <i class="fa fa-play"></i>
@@ -276,10 +284,10 @@
 						</div>
 						
 						<div id="steckbrief_funk" class="w3-container w3-display-container w3-padding w3-white w3-hide-small w3-round w3-border">
-							<span onclick="this.parentElement.style.display='hidden' steckbrief_gesamteinsatz.style.display='inline'" class="w3-button w3-theme-l3 w3-display-topright">
+							<span onclick="this.parentElement.style.display='hidden'" class="w3-button w3-theme-l3 w3-display-topright">
 							  <i class="fa fa-play"></i>
 							</span>							
-							<h6 class="w3-opacity"><i class="fa fa-folder-open w3-large w3-margin-right"> <span class="fa fa-medkit w3-right w3-small"></span></i>Chronik Notfalleinsätze</h6>
+							<h6 class="w3-opacity"><i class="fa fa-folder-open w3-large w3-margin-right"><span class="fa fa-comments w3-right w3-small"></span></i>Steckbrief Funksprüche</h6>
 							<p> ....</p>
 						</div>
 						
