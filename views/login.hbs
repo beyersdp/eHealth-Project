@@ -6,7 +6,7 @@
   
   <div class="w3-dropdown-hover w3-hide-small"> <!--[w3-right"> style="float:right"] dann wäre es rechts oben in der Ecke und theoretisch würde das dropdown right-aligned sein..- funktioniert aber nicht-->
    <button class="w3-button w3-padding-large" title="help"><i class="fa fa-question-circle w3-margin-right"></i>Digitaler Führungsassistent</i></button>     
-    <div class="w3-dropdown-content w3-card-4 w3-bar-block" >
+    <div class="w3-dropdown-content w3-card-4 w3-bar-block w3-light-grey" >
       <a href="#" class="w3-bar-item w3-button">Fragen zum Login</a>
       <a href="#" class="w3-bar-item w3-button">Fragen zur Registration</a>
       <a href="#" class="w3-bar-item w3-button">Datenschutz</a>
@@ -16,49 +16,85 @@
  </div>
 </div>
 
-<!-- Footer -->
-  <footer class="center w3-padding-64 w3-light-grey w3-small w3-center" id="footer">
-    <div class="w3-row-padding">
-        <h4>Login</h4>
-        <p>Wenn Sie schon registriert sind, können Sie sich hier anmelden:</p>
-		<p style="color:red"><b>{{ loginFalse }}</b></p>
-        <form method="POST" action="/login">
-		  <p><input class="w3-input w3-border" type="text" placeholder="E-Mail" name="login_mail" style="margin-left:auto; margin-right:auto; width:300px;" required></p>
-          <p><input class="w3-input w3-border" type="password" placeholder="Passwort" name="login_passwort" style="margin-left:auto; margin-right:auto; width:300px;" required></p>
-          <p><input class="w3-input w3-border" type="text" placeholder="HiOrg-Schlüssel" name="login_key" style="margin-left:auto; margin-right:auto; width:300px;" required></p>
-          <button style="margin-left:auto; margin-right:auto; width:300px;" type="submit" class="w3-button w3-block w3-blue-grey">EINLOGGEN</button>
-          </form>
-		  <div class="container" style="background-color:#f1f1f1">
-			<br>
-			<span class="psw w3-hover-white"><a href="/passwort_vergessen">Passwort vergessen?</a></span>
-		  </div>
-	</div>
-	  
-	<div class="w3-row-padding">
-		<br>
-		<br>
-        <h4>Registration</h4>
-        <p>Falls Sie noch nicht registriert sind, tun Sie dies bitte hier:</p>
-		<p style="color:red"><b>{{ registrationFalse }}</b></p>
-        <form method="POST" action="/registration" style="margin-left:auto; margin-right:auto; width:300px;">
-		  <p><select class="w3-input w3-border" placeholder="Anrede" name="registration_titel">
-			<option value="" hidden>Anrede</option>
-			<option value="Herr">Herr</option>
-			<option value="Frau">Frau</option>
-		  </select></p>
-		  <p><input class="w3-input w3-border" type="text" placeholder="Vorname" name="registration_vorname" style="margin-left:auto; margin-right:auto; width:300px;" required></p>
-          <p><input class="w3-input w3-border" type="text" placeholder="Nachname" name="registration_nachname" style="margin-left:auto; margin-right:auto; width:300px;" required></p>
-		  <p><input class="w3-input w3-border" type="text" placeholder="Führungsqualifikation" name="registration_quali" style="margin-left:auto; margin-right:auto; width:300px;" required></p>
-          <p><input class="w3-input w3-border" type="text" placeholder="Hilfsorganisation" name="registration_hiorg" style="margin-left:auto; margin-right:auto; width:300px;" required></p>
-		  <p><input class="w3-input w3-border" type="email" placeholder="E-Mail" name="registration_mail" style="margin-left:auto; margin-right:auto; width:300px;" required></p>
-		  <p><input class="w3-input w3-border" type="tel" placeholder="Telefonnummer" name="registration_tel" style="margin-left:auto; margin-right:auto; width:300px;" required></p> <!--pattern="[0-9]{4}-[0-9]{8}"--> <!--beim senden wird gewarnt Format einzuhalten-->
-		  <p><input class="w3-input w3-border" type="password" placeholder="Passwort" name="registration_passwort" style="margin-left:auto; margin-right:auto; width:300px;" required></p>
-          <button type="submit" style="margin-left:auto; margin-right:auto; width:300px;" class="w3-button w3-block w3-blue-grey">REGISTRIEREN</button>
-        </form>
-    </div>
-  </footer>
 
-<footer class="w3-container w3-theme-d5">
+  <div class="w3-display-container w3-container w3-margin-top color:#f2ffe6">
+    <img src="./img/background1.jpg" alt="Jeans" style="width:100%">
+    <div class="w3-display-topmiddle" style="padding:24px 48px">
+	
+		<div class="w3-row-padding w3-margin-top" style="margin-left:auto; margin-right:auto; width:350px;">
+			<div class="w3-card w3-round" id="login">
+				<div class="w3-white">
+					<p style="color:red"><b>{{ loginFalse }}</b></p>
+					<button onclick="showDetails('login_input')" class="w3-button w3-block w3-theme-d2 w3-hover-light-grey w3-card" style= "font-size:15px;">LOGIN</button>
+					<!-- LOGIN - Rolldown Menue -->
+					<div class="w3-hide w3-container w3-light-grey" id="login_input">
+						<p>Wenn Sie schon registriert sind, können Sie sich hier anmelden:</p>
+						<form method="POST" action="/login" style="LINE-HEIGHT:5px;">
+							<p style="font-size:10px" class="w3-left-align"><i class="fa fa-envelope w3-small w3-margin-right"></i>E-Mail:</p>
+							<p><input class="w3-input w3-border" type="text" placeholder="E-Mail" name="login_mail" style="margin-left:auto; margin-right:auto; width:300px;" required></p>
+							<p style="font-size:10px" class="w3-left-align"><i class="fa fa-ellipsis-h w3-small w3-margin-right"></i>Passwort:</p>
+							<p><input class="w3-input w3-border" type="password" placeholder="Passwort" name="login_passwort" style="margin-left:auto; margin-right:auto; width:300px;" required></p>
+							<p style="font-size:10px" class="w3-left-align"><i class="fa fa-key w3-small w3-margin-right"></i>HiOrg-Schlüssel der Hilfsorganisation:</p>
+							<p><input class="w3-input w3-border" type="text" placeholder="HiOrg-Schlüssel" name="login_key" style="margin-left:auto; margin-right:auto; width:300px;" required></p>
+							<button type="submit" style="margin-left:auto; margin-right:auto; width:300px; LINE-HEIGHT:15px;" class="w3-button w3-block w3-blue-grey"><i class="fa fa-save w3-small w3-margin-right"></i>EINLOGGEN</button>
+						</form>
+						<div class="container">
+							<p></p>
+							<span class="psw w3-hover-white"><a href="/passwort_vergessen">Passwort vergessen?</a></span>
+						</div>
+						<br>
+					</div> <!-- id="login_input" -->
+				</div>
+			</div> <!-- id="login" -->  
+		</div>
+		
+		
+		<div class="w3-row-padding" style="margin-left:auto; margin-right:auto; width:350px;">
+			<div class="w3-card w3-round" id="registration">
+				<div class="w3-white">
+					<p style="color:red"><b>{{ registrationFalse }}</b></p>
+					<button onclick="showDetails('registration_input')" class="w3-button w3-block w3-theme-d2 w3-hover-light-grey w3-card" style= "font-size:15px;">REGISTRATION</button>
+					<!-- REGISTRATION - Rolldown Menue -->
+					<div class="w3-hide w3-container w3-light-grey" id="registration_input">
+						<p>Falls Sie noch nicht registriert sind, tun Sie dies bitte hier:</p>
+						
+						<form method="POST" action="/registration" style="LINE-HEIGHT:5px;">
+						  <p style="font-size:10px" class="w3-left-align"><i class="fa fa-genderless w3-small w3-margin-right"></i>Anrede:</p>
+						  <p><select class="w3-input w3-border" placeholder="Anrede" name="registration_titel">
+							<option value="" hidden>Anrede</option>
+							<option value="Herr">Herr</option>
+							<option value="Frau">Frau</option>
+							<option value="Herr">Divers</option>
+						  </select></p>
+						  <p style="font-size:10px" class="w3-left-align"><i class="fa fa-address-book w3-small w3-margin-right"></i>Vorname:</p>
+						  <p><input class="w3-input w3-border" type="text" placeholder="Vorname" name="registration_vorname" style="margin-left:auto; margin-right:auto; width:300px;" required></p>
+						  <p style="font-size:10px" class="w3-left-align"><i class="fa fa-address-book w3-small w3-margin-right"></i>Nachname:</p>
+						  <p><input class="w3-input w3-border" type="text" placeholder="Nachname" name="registration_nachname" style="margin-left:auto; margin-right:auto; width:300px;" required></p>
+						  <p style="font-size:10px" class="w3-left-align"><i class="fa fa-graduation-cap w3-small w3-margin-right"></i>Führungsqualifikation:</p>
+						  <p><input class="w3-input w3-border" type="text" placeholder="Führungsqualifikation" name="registration_quali" style="margin-left:auto; margin-right:auto; width:300px;" required></p>
+						  <p style="font-size:10px" class="w3-left-align"><i class="fa fa-home w3-small w3-margin-right"></i>Hilfsorganisation:</p>
+						  <p><input class="w3-input w3-border" type="text" placeholder="Hilfsorganisation" name="registration_hiorg" style="margin-left:auto; margin-right:auto; width:300px;" required></p>
+						  <p style="font-size:10px" class="w3-left-align"><i class="fa fa-envelope w3-small w3-margin-right"></i>E-Mail:</p>
+						  <p><input class="w3-input w3-border" type="email" placeholder="E-Mail" name="registration_mail" style="margin-left:auto; margin-right:auto; width:300px;" required></p>
+						  <p style="font-size:10px" class="w3-left-align"><i class="fa fa-phone-square w3-small w3-margin-right"></i>Telefonnummer:</p>
+						  <p><input class="w3-input w3-border" type="tel" placeholder="Telefonnummer" name="registration_tel" style="margin-left:auto; margin-right:auto; width:300px;" required></p> <!--pattern="[0-9]{4}-[0-9]{8}"--> <!--beim senden wird gewarnt Format einzuhalten-->
+						  <p style="font-size:10px" class="w3-left-align"><i class="fa fa-ellipsis-h w3-small w3-margin-right"></i>Passwort:</p>
+						  <p><input class="w3-input w3-border" type="password" placeholder="Passwort" name="registration_passwort" style="margin-left:auto; margin-right:auto; width:300px;" required></p>
+						  <button type="submit" style="margin-left:auto; margin-right:auto; width:300px; LINE-HEIGHT:15px;" class="w3-button w3-block w3-blue-grey">REGISTRIEREN</button>
+						</form>
+						
+						<br>
+					</div> <!-- id="registration_input" -->
+				</div>
+			</div> <!-- id="registration" -->  
+		</div>
+	<p></p>
+	</div>
+  </div>
+
+<footer class="w3-container color:#faffe6">
+  <p></p>
+  <br>
   <p><i class="fa fa-copyright"></i> 2019</p>
 </footer>
  
@@ -87,3 +123,6 @@ function openNav() {
 }
 
 </script>
+
+<!-- Include von externen Funktionen -->
+<script type="text/javascript" src="script/gesamt.js"></script>
