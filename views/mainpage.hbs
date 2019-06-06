@@ -301,19 +301,12 @@
 			  
 					<!-- Rettungsmittel - Rolldown Menue -->
 					<div class="w3-hide w3-container w3-light-grey" id="rettungsmittelNew_input">
-<<<<<<< HEAD
-						<p style="font-size:12px">Folgende Parameter erfassen:</p>
-						<form method="POST" action="/rettungsmittel" id="rettungsmittelNew_form">
+						<form method="POST" action="/rettungsmittel" id="rettungsmittelNew_form" style="LINE-HEIGHT:5px;">
 							<input type="hidden" name="rettungsmittel_id" value="" id="rettungsmittel_id"></input>
-=======
-						<form method="POST" action="/rettungsmittel" style="LINE-HEIGHT:5px;">
-							<input type="hidden" name="rettungsmittel_id" value=""></input>
 							<p style="font-size:10px"><i class="fa fa-car w3-small w3-margin-right"></i>Fahrzeugart:</p>
->>>>>>> 872fe8bed918b9334924b76b40f970bc2ad5a2cb
 							<p style="font-size:12px; color:gray;">
 								<select class="w3-input w3-border" placeholder="Fahrzeugart" name="rettungsmittel_art" id="rettungsmittel_art">
 									<option value="" hidden>Fahrzeugart</option>
-<<<<<<< HEAD
 									<option value="Krankentransportwagen (KTW)">Krankentransportwagen (KTW)</option>
 									<option value="Rettungswagen (RTW)">Rettungswagen (RTW)</option>
 									<option value="Notarzteinsatzfahrzeug (NEF)">Notarzteinsatzfahrzeug (NEF)</option>
@@ -322,25 +315,10 @@
 									<option value="Einsatzleitwagen (ELW)">Einsatzleitwagen (ELW)</option>
 								</select>
 							</p>
-							<p style="font-size:12px"><input class="w3-input w3-border" type="text"  placeholder="Funkrufname" name="rettungsmittel_funkruf" style="margin-left:auto; margin-right:auto;" id="rettungsmittel_funkruf"></p>
-							<p style="font-size:12px">Zugeteilte Kräfte:<i class="fa fa-plus fa-fw w3-small w3-margin-right" onclick="addInputField('div_rettungsmittelNew', 'rettungsmittel_kraefte')" id="rettungsmittel_addInputField"></i></p>
-							<p style="font-size:12px"><input class="dropElement w3-input w3-border rettungsmittel_kraefte" list="funkrufDataList" type="text"  placeholder="Tippen oder Drag&Drop" name="rettungsmittel_kraefte" value="" id="rettungsmittel_kraefte" style="margin-left:auto; margin-right:auto;"></p>
-=======
-									<option>KTW &emsp;(Krankentransportwagen)</option>
-									<option>RTW &emsp;(Rettungswagen)</option>
-									<option>NEF &emsp; (Notarzteinsatzfahrzeug)</option>
-									<option>MTW&emsp;(Mannschaftstransportwagen)</option>
-									<option>GW&emsp;&emsp;(Gerätewagen)</option>
-									<option>ELW &emsp; (Einsatzleitwagen)</option>
-								</select>
-							</p>
-							<p></p>
 							<p style="font-size:10px"><i class="fa fa-bullhorn w3-small w3-margin-right"></i>Funkrufname:</p>
-							<p style="font-size:12px"><input class="w3-input w3-border" type="text"  placeholder="Funkrufname" name="rettungsmittel_funkruf" style="margin-left:auto; margin-right:auto;"></p>
-							<p></p>
-							<p style="font-size:10px"><i class="fa fa-user-md w3-small w3-margin-right"></i>Zugeteilte Kräfte:<i class="fa fa-plus fa-fw w3-small w3-margin-right" onclick="addInputField('div_rettungsmittelNew', 'rettungsmittel_kraefte')"></i></p>
-							<p style="font-size:12px"><input class="dropElement w3-input w3-border" list="funkrufDataList" type="text"  placeholder="Tippen oder Drag&Drop" name="rettungsmittel_kraefte" value="" style="margin-left:auto; margin-right:auto;"></p>
->>>>>>> 872fe8bed918b9334924b76b40f970bc2ad5a2cb
+							<p style="font-size:12px"><input class="w3-input w3-border" type="text"  placeholder="Funkrufname" name="rettungsmittel_funkruf" style="margin-left:auto; margin-right:auto;" id="rettungsmittel_funkruf"></p>
+							<p style="font-size:10px"><i class="fa fa-user-md w3-small w3-margin-right"></i>Zugeteilte Kräfte:<i class="fa fa-plus fa-fw w3-small w3-margin-right" onclick="addInputField('div_rettungsmittelNew', 'rettungsmittel_kraefte')" id="rettungsmittel_addInputField"></i></p>
+							<p style="font-size:12px"><input class="dropElement w3-input w3-border rettungsmittel_kraefte" list="funkrufDataList" type="text"  placeholder="Tippen oder Drag&Drop" name="rettungsmittel_kraefte" value="" id="rettungsmittel_kraefte" style="margin-left:auto; margin-right:auto;"></p>
 							<div id="div_rettungsmittelNew">
 							</div>
 							<button style="margin-left:auto; margin-right:auto; LINE-HEIGHT:13px" type="submit" class="w3-button w3-block w3-blue-grey">Speichern</button>
