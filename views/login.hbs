@@ -1,19 +1,18 @@
 <!-- Navbar -->
 <div class="w3-top">
- <div class="w3-bar w3-theme-d2 w3-left-align w3-large">
-  <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-theme-d2" href="javascript:void(0);" onclick="openNav()"><i class="fa fa-bars"></i></a>
-  <!--<a href="#" class="w3-bar-item w3-button w3-padding-large w3-theme-d4"><i class="fa fa-home w3-margin-right"></i>Digitaler Führungsassistent</a>-->
+    <div class="w3-bar w3-theme-d2 w3-left-align w3-large">
+		<a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-theme-d2" href="javascript:void(0);" onclick="openNav()"><i class="fa fa-bars"></i></a>
+		<!--<a href="#" class="w3-bar-item w3-button w3-padding-large w3-theme-d4"><i class="fa fa-home w3-margin-right"></i>Digitaler Führungsassistent</a>-->
   
-  <div class="w3-dropdown-hover w3-hide-small"> <!--[w3-right"> style="float:right"] dann wäre es rechts oben in der Ecke und theoretisch würde das dropdown right-aligned sein..- funktioniert aber nicht-->
-   <button class="w3-button w3-padding-large" title="help"><i class="fa fa-question-circle w3-margin-right"></i>Digitaler Führungsassistent</i></button>     
-    <div class="w3-dropdown-content w3-card-4 w3-bar-block w3-light-grey" >
-      <a href="#" class="w3-bar-item w3-button">Fragen zum Login</a>
-      <a href="#" class="w3-bar-item w3-button">Fragen zur Registration</a>
-      <a href="#" class="w3-bar-item w3-button">Datenschutz</a>
-	  <a href="#" class="w3-bar-item w3-button">Ansprechpartner</a>
-  </div>
- </div>
- </div>
+        <div class="w3-dropdown-hover w3-hide-small"> <!--[w3-right"> style="float:right"] dann wäre es rechts oben in der Ecke und theoretisch würde das dropdown right-aligned sein..- funktioniert aber nicht-->
+			<button class="w3-button w3-padding-large" title="help"><i class="fa fa-question-circle w3-margin-right"></i>Digitaler Führungsassistent</i></button>     
+			<div class="w3-dropdown-content w3-card-4 w3-bar-block w3-light-grey" >
+			  <a href="#" class="w3-bar-item w3-button" style="font-size:15px">Fragen zum Login</a>
+			  <a href="#" class="w3-bar-item w3-button" style="font-size:15px">Fragen zur Registration</a>
+			  <a href="#" class="w3-bar-item w3-button" style="font-size:15px">Datenschutz</a>
+			</div>
+		</div>
+    </div>
 </div>
 
 
@@ -28,7 +27,7 @@
 					<button onclick="showDetails('login_input')" class="w3-button w3-block w3-theme-d2 w3-hover-light-grey w3-card" style= "font-size:15px;">LOGIN</button>
 					<!-- LOGIN - Rolldown Menue -->
 					<div class="w3-hide w3-container w3-light-grey" id="login_input">
-						<p>Wenn Sie schon registriert sind, können Sie sich hier anmelden:</p>
+						<p><center style="font-size:12px">Wenn Sie schon registriert sind, können Sie sich hier anmelden:</center></p>
 						<form method="POST" action="/login" style="LINE-HEIGHT:5px;">
 							<p style="font-size:10px" class="w3-left-align"><i class="fa fa-envelope w3-small w3-margin-right"></i>E-Mail:</p>
 							<p><input class="w3-input w3-border" type="text" placeholder="E-Mail" name="login_mail" style="margin-left:auto; margin-right:auto; width:300px;" required></p>
@@ -40,7 +39,7 @@
 						</form>
 						<div class="container">
 							<p></p>
-							<span class="psw w3-hover-white"><a href="/passwort_vergessen">Passwort vergessen?</a></span>
+							<span style="font-size:12px" class="psw w3-hover-white"><a href="/passwort_vergessen"><center>Passwort vergessen?</center></a></span>
 						</div>
 						<br>
 					</div> <!-- id="login_input" -->
@@ -56,7 +55,7 @@
 					<button onclick="showDetails('registration_input')" class="w3-button w3-block w3-theme-d2 w3-hover-light-grey w3-card" style= "font-size:15px;">REGISTRATION</button>
 					<!-- REGISTRATION - Rolldown Menue -->
 					<div class="w3-hide w3-container w3-light-grey" id="registration_input">
-						<p>Falls Sie noch nicht registriert sind, tun Sie dies bitte hier:</p>
+						<p><center style="font-size:12px">Falls Sie noch nicht registriert sind, tun Sie dies bitte hier:</center></p>
 						
 						<form method="POST" action="/registration" style="LINE-HEIGHT:5px;">
 						  <p style="font-size:10px" class="w3-left-align"><i class="fa fa-genderless w3-small w3-margin-right"></i>Anrede:</p>
