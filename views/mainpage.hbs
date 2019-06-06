@@ -2,7 +2,7 @@
 <div class="w3-top" id="top" style="z-index: 5000">
 	<div class="w3-bar w3-theme-d5 w3-left-align w3-medium" id="navbar"> 
 	
-		<a class="w3-bar-item w3-padding-larger w3-theme-d4">Digitaler Führungsassistent</a>
+		<a class="w3-bar-item w3-padding-larger w3-theme-d4" href="/mainpage" style="text-decoration: none;">Digitaler Führungsassistent</a>
 		
 		<!-- 1 Funktion = ueber Einstellungen sind nochmals alle moeglichen Aktionen, wie zum Beispiel das Anlegen eines Einsatzes aufgelistet und hierueber ebenfalls ausfuehrbar -->
 		<div class="w3-dropdown-hover w3-hide-small" id="navbar_element1">
@@ -297,7 +297,7 @@
 		
 			<div class="w3-card w3-round" id="rettungsmittelNew">
 				<div class="w3-white">
-					<button onclick="showDetails('rettungsmittelNew_input')" id="rettungskraftNew_buton" class="w3-button w3-block w3-theme-d2 w3-hover-light-grey w3-left-align w3-card"><i class="fa fa-plus w3-small"><span class="fa fa-ambulance fa-fw w3-margin-right"></span></i>Rettungsfahrzeuge</button>
+					<button onclick="showDetails('rettungsmittelNew_input')" id="rettungsmittelNew_button" class="w3-button w3-block w3-theme-d2 w3-hover-light-grey w3-left-align w3-card"><i class="fa fa-plus w3-small"><span class="fa fa-ambulance fa-fw w3-margin-right"></span></i>Rettungsfahrzeuge</button>
 			  
 					<!-- Rettungsmittel - Rolldown Menue -->
 					<div class="w3-hide w3-container w3-light-grey" id="rettungsmittelNew_input">
@@ -332,22 +332,22 @@
 			
 			<div class="w3-card w3-round" id="postenNew">
 				<div class="w3-white">
-					<button onclick="showDetails('postenNew_input')" class="w3-button w3-block w3-theme-d2 w3-hover-light-grey w3-left-align w3-card"><i class="fa fa-plus w3-small"><span class="fa fa-flag fa-fw w3-margin-right"></span></i>Sanitätsposten</button>
+					<button onclick="showDetails('postenNew_input')" id="postenNew_button" class="w3-button w3-block w3-theme-d2 w3-hover-light-grey w3-left-align w3-card"><i class="fa fa-plus w3-small"><span class="fa fa-flag fa-fw w3-margin-right"></span></i>Sanitätsposten</button>
 			  
 					<!-- Sanitaetsposten - Rolldown Menue -->
 					<div class="w3-hide w3-container w3-light-grey" id="postenNew_input">
-						<form method="POST" action="/posten" style="LINE-HEIGHT:5px;">
-							<input type="hidden" name="posten_id" value=""></input>
+						<form method="POST" action="/posten" style="LINE-HEIGHT:5px;" id="rettungskraftNew_form">
+							<input type="hidden" name="posten_id" value="" id="posten_id"></input>
 							<p style="font-size:10px"><i class="fa fa-bullhorn w3-small w3-margin-right"></i>Funkrufname:</p>
-							<p style="font-size:12px"><input class="w3-input w3-border" type="text"  placeholder="Funkrufname" name="posten_funkruf" style="margin-left:auto; margin-right:auto;"></p>
+							<p style="font-size:12px"><input class="w3-input w3-border" type="text"  placeholder="Funkrufname" name="posten_funkruf" style="margin-left:auto; margin-right:auto;" id="posten_funkruf"></p>
 							<p></p>
-							<p style="font-size:10px"><i class="fa fa-user-md w3-small w3-margin-right"></i>Zugeteilte Kräfte:<i class="fa fa-plus fa-fw w3-small w3-margin-right" onclick="addInputField('div_postenNew', 'posten_kraefte')"></i></p>
-							<p style="font-size:12px"><input class="dropElement w3-input w3-border" list="funkrufDataList" type="text"  placeholder="Tippen oder Drag&Drop" name="posten_kraefte" value="" style="margin-left:auto; margin-right:auto;"></p>
+							<p style="font-size:10px"><i class="fa fa-user-md w3-small w3-margin-right"></i>Zugeteilte Kräfte:<i class="fa fa-plus fa-fw w3-small w3-margin-right" onclick="addInputField('div_postenNew', 'posten_kraefte')" id="posten_addInputField"></i></p>
+							<p style="font-size:12px"><input class="posten_kraefte dropElement w3-input w3-border" list="funkrufDataList" type="text"  placeholder="Tippen oder Drag&Drop" name="posten_kraefte" value="" style="margin-left:auto; margin-right:auto;" id="posten_kraefte"></p>
 							<div id="div_postenNew">
 							</div>
 							<button style="margin-left:auto; margin-right:auto; LINE-HEIGHT:13px;" type="submit" class="w3-button w3-block w3-blue-grey">Speichern</button>
 							<br>
-						</form>
+						</form> <!-- id="rettungskraftNew_form" -->
 					</div> <!-- id="postenNew_input" -->
 				</div>
 			</div> <!-- id="postenNew" -->
@@ -356,44 +356,44 @@
 			
 			<div class="w3-card w3-round" id="rettungskraftNew">
 				<div class="w3-white">
-					<button onclick="showDetails('rettungskraftNew_input')" class="w3-button w3-block w3-theme-d2 w3-hover-light-grey w3-left-align w3-card"><i class="fa fa-plus w3-small"><span class="fa fa-user-md fa-fw w3-margin-right"></span></i>Rettungskraft</button>
+					<button onclick="showDetails('rettungskraftNew_input')" id="rettungskraftNew_button" class="w3-button w3-block w3-theme-d2 w3-hover-light-grey w3-left-align w3-card"><i class="fa fa-plus w3-small"><span class="fa fa-user-md fa-fw w3-margin-right"></span></i>Rettungskraft</button>
 			  
 					<!-- Rettungskraft - Rolldown Menue -->
 					<div class="w3-hide w3-container w3-light-grey" id="rettungskraftNew_input">
-						<form method="POST" action="/rettungskraft" style="LINE-HEIGHT:5px;">
-							<input type="hidden" name="rettungskraft_id" value=""></input>
+						<form method="POST" action="/rettungskraft" id="rettungskraftNew_form" style="LINE-HEIGHT:5px;">
+							<input type="hidden" name="rettungskraft_id" value="" id="rettungskraft_id"></input>
 							<p style="font-size:10px"><i class="fa fa-address-book w3-small w3-margin-right"></i>Vorname:</p>
-							<p style="font-size:12px"><input class="w3-input w3-border" type="text" placeholder="Vorname" name="rettungskraft_vorname" style="margin-left:auto; margin-right:auto;"></p>
+							<p style="font-size:12px"><input class="w3-input w3-border" type="text" placeholder="Vorname" name="rettungskraft_vorname" style="margin-left:auto; margin-right:auto;" id="rettungskraft_vorname"></p>
 							<p></p>
 							<p style="font-size:10px"><i class="fa fa-address-book w3-small w3-margin-right"></i>Nachname:</p>
-							<p style="font-size:12px"><input class="w3-input w3-border" type="text" placeholder="Nachname" name="rettungskraft_nachname" style="margin-left:auto; margin-right:auto;"></p>
+							<p style="font-size:12px"><input class="w3-input w3-border" type="text" placeholder="Nachname" name="rettungskraft_nachname" style="margin-left:auto; margin-right:auto;" id="rettungskraft_nachname"></p>
 							<p></p>
 							<p style="font-size:10px"><i class="fa fa-home w3-small w3-margin-right"></i>Hilfsorganisation:</p>
-							<p style="font-size:12px"><input class="w3-input w3-border" type="text" placeholder="Hilfsorganisation" name="rettungskraft_hiorg" style="margin-left:auto; margin-right:auto;"></p>
+							<p style="font-size:12px"><input class="w3-input w3-border" type="text" placeholder="Hilfsorganisation" name="rettungskraft_hiorg" style="margin-left:auto; margin-right:auto;" id="rettungskraft_hiorg"></p>
 							<p></p>
 							<p style="font-size:10px"><i class="fa fa-graduation-cap w3-small w3-margin-right"></i>Medizinische Qualifikation:</p>
 							<p style="font-size:12px; color:gray;">
-								<select class="w3-input w3-border" placeholder="Med. Qualifikation" name="rettungskraft_quali">
+								<select class="w3-input w3-border" placeholder="Med. Qualifikation" name="rettungskraft_quali" id="rettungskraft_quali">
 									<option value="" hidden>Med. Qualifikation</option>
-									<option>Erste Hilfe (Praktikant/-in)</option>
-									<option>SAN&emsp;&emsp;&emsp;(Sanitätshelfer/-in)</option>
-									<option>RH &emsp;&emsp;&emsp;(Rettungshelfer/-in)</option>
-									<option>RSA&emsp;&emsp;&emsp;(Rettungssanitäter/-in)</option>
-									<option>RA &emsp;&emsp;&emsp;(Rettungsassistent/-in)</option>
-									<option>NFS&emsp;&emsp;&emsp;(Notfallsanitäter/in)</option>
-									<option>NA &emsp;&emsp;&emsp;(Notarzt/Notärztin)</option>
+									<option>Praktikant/-in (Erste Hilfe)</option>
+									<option>Sanitätshelfer/-in</option>
+									<option>Rettungshelfer/-in</option>
+									<option>Rettungssanitäter/-in</option>
+									<option>Rettungsassistent/-in</option>
+									<option>Notfallsanitäter/in</option>
+									<option>Notarzt/Notärztin</option>
 								</select>
 							</p>
 							<p></p>
 							<p style="font-size:10px"><i class="fa fa-phone-square w3-small w3-margin-right"></i>Telefonnummer:</p>
-							<p style="font-size:12px"><input class="w3-input w3-border" type="text" placeholder="Telefonnummer" name="rettungskraft_tel" style="margin-left:auto; margin-right:auto;"></p>
+							<p style="font-size:12px"><input class="w3-input w3-border" type="text" placeholder="Telefonnummer" name="rettungskraft_tel" style="margin-left:auto; margin-right:auto;" id="rettungskraft_tel"></p>
 							<p></p>
 							<p style="font-size:10px"><i class="fa fa-bullhorn w3-small w3-margin-right"></i>Funkrufname:</p>
-							<p style="font-size:12px"><input class="w3-input w3-border" type="text" placeholder="Funkrufname (eindeutig!)" name="rettungskraft_funkruf" style="margin-left:auto; margin-right:auto;"></p>
+							<p style="font-size:12px"><input class="w3-input w3-border" type="text" placeholder="Wenn keine Gruppenrolle" name="rettungskraft_funkruf" style="margin-left:auto; margin-right:auto;" id="rettungskraft_funkruf"></p>
 							<!-- + Rettungsmittel und Position>-->
 							<button style="margin-left:auto; margin-right:auto; LINE-HEIGHT:13px;" type="submit" class="w3-button w3-block w3-blue-grey">Speichern</button>
 							<br>
-						</form>
+						</form>  <!-- id="rettungskraftNew_form" -->
 					</div> <!-- id="rettungskraftNew_input" -->
 				</div>
 			</div> <!-- id="rettungskraftNew" -->
@@ -420,7 +420,7 @@
 				{{# if posten }}
 				{{# each posten }}
 				<div class="dragElement w3-container w3-white w3-card w3-round w3-hover-shadow" draggable="true" id="{{ _id }}">
-					<button class="funkruf w3-center w3-button w3-block w3-blue-grey">{{ funkruf }}</button>
+					<button onclick="updatePosten('{{ _id }}')" class="funkruf w3-center w3-button w3-block w3-blue-grey">{{ funkruf }}</button>
 					{{# if kraefte }}
 					{{# each kraefte }}
 					<p style="font-size:12px"><i class="fa fa-user-md fa-fw w3-margin-right"></i>{{ funkruf }} <span class="medQuali">{{ quali }}</span></p>
@@ -436,10 +436,10 @@
 				{{# each rettungskraft}}
 				<p></p>
 				<div class="dragElement w3-container w3-white w3-card w3-round w3-hover-shadow .w3-hover-div" draggable="true" id="{{ _id }}">
-					{{# if funkruf }}
-					<button class="funkruf w3-center w3-button w3-block w3-blue-grey">{{ funkruf }}</button>
-					{{/if}}
-					<p style="font-size:12px"><i class="fa fa-user-md fa-fw w3-margin-right"></i>{{ vorname }} {{ nachname }} <span class="medQuali">{{ quali }}</span></p>
+					<button class="funkruf w3-center w3-button w3-block w3-blue-grey" onclick="updateRettungskraft('{{ _id }}')">{{ funkruf }}</button>
+					<p style="font-size:12px"><i class="fa fa-user-md fa-fw w3-margin-right"></i><span>{{ vorname }}</span> <span>{{ nachname }}</span> <span class="medQuali">{{ quali }}</span></p>
+					<p hidden>{{ hiorg }}</p>
+					<p hidden>{{ tel }}</p>
 				</div> <!-- id="{{ _id }}" -->
 				{{/each}}
 				{{/if}}
