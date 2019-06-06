@@ -251,7 +251,7 @@ server.post('/registration', urlencodedParser, function(req, res){
 /* /einsatz - Empfangen eines POST-Requests ueber Port 8080  */
 server.post('/einsatz', urlencodedParser, function(req, res){
 	console.log("L2-Info: POST-REQUEST for /einsatz");
-	console.log(req.body); //DEBUG Kontrollausgabe
+	//console.log(req.body); //DEBUG Kontrollausgabe
 	
 	if(req.session && req.session.user) { 
 		console.log("L1-Info: Cookie true");
@@ -609,7 +609,7 @@ server.post('/posten', urlencodedParser, function(req, res){
 /* /rettungsmittel - Empfangen eines POST-Requests ueber Port 8080  */
 server.post('/rettungsmittel', urlencodedParser, function(req, res){
 	console.log("L2-Info: POST-REQUEST for /rettungsmittel");
-	//console.log(req.body); //DEBUG Kontrollausgabe
+	console.log(req.body); //DEBUG Kontrollausgabe
 	
 	if(req.session && req.session.user) { 
 		console.log("L1-Info: Cookie true");
@@ -628,12 +628,12 @@ server.post('/rettungsmittel', urlencodedParser, function(req, res){
 					var queryArray = req.body.rettungsmittel_kraefte.split();
 				}
 				
-				db.collection('Rettungskraft').find({funkruf: {$in: queryArray}}).toArray(function(err, queryRettungskrafte) {
+				db.collection('Rettungskraft').find({funkruf: {$in: queryArray}}).toArray(function(err, queryRettungskrafte1) {
 					
 					rettungsmittel_data = {art: req.body.rettungsmittel_art,
 									funkruf: req.body.rettungsmittel_funkruf,
 									//position: req.body.rettungsmittel_position,
-									kraefte: queryRettungskrafte};
+									kraefte: queryRettungskrafte1};
 					
 					db.collection('Rettungsmittel').insertOne(rettungsmittel_data, function(err, inserted) {
 						if (err) throw err;
@@ -644,7 +644,7 @@ server.post('/rettungsmittel', urlencodedParser, function(req, res){
 							db.collection('Fuehrungskraft').find({cookie: req.session.user}).toArray(function(err, queryFuehrungskraft) {
 								if (err) throw err;
 								
-								db.collection('Rettungskraft').find({rettungsmittel: false}).toArray(function(err, queryRettungskrafte) {
+								db.collection('Rettungskraft').find({rettungsmittel: false}).toArray(function(err, queryRettungskrafte2) {
 									if (err) throw err;
 									
 									db.collection('Rettungsmittel').find().toArray(function(err, queryRettungsmittel) {
@@ -654,7 +654,7 @@ server.post('/rettungsmittel', urlencodedParser, function(req, res){
 										
 											res.render('mainpage', {title: "Hauptseite - Digitaler Führungsassistent",
 															einsatz: queryEinsatz,
-															rettungskraft: queryRettungskrafte,
+															rettungskraft: queryRettungskrafte2,
 															rettungsmittel: queryRettungsmittel,
 															posten: queryPosten,
 															fuehrungskraft_nachname: queryFuehrungskraft[0].nachname,
@@ -673,7 +673,63 @@ server.post('/rettungsmittel', urlencodedParser, function(req, res){
 		}
 		
 		else { //ein vorhandenes Rettungsmittel soll bearbeitet werden, anhand der gesendeten ID
-			res.send("In Arbeit...");
+			
+			mongodbClient.connect(url, { useNewUrlParser: true }, function(err, dbClient) {
+				if (err) throw err;
+				var db = dbClient.db('DigitalerFuehrungsassistent');
+				console.log("L2-Info: DB-Connection true II");
+				
+				if (Array.isArray(req.body.rettungsmittel_kraefte)) {
+					var queryArray = req.body.rettungsmittel_kraefte;
+				}
+				else {
+					var queryArray = req.body.rettungsmittel_kraefte.split();
+				}
+				
+				db.collection('Rettungskraft').find({funkruf: {$in: queryArray}}).toArray(function(err, queryRettungskraefte1) {
+					
+					db.collection('Rettungsmittel').findOneAndUpdate({_id: ObjectID(req.body.rettungsmittel_id)}, {$set: {art: req.body.rettungsmittel_art,
+																														  funkruf: req.body.rettungsmittel_funkruf,
+																														  //position: req.body.rettungsmittel_position,
+																														  kraefte: queryRettungskraefte1}},
+																														  function(err, updated){
+						
+						db.collection('Rettungskraft').updateMany({funkruf: {$nin: queryArray}}, {$set: {rettungsmittel: false}}, function(err, result) {
+							if (err) throw err;
+							
+							db.collection('Einsatz').find().sort({timestamp: 1}).toArray(function(err, queryEinsatz) {
+								if (err) throw err;
+								
+								db.collection('Fuehrungskraft').find({cookie: req.session.user}).toArray(function(err, queryFuehrungskraft) {
+									if (err) throw err;
+									
+									db.collection('Rettungskraft').find({rettungsmittel: false}).toArray(function(err, queryRettungskraefte2) {
+										if (err) throw err;
+										
+										db.collection('Rettungsmittel').find().toArray(function(err, queryRettungsmittel) {
+											
+											db.collection('Posten').find().toArray(function(err, queryPosten) {
+												if (err) throw err;
+											
+												res.render('mainpage', {title: "Hauptseite - Digitaler Führungsassistent",
+																einsatz: queryEinsatz,
+																rettungskraft: queryRettungskraefte2,
+																rettungsmittel: queryRettungsmittel,
+																posten: queryPosten,
+																fuehrungskraft_nachname: queryFuehrungskraft[0].nachname,
+																fuehrungskraft_quali: queryFuehrungskraft[0].quali});
+												dbClient.close();
+											});
+										});
+									});
+								});
+							});
+						});
+					});
+				});
+				
+				db.collection('Rettungskraft').updateMany({funkruf: {$in: queryArray}}, {$set: {rettungsmittel: true}});
+			});
 		}
 	
 	}
