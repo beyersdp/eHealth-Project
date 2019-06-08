@@ -83,22 +83,33 @@ function getIcon(indicator) {
 	}
 }
 
+// Kontextmenu-Funktion - Marker entfernen
+function markerEntfernen(e) {
+	e.relatedTarget.remove();
+
+	// TODO: Unterschieden ob Einsatz oder Rettungsmittel (DB Querys)
+}
+
+// Kontextmenu-Funktion - Karte zentrieren
+function mapZentrieren (e) {
+	
+}
+
+// Kontextmenu-Funktion - Position an Server senden
+function positionSenden(e) {
+	console.log(e.relatedTarget._popup._content.replace("<b>", "").replace("</b>",""));
+	console.log(e.latlng);
+	
+	var markerName = e.relatedTarget._popup._content.replace("<b>", "").replace("</b>","");
+	var markerId = document.getElementById(markerName).parentElement.id;
+
+	//TODO: Ajax, find ID in Collections, update Position, Render alle aktiven Marker
+}
+
 
 
 function contextmenu_function1 (e) {
     alert(e.latlng);
-}
- 
-function centerMap (e) {
-    map.panTo(e.latlng);
-}
- 
-function zoomIn (e) {
-    map.zoomIn();
-}
- 
-function zoomOut (e) {
-    map.zoomOut();
 }
 
 

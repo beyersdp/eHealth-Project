@@ -469,7 +469,7 @@
 <script>
 	//beginning view of map [FYI: alternative "panTo"]
 	var map = L.map('map', {contextmenu: true, contextmenuWidth: 140, contextmenuItems: [{
-		text: 'Funktion 1', callback: contextmenu_function1},
+		text: 'Karte hier zentrieren', callback: mapZentrieren},
 		]})
 		.setView([48.506939, 9.203804], 14);
 	
@@ -577,7 +577,9 @@
 			var nextSibling = document.getElementById(e.dataTransfer.getData('text')).nextSibling.nextSibling.innerText;
 		
 			var coordinates = map.containerPointToLatLng(L.point([e.clientX - 250,e.clientY - 50]));
-			L.marker(coordinates, {icon: getIcon(nextSibling), draggable: true, keyboard: true, contextmenu: true, contextmenuItems: [{text: 'Marker item', index: 0}]})
+			L.marker(coordinates, {icon: getIcon(nextSibling), draggable: true, keyboard: true, contextmenu: true, 
+				contextmenuItems: [{text: 'Marker entfernen', index: 0, callback: markerEntfernen},
+								   {text: 'Position setzen', index: 1, callback: positionSenden}]})
 				.addTo(map)
 				.bindPopup("<b>" + e.dataTransfer.getData('text') + "</b>");
 		}

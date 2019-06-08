@@ -965,6 +965,16 @@ server.get('/formtest', function(req, res){
 
 
 
+/* /ajaxtest - Empfangen eines POST-Requests ueber Port 8080  */
+server.post('/ajaxtest', urlencodedParser, function(req, res){
+	console.log("L2-Info: GET-REQUEST for /ajaxtest");
+	console.log(rey.body);
+	res.render('html_form_dummy');
+	
+});	
+
+
+
 /* Relevant fuer umfassendere Routing-Aufgaben */
 var cb1 = function (req, res, next) {
 	console.log("CB1");
