@@ -47,7 +47,7 @@ var elwIcon  = L.icon({
 });
 
 var postenIcon  = L.icon({
-		iconUrl: './img/icons/marker_red.png',
+		iconUrl: './img/icons/marker_blue.png',
 		iconSize:     [25, 41], // size of the icon
 		// den Anker in das Zentrum der angegebenen Pixelgroesse setzen:
 		iconAnchor:   [12, 41], // point of the icon which will correspond to marker's location
@@ -64,7 +64,6 @@ function getIcon(indicator) {
 		return ktwIcon;
 	}
 	if (indicator == "Rettungswagen (RTW)") {
-		console.log(rtwIcon);
 		return rtwIcon;
 	}
 	if (indicator == "Notarzteinsatzfahrzeug (NEF)") {
@@ -86,6 +85,21 @@ function getIcon(indicator) {
 
 
 
+function contextmenu_function1 (e) {
+    alert(e.latlng);
+}
+ 
+function centerMap (e) {
+    map.panTo(e.latlng);
+}
+ 
+function zoomIn (e) {
+    map.zoomIn();
+}
+ 
+function zoomOut (e) {
+    map.zoomOut();
+}
 
 
 

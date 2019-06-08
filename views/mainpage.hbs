@@ -468,7 +468,10 @@
 
 <script>
 	//beginning view of map [FYI: alternative "panTo"]
-	var map = L.map('map').setView([48.506939, 9.203804], 14);
+	var map = L.map('map', {contextmenu: true, contextmenuWidth: 140, contextmenuItems: [{
+		text: 'Funktion 1', callback: contextmenu_function1},
+		]})
+		.setView([48.506939, 9.203804], 14);
 	
 	//Map Suchfeld
     var searchControl = L.esri.Geocoding.geosearch().addTo(map);
@@ -522,6 +525,8 @@
 	}
 	// End Kartenansicht
 	
+
+	
 	
 	
 	
@@ -568,12 +573,11 @@
 		this.value = e.dataTransfer.getData('text');
 		
 		if (e.toElement.id == "map") {
-			console.log(document.getElementById(e.dataTransfer.getData('text')));
 			
 			var nextSibling = document.getElementById(e.dataTransfer.getData('text')).nextSibling.nextSibling.innerText;
 		
 			var coordinates = map.containerPointToLatLng(L.point([e.clientX - 250,e.clientY - 50]));
-			L.marker(coordinates, {icon: getIcon(nextSibling), draggable: true})
+			L.marker(coordinates, {icon: getIcon(nextSibling), draggable: true, keyboard: true, contextmenu: true, contextmenuItems: [{text: 'Marker item', index: 0}]})
 				.addTo(map)
 				.bindPopup("<b>" + e.dataTransfer.getData('text') + "</b>");
 		}
@@ -623,4 +627,3 @@
 <script type="text/javascript" src="script/rettungsmittel.js"></script>
 <script type="text/javascript" src="script/rettungskraft.js"></script>
 <script type="text/javascript" src="script/posten.js"></script>
-<script type="text/javascript" src="script/karte.js"></script>
