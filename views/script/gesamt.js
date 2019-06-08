@@ -47,11 +47,11 @@ function toHour(className) {
 	});
 }
 
-// Einem HTML-Form ein weiteres Input-Feld hinzufuegen
+// Einer HTML-Form ein weiteres Input-Feld hinzufuegen
 function addInputField(id, inputName) {
 
 	var newParagraph = document.createElement("p");
-	newParagraph.style = "font-size:12px";
+	newParagraph.style = "font-size:10px";
 	
 	var newInput = document.createElement("input");
 	newInput.className = "w3-input w3-border dropElement " + inputName;
@@ -60,8 +60,8 @@ function addInputField(id, inputName) {
 	newInput.placeholder = "Tippen oder Drag&Drop";
 	newInput.name = inputName;
 	newInput.value = "";
-	newInput.id = id;
-	newInput.style= "margin-left:auto; margin-right:auto;"
+	newInput.id = id+id; //wichtig fuer removeInputField, sonst loescht es alle und es koennen auch keine neuen hinzugefuegt werden
+	newInput.style= "height:25px; margin-left:auto; margin-right:auto;"
 	
 	newInput.addEventListener('dragover', handleDragOver, false);
 	newInput.addEventListener('dragenter', handleDragEnter, false);
@@ -73,6 +73,12 @@ function addInputField(id, inputName) {
 	
 	document.getElementById(id).appendChild(newParagraph);
 }
+
+// Eine HTML-Form, um ein Input-Feld dezimieren
+function removeInputField(id, inputName){
+	var elem = document.getElementById(id+id);
+    elem.parentNode.removeChild(elem);
+} 
 
 // Datalist erweitern nach Form-Eingabe
 function addDataList(listName, className) {
