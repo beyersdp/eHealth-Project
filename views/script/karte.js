@@ -86,8 +86,21 @@ function getIcon(indicator) {
 // Kontextmenu-Funktion - Marker entfernen
 function markerEntfernen(e) {
 	e.relatedTarget.remove();
+	
+	var markerName = e.relatedTarget._popup._content.replace("<b>", "").replace("</b>","");
+	var markerId = document.getElementById(markerName).parentElement.id;
 
-	// TODO: Unterschieden ob Einsatz oder Rettungsmittel (DB Querys)
+	var data = {'id': markerId, 'position': ""};
+
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			console.log(this.responseText);
+		}
+	};
+	xhttp.open("POST", "/position", true);
+	xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+	xhttp.send(JSON.stringify(data)); 
 }
 
 // Kontextmenu-Funktion - Karte zentrieren

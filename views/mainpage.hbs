@@ -614,6 +614,46 @@
 	
 </script>
 <script>
+	{{# if rettungsmittel }}
+	{{# each rettungsmittel }}
+		{{# if position}}
+			L.marker([{{ position.lat }}, {{ position.lng }}], {icon: getIcon("{{ art }}"), draggable: true, keyboard: true, contextmenu: true, 
+				contextmenuItems: [{text: 'Marker entfernen', index: 0, callback: markerEntfernen},
+								   {text: 'Position setzen', index: 1, callback: positionSenden}]})
+				.addTo(map)
+				.bindPopup("<b>" + "{{ funkruf }}" + "</b>");
+				
+		{{/if}}
+	{{/each}}
+	{{/if}}
+	
+	{{# if posten }}
+	{{# each posten }}
+		{{# if position}}
+			L.marker([{{ position.lat }}, {{ position.lng }}], {icon: getIcon(null), draggable: true, keyboard: true, contextmenu: true, 
+				contextmenuItems: [{text: 'Marker entfernen', index: 0, callback: markerEntfernen},
+								   {text: 'Position setzen', index: 1, callback: positionSenden}]})
+				.addTo(map)
+				.bindPopup("<b>" + "{{ funkruf }}" + "</b>");
+				
+		{{/if}}
+	{{/each}}
+	{{/if}}
+	
+	{{# if rettungskraft }}
+	{{# each rettungskraft }}
+		{{# if position}}
+			L.marker([{{ position.lat }}, {{ position.lng }}], {icon: getIcon(null), draggable: true, keyboard: true, contextmenu: true, 
+				contextmenuItems: [{text: 'Marker entfernen', index: 0, callback: markerEntfernen},
+								   {text: 'Position setzen', index: 1, callback: positionSenden}]})
+				.addTo(map)
+				.bindPopup("<b>" + "{{ funkruf }}" + "</b>");
+				
+		{{/if}}
+	{{/each}}
+	{{/if}}
+</script>
+<script>
 	/*
 	var comfyText = (function(){
 		var tag = document.querySelectorAll('textarea')
