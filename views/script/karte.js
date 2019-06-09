@@ -92,7 +92,7 @@ function markerEntfernen(e) {
 
 // Kontextmenu-Funktion - Karte zentrieren
 function mapZentrieren (e) {
-	
+	map.panTo(e.latlng);
 }
 
 // Kontextmenu-Funktion - Position an Server senden
@@ -105,15 +105,6 @@ function positionSenden(e) {
 
 	//TODO: Ajax, find ID in Collections, update Position, Render alle aktiven Marker
 }
-
-
-
-function contextmenu_function1 (e) {
-    alert(e.latlng);
-}
-
-
-
 
 
 

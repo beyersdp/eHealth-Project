@@ -567,7 +567,9 @@
 		
 		if (e.toElement.id == "map") {
 			
-			var nextSibling = document.getElementById(e.dataTransfer.getData('text')).nextSibling.nextSibling.innerText;
+			console.log(e.dataTransfer.getData('text').nextSibling);
+			
+			var nextSibling = document.getElementById(e.dataTransfer.getData('text')).nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.innerText;
 		
 			var coordinates = map.containerPointToLatLng(L.point([e.clientX - 250,e.clientY - 50]));
 			L.marker(coordinates, {icon: getIcon(nextSibling), draggable: true, keyboard: true, contextmenu: true, 
@@ -612,6 +614,7 @@
 	
 </script>
 <script>
+	/*
 	var comfyText = (function(){
 		var tag = document.querySelectorAll('textarea')
 		for (var i=0; i<tag.length; i++){
@@ -632,7 +635,8 @@
 			  autoExpand(e,tag[i])
 			}
 		}
-	})()  
+	})()
+	*/
 </script>
 
 

@@ -602,8 +602,6 @@ server.post('/posten', urlencodedParser, function(req, res){
 				
 				db.collection('Rettungskraft').find({funkruf: {$in: queryArray}}).toArray(function(err, queryRettungskrafte) {
 					
-					console.log(queryRettungskrafte);
-					
 					posten_data = {funkruf: req.body.posten_funkruf,
 								   //position: req.body.posten_position,
 								   kraefte: queryRettungskrafte};
@@ -673,7 +671,7 @@ server.post('/posten', urlencodedParser, function(req, res){
 							
 							db.collection('Rettungskraft').updateMany({funkruf: {$in: queryPosten1[0].kraefte.filter(o => ! queryRettungskraefte1.some(i => i == o))}},
 																	  {$set: {rettungsmittel: false}}, 
-																	  function(err, result) {
+																	  function(err, result) { //not working
 								if (err) throw err;
 								
 								db.collection('Einsatz').find().sort({timestamp: 1}).toArray(function(err, queryEinsatz) {

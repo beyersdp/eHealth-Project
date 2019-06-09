@@ -65,15 +65,16 @@ function updateRettungskraft(id) {
 	document.getElementById("rettungskraftNew_button").click();
 	
 	var rettungskraft = document.getElementById(id);
+	console.log(rettungskraft.childNodes);
 	
 	document.getElementById("rettungskraft_id").value = id;
-	document.getElementById("rettungskraft_vorname").value = rettungskraft.childNodes[3].childNodes[1].innerText;
-	document.getElementById("rettungskraft_nachname").value = rettungskraft.childNodes[3].childNodes[3].innerText;
-	document.getElementById("rettungskraft_hiorg").value = rettungskraft.childNodes[5].innerText;
-	document.getElementById("rettungskraft_quali").value = longQuali(rettungskraft.childNodes[3].childNodes[5].innerText);
-	document.getElementById("rettungskraft_tel").value = rettungskraft.childNodes[7].innerText;
+	document.getElementById("rettungskraft_vorname").value = rettungskraft.childNodes[7].childNodes[1].innerText;
+	document.getElementById("rettungskraft_nachname").value = rettungskraft.childNodes[7].childNodes[3].innerText;
+	document.getElementById("rettungskraft_hiorg").value = rettungskraft.childNodes[9].innerText;
+	document.getElementById("rettungskraft_quali").value = longQuali(rettungskraft.childNodes[7].childNodes[5].innerText);
+	document.getElementById("rettungskraft_tel").value = rettungskraft.childNodes[11].innerText;
 	
-	if (rettungskraft.childNodes[1].innerText != rettungskraft.childNodes[3].childNodes[1].innerText + " " + rettungskraft.childNodes[3].childNodes[3].innerText) {
+	if (rettungskraft.childNodes[1].innerText != rettungskraft.childNodes[7].childNodes[1].innerText + " " + rettungskraft.childNodes[7].childNodes[3].innerText) {
 	
 		document.getElementById("rettungskraft_funkruf").value = rettungskraft.childNodes[1].innerText;
 	}
