@@ -883,6 +883,65 @@ server.get('/funkspruchCHRONIK', function(req, res){
 });
 
 
+
+/* /position - Empfangen eines POST-Requests ueber Port 8080  */
+server.post('/position', urlencodedParser, function(req, res){
+	console.log("L2-Info: POST-REQUEST for /position");
+	console.log(req.body); //DEBUG Kontrollausgabe
+	
+	if(req.session && req.session.user) { 
+		console.log("L1-Info: Cookie true");
+		
+		//Preprocessing / Formatieren von JSON-Objekten
+		var rawData = null;
+		for (var k in req.body) rawData = k;
+		var validData = JSON.parse(rawData);
+		
+		console.log(validData.id);
+		console.log(validData.position);
+		
+		mongodbClient.connect(url, { useNewUrlParser: true }, function(err, dbClient) {
+			if (err) throw err;
+			var db = dbClient.db('DigitalerFuehrungsassistent');
+			console.log("L2-Info: DB-Connection true");
+			
+			db.collection('Rettungsmittel').findOneAndUpdate({_id: ObjectID(validData.id)}, {$set: {position: validData.position}}, function(err, updated){
+				console.log(updated);
+				
+				if (updated.value != null) {
+					res.send('OK');
+					dbClient.close();
+				}
+			});
+			
+			db.collection('Posten').findOneAndUpdate({_id: ObjectID(validData.id)}, {$set: {position: validData.position}}, function(err, updated){
+				console.log(updated);
+				
+				if (updated.value != null) {
+					res.send('OK');
+					dbClient.close();
+				}
+			});
+			
+			db.collection('Rettungskraft').findOneAndUpdate({_id: ObjectID(validData.id)}, {$set: {position: validData.position}}, function(err, updated){
+				console.log(updated);
+				
+				if (updated.value != null) {
+					res.send('OK');
+					dbClient.close();
+				}
+			});
+		});
+	}
+	
+	else {
+		console.log("L1-Info: Cookie false");
+		res.send("Cookie false");
+	}
+});
+
+
+
 /* /cookietest - Empfangen eines GET-Requests ueber Port 8080  */
 server.get('/cookietest', function(req, res){
 	console.log("L2-Info: GET-REQUEST for /cookietest");

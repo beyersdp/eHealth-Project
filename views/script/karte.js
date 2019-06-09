@@ -97,13 +97,21 @@ function mapZentrieren (e) {
 
 // Kontextmenu-Funktion - Position an Server senden
 function positionSenden(e) {
-	console.log(e.relatedTarget._popup._content.replace("<b>", "").replace("</b>",""));
-	console.log(e.latlng);
 	
 	var markerName = e.relatedTarget._popup._content.replace("<b>", "").replace("</b>","");
 	var markerId = document.getElementById(markerName).parentElement.id;
 
-	//TODO: Ajax, find ID in Collections, update Position, Render alle aktiven Marker
+	var data = {'id': markerId, 'position': e.latlng};
+
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			console.log(this.responseText);
+		}
+	};
+	xhttp.open("POST", "/position", true);
+	xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+	xhttp.send(JSON.stringify(data)); 
 }
 
 
