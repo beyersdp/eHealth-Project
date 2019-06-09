@@ -153,6 +153,12 @@ function longQuali(quali) {
 	return result;
 }
 
+
+function clickOn(id) {
+	
+	document.getElementById(id).click();
+}
+
 // Direkt startende Funktionen:
 toHour('timestamp');
 shortQuali("medQuali");

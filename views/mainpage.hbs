@@ -8,12 +8,12 @@
 		<div class="w3-dropdown-hover w3-hide-small" id="navbar_element1">
 			<button class="w3-button w3-padding-larger" style="height:45px; font-size:14px;" title="Funktionalitäten"><i class="fa fa-gear fa-fw"></i>Funktionen</button>
 			<div class="w3-dropdown-content w3-card-4 w3-bar-block" style="width:250px" id="navbar_element1_dropdown">
-				<a href="#" style="font-size:12px" class="w3-bar-item w3-button"><i class="fa fa-address-card w3-large w3-margin-right"> <span class="fa fa-pencil w3-right w3-small"></span></i>Führungsposition ändern</a>
-				<a href="#" style="font-size:12px" class="w3-bar-item w3-button"><i class="fa fa-plus w3-small w3-margin-right"> <span class="fa fa-medkit w3-right w3-large"></span></i>Notfalleinsatz anlegen</a>
-				<a href="#" style="font-size:12px" class="w3-bar-item w3-button"><i class="fa fa-plus w3-small w3-margin-right"> <span class="fa fa-comments w3-right w3-large"></span></i>Funkspruch anlegen</a>
-				<a href="#" style="font-size:12px" class="w3-bar-item w3-button"><i class="fa fa-plus w3-small w3-margin-right"> <span class="fa fa-ambulance w3-right w3-large"></span></i>Rettungsmittel hinzufügen</a>
-				<a href="#" style="font-size:12px" class="w3-bar-item w3-button"><i class="fa fa-plus w3-small w3-margin-right"> <span class="fa fa-flag w3-right w3-large"></span></i> Sanitätsposten hinzufügen</a>
-				<a href="#" style="font-size:12px" class="w3-bar-item w3-button"><i class="fa fa-plus w3-small w3-margin-right"> <span class="fa fa-user-md w3-right w3-large"></span></i> Rettungskräfte hinzufügen</a>
+				<a href="javascript:void(0)"  onclick="clickOn('einsatzNew_button')"  style="font-size:12px" class="w3-bar-item w3-button"><i class="fa fa-plus w3-small w3-margin-right"> <span class="fa fa-medkit w3-right w3-large"></span></i>Notfalleinsatz anlegen</a>
+				<a href="javascript:void(0)"  onclick="clickOn('funkNew_button')" style="font-size:12px" class="w3-bar-item w3-button"><i class="fa fa-plus w3-small w3-margin-right"> <span class="fa fa-comments w3-right w3-large"></span></i>Funkspruch anlegen</a>
+				<a href="javascript:void(0)"  onclick="clickOn('rettungsmittelNew_button')" style="font-size:12px" class="w3-bar-item w3-button"><i class="fa fa-plus w3-small w3-margin-right"> <span class="fa fa-ambulance w3-right w3-large"></span></i>Rettungsmittel hinzufügen</a>
+				<a href="javascript:void(0)"  onclick="clickOn('postenNew_button')" style="font-size:12px" class="w3-bar-item w3-button"><i class="fa fa-plus w3-small w3-margin-right"> <span class="fa fa-flag w3-right w3-large"></span></i> Sanitätsposten hinzufügen</a>
+				<a href="javascript:void(0)"  onclick="clickOn('rettungskraftNew_button')" style="font-size:12px" class="w3-bar-item w3-button"><i class="fa fa-plus w3-small w3-margin-right"> <span class="fa fa-user-md w3-right w3-large"></span></i> Rettungskräfte hinzufügen</a>
+				<a href="javascript:void(0)" style="font-size:12px" class="w3-bar-item w3-button"><i class="fa fa-address-card w3-large w3-margin-right"> <span class="fa fa-pencil w3-right w3-small"></span></i>Führungsposition ändern</a>
 			</div> <!-- id="navbar_element1_dropdown -->
 		</div> <!-- id="navbar_element1" -->
 		
@@ -52,7 +52,7 @@
 			<!-- Funkspruchverwaltung -->
 			<div class="w3-card w3-round" id="funkNew">
 				<div class="w3-white">
-					<button onclick="showDetails('funkNew_input')" class="w3-button w3-block w3-theme-d2 w3-hover-light-grey w3-left-align w3-card" style="height:35px; font-size:13px;"><i class="fa fa-plus w3-small w3-margin-right"> <span class="fa fa-comments w3-right w3-large"></span></i> Funkspruch</button>
+					<button onclick="showDetails('funkNew_input')" id="funkNew_button" class="w3-button w3-block w3-theme-d2 w3-hover-light-grey w3-left-align w3-card" style="height:35px; font-size:13px;"><i class="fa fa-plus w3-small w3-margin-right"> <span class="fa fa-comments w3-right w3-large"></span></i> Funkspruch</button>
 			  
 					<!-- Funkspruch anlegen - Rolldown Menue -->
 					<div class="w3-hide w3-container w3-light-grey" id="funkNew_input">
@@ -87,7 +87,7 @@
 			<!-- Einsatzverwaltung -->
 			<div class="w3-card w3-round" id="einsatzNew">
 				<div class="w3-white">
-					<button onclick="showDetails('einsatzNew_input')" class="w3-button w3-block w3-theme-d2 w3-hover-light-grey w3-left-align w3-card" style="height:35px; font-size:13px;"><i class="fa fa-plus w3-small w3-margin-right"><span class="fa fa-medkit w3-right w3-large"></span></i>Notfalleinsatz</button>
+					<button onclick="showDetails('einsatzNew_input')" id="einsatzNew_button" class="w3-button w3-block w3-theme-d2 w3-hover-light-grey w3-left-align w3-card" style="height:35px; font-size:13px;"><i class="fa fa-plus w3-small w3-margin-right"><span class="fa fa-medkit w3-right w3-large"></span></i>Notfalleinsatz</button>
 			  
 					<!-- Einsatz anlegen - Rolldown Menue -->
 					<div class="w3-hide w3-container w3-light-grey" id="einsatzNew_input">
@@ -567,10 +567,18 @@
 		
 		if (e.toElement.id == "map") {
 			
-			console.log(e.dataTransfer.getData('text').nextSibling);
+			var nextSibling = null;
 			
-			var nextSibling = document.getElementById(e.dataTransfer.getData('text')).nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.innerText;
-		
+			if (document.getElementById(e.dataTransfer.getData('text')).childNodes[0].className == 'fa fa-user-md w3-small w3-margin-right') {
+				nextSibling = 'Rettungskraft';
+			}
+			else if (document.getElementById(e.dataTransfer.getData('text')).childNodes[0].className == 'fa fa-flag w3-small w3-margin-right') {
+				nextSibling = 'Posten';
+			}
+			else {
+				nextSibling = document.getElementById(e.dataTransfer.getData('text')).nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.innerText;
+			}
+			
 			var coordinates = map.containerPointToLatLng(L.point([e.clientX - 250,e.clientY - 50]));
 			L.marker(coordinates, {icon: getIcon(nextSibling), draggable: true, keyboard: true, contextmenu: true, 
 				contextmenuItems: [{text: 'Marker entfernen', index: 0, callback: markerEntfernen},
@@ -630,7 +638,7 @@
 	{{# if posten }}
 	{{# each posten }}
 		{{# if position}}
-			L.marker([{{ position.lat }}, {{ position.lng }}], {icon: getIcon(null), draggable: true, keyboard: true, contextmenu: true, 
+			L.marker([{{ position.lat }}, {{ position.lng }}], {icon: getIcon('Posten'), draggable: true, keyboard: true, contextmenu: true, 
 				contextmenuItems: [{text: 'Marker entfernen', index: 0, callback: markerEntfernen},
 								   {text: 'Position setzen', index: 1, callback: positionSenden}]})
 				.addTo(map)
@@ -643,7 +651,7 @@
 	{{# if rettungskraft }}
 	{{# each rettungskraft }}
 		{{# if position}}
-			L.marker([{{ position.lat }}, {{ position.lng }}], {icon: getIcon(null), draggable: true, keyboard: true, contextmenu: true, 
+			L.marker([{{ position.lat }}, {{ position.lng }}], {icon: getIcon('Rettungskraft'), draggable: true, keyboard: true, contextmenu: true, 
 				contextmenuItems: [{text: 'Marker entfernen', index: 0, callback: markerEntfernen},
 								   {text: 'Position setzen', index: 1, callback: positionSenden}]})
 				.addTo(map)

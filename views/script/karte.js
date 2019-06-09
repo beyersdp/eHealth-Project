@@ -47,7 +47,15 @@ var elwIcon  = L.icon({
 });
 
 var postenIcon  = L.icon({
-		iconUrl: './img/icons/marker_blue.png',
+		iconUrl: './img/icons/marker_yellow.png',
+		iconSize:     [25, 41], // size of the icon
+		// den Anker in das Zentrum der angegebenen Pixelgroesse setzen:
+		iconAnchor:   [12, 41], // point of the icon which will correspond to marker's location
+		popupAnchor:  [1, -41] // point from which the popup should open relative to the iconAnchor
+});
+
+var rettungskraftIcon  = L.icon({
+		iconUrl: './img/icons/marker_green.png',
 		iconSize:     [25, 41], // size of the icon
 		// den Anker in das Zentrum der angegebenen Pixelgroesse setzen:
 		iconAnchor:   [12, 41], // point of the icon which will correspond to marker's location
@@ -78,8 +86,11 @@ function getIcon(indicator) {
 	if (indicator == "Einsatzleitwagen (ELW)") {
 		return elwIcon;
 	}
-	else {
+	if (indicator == "Posten") {
 		return postenIcon;
+	}
+	if (indicator == "Rettungskraft") {
+		return rettungskraftIcon;
 	}
 }
 

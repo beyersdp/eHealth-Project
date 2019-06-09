@@ -906,7 +906,6 @@ server.post('/position', urlencodedParser, function(req, res){
 			console.log("L2-Info: DB-Connection true");
 			
 			db.collection('Rettungsmittel').findOneAndUpdate({_id: ObjectID(validData.id)}, {$set: {position: validData.position}}, function(err, updated){
-				console.log(updated);
 				
 				if (updated.value != null) {
 					res.send('OK');
@@ -915,7 +914,6 @@ server.post('/position', urlencodedParser, function(req, res){
 			});
 			
 			db.collection('Posten').findOneAndUpdate({_id: ObjectID(validData.id)}, {$set: {position: validData.position}}, function(err, updated){
-				console.log(updated);
 				
 				if (updated.value != null) {
 					res.send('OK');
@@ -924,7 +922,6 @@ server.post('/position', urlencodedParser, function(req, res){
 			});
 			
 			db.collection('Rettungskraft').findOneAndUpdate({_id: ObjectID(validData.id)}, {$set: {position: validData.position}}, function(err, updated){
-				console.log(updated);
 				
 				if (updated.value != null) {
 					res.send('OK');
