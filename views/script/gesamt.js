@@ -153,11 +153,67 @@ function longQuali(quali) {
 	return result;
 }
 
-
+// Simuliert einen Klick auf ein uebergebenes Element
 function clickOn(id) {
 	
 	document.getElementById(id).click();
 }
+
+// Wechseln des anzuzeigenden Elements des dynamischen Infobereichs mittels Pfeil-Button
+function switchInfoDisplay(source) {
+	
+	if (source == 'kerndaten') {
+		document.getElementById(source).hidden = true;
+		document.getElementById('notiz').hidden = false;
+	}
+	
+	if (source == 'notiz') {
+		document.getElementById(source).hidden = true;
+		document.getElementById('einsatzChronik').hidden = false;
+	}
+	
+	if (source == 'einsatzChronik') {
+		document.getElementById(source).hidden = true;
+		document.getElementById('funkChronik').hidden = false;
+	}
+	
+	if (source == 'funkChronik') {
+		document.getElementById(source).hidden = true;
+		document.getElementById('kerndaten').hidden = false;
+	}
+}
+
+// Wechseln des anzuzeigenden Elements des dynamischen Infobereichs mittels NavBar
+function switchInfoDisplayNavBar(source) {
+	if (source == 'kerndaten') {
+		document.getElementById(source).hidden = false;
+		document.getElementById('notiz').hidden = true;
+		document.getElementById('einsatzChronik').hidden = true;
+		document.getElementById('funkChronik').hidden = true;
+	}
+	
+	if (source == 'notiz') {
+		document.getElementById(source).hidden = false;
+		document.getElementById('kerndaten').hidden = true;
+		document.getElementById('einsatzChronik').hidden = true;
+		document.getElementById('funkChronik').hidden = true;
+	}
+	
+	if (source == 'einsatzChronik') {
+		document.getElementById(source).hidden = false;
+		document.getElementById('kerndaten').hidden = true;
+		document.getElementById('notiz').hidden = true;
+		document.getElementById('funkChronik').hidden = true;
+	}
+	
+	if (source == 'funkChronik') {
+		document.getElementById(source).hidden = false;
+		document.getElementById('kerndaten').hidden = true;
+		document.getElementById('notiz').hidden = true;
+		document.getElementById('einsatzChronik').hidden = true;
+	}
+}
+
 
 // Direkt startende Funktionen:
 toHour('timestamp');

@@ -21,10 +21,10 @@
 		<div class="w3-dropdown-hover w3-hide-small" id="navbar_element2">
 			<button class="w3-button w3-padding-larger" style="height:45px; font-size:14px;" title="Details zum Gesamteinsatz"><i class="fa fa-info-circle fa-fw"></i>Informationen</button>
 			<div class="w3-dropdown-content w3-card-4 w3-bar-block" style="width:250px" id="navbar_element2_dropdown">
-				<a href="#" style="font-size:12px"class="w3-bar-item w3-button"><i class="fa fa-plus-square w3-large w3-margin-right"> <span class="fa fa-info-circle w3-right w3-small"></span></i> Steckbrief Gesamteinsatz</a>
-				<a href="#" style="font-size:12px"class="w3-bar-item w3-button"><i class="fa fa-folder-open w3-large w3-margin-right"> <span class="fa fa-clipboard w3-right w3-small"></span></i>Gemeinsame Notizen</a>
-				<a href="#" style="font-size:12px"class="w3-bar-item w3-button"><i class="fa fa-folder-open w3-large w3-margin-right"> <span class="fa fa-medkit w3-right w3-small"></span></i>Chronik Notfalleinsätze</a>
-				<a href="#" style="font-size:12px"class="w3-bar-item w3-button"><i class="fa fa-folder-open w3-large w3-margin-right"> <span class="fa fa-comments w3-right w3-small"></span></i>Steckbrief Funksprüche</a>
+				<a href="javascript:void(0)" onclick="switchInfoDisplayNavBar('kerndaten')" style="font-size:12px"class="w3-bar-item w3-button"><i class="fa fa-plus-square w3-large w3-margin-right"> <span class="fa fa-info-circle w3-right w3-small"></span></i> Steckbrief Gesamteinsatz</a>
+				<a href="javascript:void(0)" onclick="switchInfoDisplayNavBar('notiz')"  style="font-size:12px"class="w3-bar-item w3-button"><i class="fa fa-folder-open w3-large w3-margin-right"> <span class="fa fa-clipboard w3-right w3-small"></span></i>Gemeinsame Notizen</a>
+				<a href="javascript:void(0)" onclick="switchInfoDisplayNavBar('einsatzChronik')"  style="font-size:12px"class="w3-bar-item w3-button"><i class="fa fa-folder-open w3-large w3-margin-right"> <span class="fa fa-medkit w3-right w3-small"></span></i>Chronik Notfalleinsätze</a>
+				<a href="javascript:void(0)" onclick="switchInfoDisplayNavBar('funkChronik')"  style="font-size:12px"class="w3-bar-item w3-button"><i class="fa fa-folder-open w3-large w3-margin-right"> <span class="fa fa-comments w3-right w3-small"></span></i>Steckbrief Funksprüche</a>
 			</div> <!-- id="navbar_element2_dropdown -->
 		</div> <!-- id="navbar_element2" -->
 		
@@ -144,43 +144,7 @@
 				{{/each}}
 			</div> <!-- id="left_scrollbar -->
 			{{/if}}
-	
 
-      <!-- Aufgaben -->
-	  <!-- 
-      <div class="w3-card w3-round">
-        <div class="w3-white">
-          <button onclick="myFunction('neue_Aufgabe_oder_Info')" class="w3-button w3-block w3-theme-l1 w3-hover-light-grey w3-left-align w3-card"><i class="fa fa-briefcase"></i><i class="fa fa-info-circle"></i> Neue Aufgabe|Info anlegen</button>
-          
-		  <div id="neue_Aufgabe_oder_Info" class="w3-hide w3-container w3-light-grey">
-			<p>Bitte füllen Sie Folgendes aus:</p>
-			<form target="_blank">
-			  <p><input class="w3-input w3-border" type="text" placeholder="Hier tippen..." name="Kurzbeschreibung" style="margin-left:auto; margin-right:auto;"required=""></p>
-			  <button style="margin-left:auto; margin-right:auto;" type="submit" class="w3-button w3-block w3-blue-grey">speichern</button>
-			<br>
-			</form>
-          </div>	  
-          <button onclick="myFunction('Aufgaben|Info-Chronik')" class="w3-button w3-block w3-theme-l1 w3-hover-light-grey w3-left-align w3-card"><i class="fa fa-calendar-check-o fa-fw w3-margin-right"></i>Aufgaben|Info-Chronik</button>
-          <div id="Aufgaben|Info-Chronik" class="w3-hide w3-container w3-light-grey">
-            <p>Auflistung der Aufgaben|Informationen: ...</p>
-          </div>
-		  
-		  <div class="w3-container">
-			  <br>
-			  <div class="w3-container w3-display-container w3-round w3-theme-l4 w3-border w3-theme-border w3-margin-bottom w3-hide-small">
-				<span onclick="this.parentElement.style.display='none'" class="w3-button w3-theme-l3 w3-display-topright">
-				  <i class="fa fa-remove"></i>
-				</span>
-				<p><strong>Aufgabe</strong></p>
-				<p><i class="fa fa-clock-o w3-small"></i> 18:45Uhr: <br>Der 63/83-2 hat kein Bezin mehr. Diesel muss organisiert werden!<p>
-			  </div>
-		  </div>
-		  
-		</div>
-	  </div>
-	  -->
-	  
-		<br>
       <!-- Schlagwörter -> für Schnellsuche [NiceToHave]-->
 	  <!--
       <div class="w3-card w3-round w3-white w3-hide-small">
@@ -237,7 +201,7 @@
 				<div class="w3-col m12">
 					<div class="w3-card w3-round w3-white">
 						<div class="w3-container w3-padding">
-							<h6 class="w3-opacity">Geben Sie ein Schlagwort ein, um eine Aktion zu disponieren...</h6>
+							<h6 class="w3-opacity">Speichern Sie Notizen, um diese später zu bearbeiten...</h6>
 							<p style="font-size:12px"><input class="w3-input w3-border" type="text" placeholder="Hier tippen..."></p>
 						</div>
 					</div>
@@ -251,36 +215,36 @@
 				<div class="w3-col m12">
 					<div class="w3-card w3-round w3-white">
 						<!-- in Arbeit... -->
-						<div id="steckbrief_gesamteinsatz" class="w3-container w3-display-container w3-padding w3-white w3-hide-small w3-round w3-border">
+						<div id="kerndaten" class="w3-container w3-display-container w3-padding w3-white w3-hide-small w3-round w3-border">
 							<!-- onclick="this.parentElement.style.display='hidden' chronik_notfalleinsaetze.style.display='inline'"-->
-							<span onclick="switchInfoDisplay()" class="w3-button w3-theme-l3 w3-display-topright">
-							  <i class="fa fa-play"></i>
+							<span onclick="switchInfoDisplay('kerndaten')" class="w3-button w3-theme-l3 w3-display-topright">
+							  <i class="fa fa-play" onclick="switchInfoDisplay('kerndaten')"></i>
 							</span>							
 							<h6 class="w3-opacity"><i class="fa fa-plus-square w3-large w3-margin-right"> <span class="fa fa-info-circle w3-right w3-small"></span></i> Steckbrief Gesamteinsatz</h6>
 							<p> ....</p>
 						</div>
 						
-						<div id="gemeinsame_notizen" class="w3-container w3-display-container w3-padding w3-white w3-hide-small w3-round w3-border">
-							<span onclick="this.parentElement.style.display='none'" class="w3-button w3-theme-l3 w3-display-topright">
-							  <i class="fa fa-play"></i>
+						<div id="notiz" hidden class="w3-container w3-display-container w3-padding w3-white w3-hide-small w3-round w3-border">
+							<span onclick="switchInfoDisplay('notiz')" class="w3-button w3-theme-l3 w3-display-topright">
+							  <i class="fa fa-play" onclick="switchInfoDisplay('notiz')"></i>
 							</span>							
 							<h6 class="w3-opacity"><i class="fa fa-folder-open w3-large w3-margin-right"> <span class="fa fa-clipboard w3-right w3-small"></span></i>Gemeinsame Notizen</h6>
 							<p> ....</p>
 						</div>
 						
-						<div id="chronik_notfalleinsaetze" class="w3-container w3-display-container w3-padding w3-white w3-hide-small w3-round w3-border">
-							<span onclick="this.parentElement.style.display='hidden' steckbrief_gesamteinsatz.style.display='inline'" class="w3-button w3-theme-l3 w3-display-topright">
-							  <i class="fa fa-play"></i>
+						<div id="einsatzChronik" hidden class="w3-container w3-display-container w3-padding w3-white w3-hide-small w3-round w3-border">
+							<span onclick="switchInfoDisplay('einsatzChronik')" steckbrief_gesamteinsatz.style.display='inline'" class="w3-button w3-theme-l3 w3-display-topright">
+							  <i class="fa fa-play" onclick="switchInfoDisplay('einsatzChronik')"></i>
 							</span>							
-							<h6 class="w3-opacity"><i class="fa fa-folder-open w3-large w3-margin-right"> <span class="fa fa-medkit w3-right w3-small"></span></i>Chronik Notfalleinsätze</h6>
+							<h6 class="w3-opacity"><i class="fa fa-folder-open w3-large w3-margin-right"> <span class="fa fa-medkit w3-right w3-small"></span></i>Chronologie der Notfalleinsätze</h6>
 							<p> ....</p>
 						</div>
 						
-						<div id="steckbrief_funk" class="w3-container w3-display-container w3-padding w3-white w3-hide-small w3-round w3-border">
-							<span onclick="this.parentElement.style.display='hidden'" class="w3-button w3-theme-l3 w3-display-topright">
-							  <i class="fa fa-play"></i>
+						<div id="funkChronik" hidden class="w3-container w3-display-container w3-padding w3-white w3-hide-small w3-round w3-border">
+							<span onclick="switchInfoDisplay('funkChronik')" class="w3-button w3-theme-l3 w3-display-topright">
+							  <i class="fa fa-play" onclick="switchInfoDisplay(funkChronik')"></i>
 							</span>							
-							<h6 class="w3-opacity"><i class="fa fa-folder-open w3-large w3-margin-right"><span class="fa fa-comments w3-right w3-small"></span></i>Steckbrief Funksprüche</h6>
+							<h6 class="w3-opacity"><i class="fa fa-folder-open w3-large w3-margin-right"><span class="fa fa-comments w3-right w3-small"></span></i>Chronologie der Funksprüche</h6>
 							<p> ....</p>
 						</div>
 						
