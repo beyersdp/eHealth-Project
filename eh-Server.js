@@ -37,6 +37,102 @@ server.use(session({
 
 
 
+// Ereignis der Historie hinzufuegen
+function addHistory(args) {	
+	console.log("L2-Info: Create history entry");
+	
+	var kraefte_grouping = "";
+	
+	if (args.rettungskraefte != [] && args.rettungskraefte != undefined) {
+		args.rettungskraefte.forEach(function (rk) {
+			kraefte_grouping += rk.funkruf +", ";
+		});
+	}
+	
+	if (args.posten != [] && args.posten != undefined) {
+		args.posten.forEach(function (p) {
+			kraefte_grouping += p.funkruf +" (";
+			
+			p.kraefte.forEach(function (k) {
+				kraefte_grouping += k.vorname[0] + ". " + k.nachname + ", ";
+			});
+			kraefte_grouping += "), "
+		});	
+	}
+	
+	if (args.rettungsmittel != [] && args.rettungsmittel != undefined) {
+		args.rettungsmittel.forEach(function (rm) {
+			kraefte_grouping += rm.funkruf +" (";
+			
+			rm.kraefte.forEach(function (k) {
+				kraefte_grouping += k.vorname[0] + ". " + k.nachname + ", ";
+			});
+			kraefte_grouping += "), "
+		});
+	}
+	
+	if (args.ereignis == "Funkspruch") {
+		var ereignis_grouping = args.ereignis + " von [" + args.sender + "] an [" + args.empfaenger + "]. "
+								+ "Zum Thema [" + args.kategorie + "] folgende Kommunikation: " + args.text;
+	}
+	
+	if (args.ereignis == "Notfalleinsatz") {
+		var ereignis_grouping = args.ereignis + " " + args.meldebild + " (gemeldet durch " + args.sender + "). Anzahl verletzter Personen = " + args.anzVerletzte
+								+ "\nDerzeitiger Bearbeitungsgrad = " + args.status + "\nDerzeitige zugeteilte Kräfte = " + kraefte_grouping.slice(0,-2)
+								+ "\nDerzeitige Anmerkungen: " + args.text;
+	}
+	
+	if (args.ereignis == "Rettungskraft hat Ihre Schicht begonnen") {
+		var ereignis_grouping = args.ereignis + ":\n" + args.vorname + " " + args.nachname + " (" + args.quali + ")\nHilfsorganisation: " + args.hiorg
+								+ "\nErreichbarkeiten: Telefonnummer = " + args.tel + ", Funkrufname = " + args.funkruf;
+	}
+	
+	if (args.ereignis == "Personaldaten einer Rettungskraft wurden bearbeitet") {
+		var ereignis_grouping = args.ereignis + ":\n" + args.vorname + " " + args.nachname + " (" + args.quali + ")\nHilfsorganisation: " + args.hiorg
+								+ "\nErreichbarkeiten: Telefonnummer = " + args.tel + ", Funkrufname = " + args.funkruf;
+	}
+	
+	if (args.ereignis == "Sanitätsposten wurde erstellt") {
+		var ereignis_grouping = args.ereignis + ": " + args.funkruf + "\nDerzeitige zugeteilte Kräfte = " + kraefte_grouping.slice(0,-2);
+	}
+	
+	if (args.ereignis == "Sanitätsposten wurde bearbeitet") {
+		var ereignis_grouping = args.ereignis + ": " + args.funkruf + "\nDerzeitige zugeteilte Kräfte = " + kraefte_grouping.slice(0,-2);
+	}
+	
+	if (args.ereignis == "Fahrzeug wurde besetzt") {
+		var ereignis_grouping = args.ereignis + ": " + args.funkruf + " (" + args.art + ")\nDerzeitige zugeteilte Kräfte = " + kraefte_grouping.slice(0,-2);
+	}
+	
+	if (args.ereignis == "Fahrzeug-Konstellation wurde angepasst") {
+		var ereignis_grouping = args.ereignis + ": " + args.funkruf + " (" + args.art + ")\nDerzeitige zugeteilte Kräfte = " + kraefte_grouping.slice(0,-2);
+	}
+	
+	if (args.ereignis == "Standort aktualisiert") {
+		var ereignis_grouping = args.ereignis + ": " + args.funkruf + " befindet sich nun an den Koordinaten (" + args.position.lat + ", " + args.position.lng + ")";
+	}
+	
+	console.log(ereignis_grouping);
+	
+	var history_data = {timestamp: moment().format('YYYYMMDDHHmmss'),
+						ereignis: ereignis_grouping,
+						fuehrungskraft: args.fuehrungskraft};
+	
+	mongodbClient.connect(url, { useNewUrlParser: true }, function(err, dbClient) {
+		if (err) throw err;
+		var db = dbClient.db('DigitalerFuehrungsassistent');
+		console.log("L2-Info: DB-Connection true");
+		
+		db.collection('Historie').insertOne(history_data, function(err, result) {
+			if (err) throw err;
+			
+			dbClient.close();
+		});
+	});
+}
+
+
+
 /* Server starten */
 server.listen(server.get('port'), '0.0.0.0', function() {
 	console.log('L1-Info: Server started listening at ' + server.get('port'));
@@ -273,25 +369,24 @@ server.post('/einsatz', urlencodedParser, function(req, res){
 						var queryArray = req.body.einsatz_kraefte.split();
 					}
 					
-					db.collection('Rettungskraft').find({funkruf: {$in: queryArray}}).toArray(function(err, queryRettungskrafte) {
+					db.collection('Rettungskraft').find({funkruf: {$in: queryArray}}).toArray(function(err, queryRettungskrafte1) {
 						if (err) throw err;
 						
-						db.collection('Posten').find({funkruf: {$in: queryArray}}).toArray(function(err, queryPosten) {
+						db.collection('Posten').find({funkruf: {$in: queryArray}}).toArray(function(err, queryPosten1) {
 							if (err) throw err;
 							
-							db.collection('Rettungsmittel').find({funkruf: {$in: queryArray}}).toArray(function(err, queryRettungsmittel) {
+							db.collection('Rettungsmittel').find({funkruf: {$in: queryArray}}).toArray(function(err, queryRettungsmittel1) {
 								if (err) throw err;
 						
 								einsatz_data = {sender: req.body.einsatz_sender,
-												position: req.body.einsatz_position,
 												meldebild: req.body.einsatz_meldebild,
 												anzVerletzte: req.body.einsatz_anzVerletzte,
 												text: req.body.einsatz_text,
 												status: req.body.einsatz_status,
 												timestamp: moment().format('YYYYMMDDHHmmss'),
-												rettungskraefte: queryRettungskrafte,
-												posten: queryPosten,
-												rettungsmittel: queryRettungsmittel,
+												rettungskraefte: queryRettungskrafte1,
+												posten: queryPosten1,
+												rettungsmittel: queryRettungsmittel1,
 												fuehrungskraft: result[0]};
 					
 								db.collection('Einsatz').insertOne(einsatz_data, function(err, inserted) {
@@ -300,20 +395,25 @@ server.post('/einsatz', urlencodedParser, function(req, res){
 									db.collection('Einsatz').find().sort({timestamp: 1}).toArray(function(err, queryEinsatz) {
 										if (err) throw err;
 										
-										db.collection('Rettungskraft').find({rettungsmittel: false}).toArray(function(err, queryRettungskrafte) {
+										db.collection('Rettungskraft').find({rettungsmittel: false}).toArray(function(err, queryRettungskrafte2) {
 											if (err) throw err;
 											
-											db.collection('Rettungsmittel').find().toArray(function(err, queryRettungsmittel) {
+											db.collection('Rettungsmittel').find().toArray(function(err, queryRettungsmittel2) {
 												if (err) throw err;
 												
-												db.collection('Posten').find().toArray(function(err, queryPosten) {
+												db.collection('Posten').find().toArray(function(err, queryPosten2) {
 													if (err) throw err;
-										
+													
+													addHistory({ereignis: "Notfalleinsatz", sender: req.body.einsatz_sender, meldebild: req.body.einsatz_meldebild,
+																anzVerletzte: req.body.einsatz_anzVerletzte, status: req.body.einsatz_status, text: req.body.einsatz_text,
+																rettungskraefte: queryRettungskrafte1, posten: queryPosten1, rettungsmittel: queryRettungsmittel1,
+																fuehrungskraft: result[0].nachname})
+													
 													res.render('mainpage', {title: "Einsatz - Digitaler Führungsassistent",
 																			einsatz: queryEinsatz,
-																			rettungskraft: queryRettungskrafte,
-																			rettungsmittel: queryRettungsmittel,
-																			posten: queryPosten,
+																			rettungskraft: queryRettungskrafte2,
+																			rettungsmittel: queryRettungsmittel2,
+																			posten: queryPosten2,
 																			fuehrungskraft_nachname: result[0].nachname,
 																			fuehrungskraft_quali: result[0].quali});
 													dbClient.close();
@@ -348,6 +448,10 @@ server.post('/einsatz', urlencodedParser, function(req, res){
 																						text: req.body.einsatz_text,
 																						status: req.body.einsatz_status,
 																						fuehrungskraft: result[0]}}, function(err, updated){
+						addHistory({ereignis: "Notfalleinsatz", sender: req.body.einsatz_sender, meldebild: req.body.einsatz_meldebild,
+																anzVerletzte: req.body.einsatz_anzVerletzte, status: req.body.einsatz_status, text: req.body.einsatz_text,
+																rettungskraefte: queryRettungskrafte1, posten: queryPosten1, rettungsmittel: queryRettungsmittel1,
+																fuehrungskraft: result[0].nachname})
 
 						res.render('html_form_dummy', {title: "Einsatz - Digitaler Führungsassistent",
 													   einsatz_id: req.body.einsatz_id,
@@ -411,7 +515,11 @@ server.post('/funkspruch', urlencodedParser, function(req, res){
 								
 								db.collection('Posten').find().toArray(function(err, queryPosten) {
 									if (err) throw err;
-					
+									
+									addHistory({ereignis: "Funkspruch", sender: req.body.funkspruch_sender, 
+											   empfaenger: req.body.funkspruch_empfaenger, fuehrungskraft: result[0].nachname, 
+											   kategorie: req.body.funkspruch_kategorie, text: req.body.funkspruch_text});
+											   
 									res.render('mainpage', {title: "Hauptseite - Digitaler Führungsassistent",
 															einsatz: queryEinsatz,
 															rettungskraft: queryRettungskrafte,
@@ -460,8 +568,9 @@ server.post('/rettungskraft', urlencodedParser, function(req, res){
 											  quali: req.body.rettungskraft_quali,
 											  funkruf: req.body.rettungskraft_vorname + " " + req.body.rettungskraft_nachname,
 											  tel: req.body.rettungskraft_tel,
-											  //position: req.body.rettungskraft_position,
 											  rettungsmittel: false};
+					
+					
 				}
 				
 				else {
@@ -472,8 +581,10 @@ server.post('/rettungskraft', urlencodedParser, function(req, res){
 											  quali: req.body.rettungskraft_quali,
 											  funkruf: req.body.rettungskraft_funkruf,
 											  tel: req.body.rettungskraft_tel,
-											  //position: req.body.rettungskraft_position,
 											  rettungsmittel: false};
+					
+					addHistory({ereignis: "Rettungskraft hat Ihre Schicht begonnen", vorname: req.body.rettungskraft_vorname, nachname: req.body.rettungskraft_nachname,
+								hiorg: req.body.rettungskraft_hiorg, quali: req.body.rettungskraft_quali, funkruf: req.body.rettungskraft_funkruf, tel: req.body.rettungskraft_tel});
 				}
 										  
 				db.collection('Rettungskraft').insertOne(rettungskraft_data, function(err, inserted) {
@@ -493,7 +604,21 @@ server.post('/rettungskraft', urlencodedParser, function(req, res){
 									
 									db.collection('Posten').find().toArray(function(err, queryPosten) {
 										if (err) throw err;
-							
+										
+										if (req.body.rettungskraft_funkruf == "") {
+											addHistory({ereignis: "Rettungskraft hat Ihre Schicht begonnen", vorname: req.body.rettungskraft_vorname,
+														nachname: req.body.rettungskraft_nachname, hiorg: req.body.rettungskraft_hiorg, quali: req.body.rettungskraft_quali, 
+														funkruf: req.body.rettungskraft_vorname + " " + req.body.rettungskraft_nachname,
+														tel: req.body.rettungskraft_tel, fuehrungskraft: queryFuehrungskraft[0].nachname});
+										}
+										
+										else {
+											addHistory({ereignis: "Rettungskraft hat Ihre Schicht begonnen", vorname: req.body.rettungskraft_vorname, 
+														nachname: req.body.rettungskraft_nachname, hiorg: req.body.rettungskraft_hiorg, quali: req.body.rettungskraft_quali, 
+														funkruf: req.body.rettungskraft_funkruf, tel: req.body.rettungskraft_tel,
+														fuehrungskraft: queryFuehrungskraft[0].nachname});
+										}
+										
 										res.render('mainpage', {title: "Hauptseite - Digitaler Führungsassistent",
 																einsatz: queryEinsatz,
 																rettungskraft: queryRettungskrafte,
@@ -525,8 +650,9 @@ server.post('/rettungskraft', urlencodedParser, function(req, res){
 											  hiorg: req.body.rettungskraft_hiorg,
 											  quali: req.body.rettungskraft_quali,
 											  funkruf: req.body.rettungskraft_vorname + " " + req.body.rettungskraft_nachname,
-											  tel: req.body.rettungskraft_tel};
+											  tel: req.body.rettungskraft_tel};							  
 				}
+				
 				else {
 					var rettungskraft_data = {vorname: req.body.rettungskraft_vorname,
 											  nachname: req.body.rettungskraft_nachname,
@@ -534,7 +660,7 @@ server.post('/rettungskraft', urlencodedParser, function(req, res){
 											  quali: req.body.rettungskraft_quali,
 											  funkruf: req.body.rettungskraft_funkruf,
 											  tel: req.body.rettungskraft_tel};
-				}
+					}
 				
 				db.collection('Rettungskraft').findOneAndUpdate({_id: ObjectID(req.body.rettungskraft_id)}, {$set: rettungskraft_data}, function(err, updated){
 						
@@ -551,7 +677,21 @@ server.post('/rettungskraft', urlencodedParser, function(req, res){
 									
 									db.collection('Posten').find().toArray(function(err, queryPosten) {
 										if (err) throw err;
-									
+										
+										if (req.body.rettungskraft_funkruf == "") {
+											addHistory({ereignis: "Personaldaten einer Rettungskraft wurden bearbeitet", vorname: req.body.rettungskraft_vorname,
+														nachname: req.body.rettungskraft_nachname, hiorg: req.body.rettungskraft_hiorg, quali: req.body.rettungskraft_quali, 
+														funkruf: req.body.rettungskraft_vorname + " " + req.body.rettungskraft_nachname,
+														tel: req.body.rettungskraft_tel, fuehrungskraft: queryFuehrungskraft[0].nachname});
+										}
+										
+										else {
+											addHistory({ereignis: "Personaldaten einer Rettungskraft wurden bearbeitet", vorname: req.body.rettungskraft_vorname, 
+														nachname: req.body.rettungskraft_nachname, hiorg: req.body.rettungskraft_hiorg, quali: req.body.rettungskraft_quali, 
+														funkruf: req.body.rettungskraft_funkruf, tel: req.body.rettungskraft_tel,
+														fuehrungskraft: queryFuehrungskraft[0].nachname});
+										}
+										
 										res.render('mainpage', {title: "Hauptseite - Digitaler Führungsassistent",
 														einsatz: queryEinsatz,
 														rettungskraft: queryRettungskraefte,
@@ -600,11 +740,10 @@ server.post('/posten', urlencodedParser, function(req, res){
 					var queryArray = req.body.posten_kraefte.split();
 				}
 				
-				db.collection('Rettungskraft').find({funkruf: {$in: queryArray}}).toArray(function(err, queryRettungskrafte) {
+				db.collection('Rettungskraft').find({funkruf: {$in: queryArray}}).toArray(function(err, queryRettungskraefte1) {
 					
 					posten_data = {funkruf: req.body.posten_funkruf,
-								   //position: req.body.posten_position,
-								   kraefte: queryRettungskrafte};
+								   kraefte: queryRettungskraefte1};
 					
 					db.collection('Posten').insertOne(posten_data, function(err, inserted) {
 						if (err) throw err;
@@ -615,7 +754,7 @@ server.post('/posten', urlencodedParser, function(req, res){
 							db.collection('Fuehrungskraft').find({cookie: req.session.user}).toArray(function(err, queryFuehrungskraft) {
 								if (err) throw err;
 								
-								db.collection('Rettungskraft').find({rettungsmittel: false}).toArray(function(err, queryRettungskrafte) {
+								db.collection('Rettungskraft').find({rettungsmittel: false}).toArray(function(err, queryRettungskraefte2) {
 									if (err) throw err;
 									
 									db.collection('Rettungsmittel').find().toArray(function(err, queryRettungsmittel) {
@@ -623,10 +762,13 @@ server.post('/posten', urlencodedParser, function(req, res){
 										
 										db.collection('Posten').find().toArray(function(err, queryPosten) {
 											if (err) throw err;
-										
+											
+											addHistory({ereignis: "Sanitätsposten wurde erstellt", funkruf: req.body.posten_funkruf, rettungskraefte: queryRettungskraefte1,
+														fuehrungskraft: queryFuehrungskraft[0].nachname})
+											
 											res.render('mainpage', {title: "Hauptseite - Digitaler Führungsassistent",
 															einsatz: queryEinsatz,
-															rettungskraft: queryRettungskrafte,
+															rettungskraft: queryRettungskraefte2,
 															rettungsmittel: queryRettungsmittel,
 															posten: queryPosten,
 															fuehrungskraft_nachname: queryFuehrungskraft[0].nachname,
@@ -687,7 +829,10 @@ server.post('/posten', urlencodedParser, function(req, res){
 												
 												db.collection('Posten').find().toArray(function(err, queryPosten2) {
 													if (err) throw err;
-												
+													
+													addHistory({ereignis: "Sanitätsposten wurde bearbeitet", funkruf: req.body.posten_funkruf, rettungskraefte: queryRettungskraefte1,
+																fuehrungskraft: queryFuehrungskraft[0].nachname})
+													
 													res.render('mainpage', {title: "Hauptseite - Digitaler Führungsassistent",
 																			einsatz: queryEinsatz,
 																			rettungskraft: queryRettungskraefte2,
@@ -741,12 +886,11 @@ server.post('/rettungsmittel', urlencodedParser, function(req, res){
 					var queryArray = req.body.rettungsmittel_kraefte.split();
 				}
 				
-				db.collection('Rettungskraft').find({funkruf: {$in: queryArray}}).toArray(function(err, queryRettungskrafte1) {
+				db.collection('Rettungskraft').find({funkruf: {$in: queryArray}}).toArray(function(err, queryRettungskraefte1) {
 					
 					rettungsmittel_data = {art: req.body.rettungsmittel_art,
 									funkruf: req.body.rettungsmittel_funkruf,
-									//position: req.body.rettungsmittel_position,
-									kraefte: queryRettungskrafte1};
+									kraefte: queryRettungskraefte1};
 					
 					db.collection('Rettungsmittel').insertOne(rettungsmittel_data, function(err, inserted) {
 						if (err) throw err;
@@ -764,7 +908,10 @@ server.post('/rettungsmittel', urlencodedParser, function(req, res){
 										
 										db.collection('Posten').find().toArray(function(err, queryPosten) {
 											if (err) throw err;
-										
+											
+											addHistory({ereignis: "Fahrzeug wurde besetzt", funkruf: req.body.rettungsmittel_funkruf, art: req.body.rettungsmittel_art,
+														rettungskraefte: queryRettungskraefte1, fuehrungskraft: queryFuehrungskraft[0].nachname});
+											
 											res.render('mainpage', {title: "Hauptseite - Digitaler Führungsassistent",
 															einsatz: queryEinsatz,
 															rettungskraft: queryRettungskrafte2,
@@ -803,12 +950,11 @@ server.post('/rettungsmittel', urlencodedParser, function(req, res){
 					
 					db.collection('Rettungsmittel').findOneAndUpdate({_id: ObjectID(req.body.rettungsmittel_id)}, {$set: {art: req.body.rettungsmittel_art,
 																														  funkruf: req.body.rettungsmittel_funkruf,
-																														  //position: req.body.rettungsmittel_position,
 																														  kraefte: queryRettungskraefte1}},
 																														  function(err, updated){
 						
 						db.collection('Rettungskraft').updateMany({funkruf: {$nin: queryArray}}, {$set: {rettungsmittel: false}}, function(err, result) {
-							if (err) throw err;
+							if (err) throw err; //not working!
 							
 							db.collection('Einsatz').find().sort({timestamp: 1}).toArray(function(err, queryEinsatz) {
 								if (err) throw err;
@@ -824,6 +970,9 @@ server.post('/rettungsmittel', urlencodedParser, function(req, res){
 											db.collection('Posten').find().toArray(function(err, queryPosten) {
 												if (err) throw err;
 											
+												addHistory({ereignis: "Fahrzeug-Konstellation wurde angepasst", funkruf: req.body.rettungsmittel_funkruf, art: req.body.rettungsmittel_art,
+														rettungskraefte: queryRettungskraefte1, fuehrungskraft: queryFuehrungskraft[0].nachname});
+												
 												res.render('mainpage', {title: "Hauptseite - Digitaler Führungsassistent",
 																einsatz: queryEinsatz,
 																rettungskraft: queryRettungskraefte2,
@@ -887,7 +1036,7 @@ server.get('/funkspruchCHRONIK', function(req, res){
 /* /position - Empfangen eines POST-Requests ueber Port 8080  */
 server.post('/position', urlencodedParser, function(req, res){
 	console.log("L2-Info: POST-REQUEST for /position");
-	console.log(req.body); //DEBUG Kontrollausgabe
+	//console.log(req.body); //DEBUG Kontrollausgabe
 	
 	if(req.session && req.session.user) { 
 		console.log("L1-Info: Cookie true");
@@ -896,9 +1045,6 @@ server.post('/position', urlencodedParser, function(req, res){
 		var rawData = null;
 		for (var k in req.body) rawData = k;
 		var validData = JSON.parse(rawData);
-		
-		console.log(validData.id);
-		console.log(validData.position);
 		
 		mongodbClient.connect(url, { useNewUrlParser: true }, function(err, dbClient) {
 			if (err) throw err;
@@ -909,7 +1055,13 @@ server.post('/position', urlencodedParser, function(req, res){
 				
 				if (updated.value != null) {
 					res.send('OK');
-					dbClient.close();
+					
+					db.collection('Fuehrungskraft').find({cookie: req.session.user}).toArray(function(err, queryFuehrungskraft) {
+						if (err) throw err;
+						
+						addHistory({ereignis: "Standort aktualisiert", funkruf: updated.value.funkruf, position: validData.position, fuehrungskraft: queryFuehrungskraft[0].nachname});
+						dbClient.close();
+					});
 				}
 			});
 			
@@ -917,7 +1069,13 @@ server.post('/position', urlencodedParser, function(req, res){
 				
 				if (updated.value != null) {
 					res.send('OK');
-					dbClient.close();
+					
+					db.collection('Fuehrungskraft').find({cookie: req.session.user}).toArray(function(err, queryFuehrungskraft) {
+						if (err) throw err;
+
+						addHistory({ereignis: "Standort aktualisiert", funkruf: updated.value.funkruf, position: validData.position, fuehrungskraft: queryFuehrungskraft[0].nachname});
+						dbClient.close();
+					});
 				}
 			});
 			
@@ -925,7 +1083,27 @@ server.post('/position', urlencodedParser, function(req, res){
 				
 				if (updated.value != null) {
 					res.send('OK');
-					dbClient.close();
+					
+					db.collection('Fuehrungskraft').find({cookie: req.session.user}).toArray(function(err, queryFuehrungskraft) {
+						if (err) throw err;
+						
+						addHistory({ereignis: "Standort aktualisiert", funkruf: updated.value.funkruf, position: validData.position, fuehrungskraft: queryFuehrungskraft[0].nachname});
+						dbClient.close();
+					});
+				}
+			});
+			
+			db.collection('Einsatz').findOneAndUpdate({_id: ObjectID(validData.id)}, {$set: {position: validData.position}}, function(err, updated){
+				
+				if (updated.value != null) {
+					res.send('OK');
+					
+					db.collection('Fuehrungskraft').find({cookie: req.session.user}).toArray(function(err, queryFuehrungskraft) {
+						if (err) throw err;
+						
+						addHistory({ereignis: "Standort aktualisiert", funkruf: updated.value.meldebild, position: validData.position, fuehrungskraft: queryFuehrungskraft[0].nachname});
+						dbClient.close();
+					});
 				}
 			});
 		});
@@ -1009,47 +1187,19 @@ server.get('/mainpage', function(req, res){
 
 
 
-/* /formtest - Empfangen eines GET-Requests ueber Port 8080  */
-server.get('/formtest', function(req, res){
-	console.log("L2-Info: GET-REQUEST for /formtest");
+/* /history - Empfangen eines GET-Requests ueber Port 8080  */
+server.get('/history', function(req, res){
+	console.log("L2-Info: GET-REQUEST for /history");
 	
-	res.render('html_form_dummy');
+	if(req.session && req.session.user) { 
+		console.log("L1-Info: Cookie true");
+		
+		
+		
+	}
 	
+	else {
+		console.log("L1-Info: Cookie false");
+		res.send("Cookie false");
+	}
 });	
-
-
-
-/* /ajaxtest - Empfangen eines POST-Requests ueber Port 8080  */
-server.post('/ajaxtest', urlencodedParser, function(req, res){
-	console.log("L2-Info: GET-REQUEST for /ajaxtest");
-	console.log(rey.body);
-	res.render('html_form_dummy');
-	
-});	
-
-
-
-/* Relevant fuer umfassendere Routing-Aufgaben */
-var cb1 = function (req, res, next) {
-	console.log("CB1");
-	
-	mongodbClient.connect(url, { useNewUrlParser: true }, function(err, dbClient) {
-			if (err) throw err;
-			var db = dbClient.db('DigitalerFuehrungsassistent');
-			console.log("L2-Info: DB-Connection true");
-			dbClient.close();
-			next();
-	});
-}
-var cb2 = function (req, res, next) {
-	console.log("CB2");
-	req.gehtdas = "ja";
-	next();
-}
-var cb3 = function (req, res) {
-	console.log("CB3");
-	console.log(req.gehtdas);
-	res.send("klappt...")
-}
-
-server.get('/routentest', [cb1, cb2, cb3]);

@@ -289,7 +289,7 @@ Collection: Einsatz
       <x>310</x>
       <y>470</y>
       <w>150</w>
-      <h>100</h>
+      <h>80</h>
     </coordinates>
     <panel_attributes>lt=.
 Collection: Historie
@@ -297,7 +297,6 @@ Collection: Historie
 - _id: MongoDB-intern
 - timestamp: String
 - ereignis: String
-- ereignisID: String
 
 </panel_attributes>
     <additional_attributes/>
@@ -308,10 +307,10 @@ Collection: Historie
       <x>310</x>
       <y>450</y>
       <w>180</w>
-      <h>130</h>
+      <h>110</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
-    <additional_attributes>10.0;20.0;10.0;10.0;160.0;10.0;160.0;110.0;150.0;110.0</additional_attributes>
+    <additional_attributes>10.0;20.0;10.0;10.0;160.0;10.0;160.0;90.0;150.0;90.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
@@ -319,10 +318,10 @@ Collection: Historie
       <x>320</x>
       <y>440</y>
       <w>180</w>
-      <h>130</h>
+      <h>110</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
-    <additional_attributes>10.0;20.0;10.0;10.0;160.0;10.0;160.0;110.0;150.0;110.0</additional_attributes>
+    <additional_attributes>10.0;20.0;10.0;10.0;160.0;10.0;160.0;90.0;150.0;90.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>

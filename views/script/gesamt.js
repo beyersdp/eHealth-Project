@@ -25,11 +25,10 @@ function openNav() {
 
 // Sicherheitsabfrage, bevor der Gesamteinsatz beendet wird
 function gesamteinsatzBeenden() {
-  var txt= "Wollen Sie den Großeinsatz wirklich beenden und den automatischen Bericht starten?";
+  var txt= "Wollen Sie den Großeinsatz wirklich beenden und die Gesamtdokumentation erstellen?";
   if (confirm(txt)) {
 	href="#";
   }
-  document.getElementById("exit").innerHTML = txt;
 }
 
 // Aus default Date-String die Stunden, Minuten und Sekunden extrahieren

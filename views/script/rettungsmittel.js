@@ -22,7 +22,7 @@ function updateRettungsmittel(id) {
 	
 	for (var i = 0; i < inputElements.length; i++) {
 
-		inputElements[i].value = rettungsmittel.childNodes[index].childNodes[1].data.slice(0,-1)
+		inputElements[i].value = rettungsmittel.childNodes[index].childNodes[1].data.slice(0,-1);
 		index += 2;
 	}
 }
