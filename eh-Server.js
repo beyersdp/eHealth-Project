@@ -816,11 +816,12 @@ server.post('/posten', urlencodedParser, function(req, res){
 						if (err) throw err;
 
 						db.collection('Posten').findOneAndUpdate({_id: ObjectID(req.body.posten_id)}, {$set: {funkruf: req.body.posten_funkruf,
-																													   //position: req.body.rettungsmittel_position,
 																													   kraefte: queryRettungskraefte1}},
 																													   function(err, updated){
 							
-							db.collection('Rettungskraft').updateMany({funkruf: {$in: queryPosten1[0].kraefte.filter(o => ! queryRettungskraefte1.some(i => i == o))}},
+							var toChange = queryPosten1[0].kraefte.map(x => x.funkruf).filter(function(kraft){ if(queryRettungskraefte1.map(x => x.funkruf).includes(kraft)){} else {return kraft;}});
+							
+							db.collection('Rettungskraft').updateMany({funkruf: {$in: toChange}},
 																	  {$set: {rettungsmittel: false}}, 
 																	  function(err, result) { //not working
 								if (err) throw err;
@@ -960,42 +961,49 @@ server.post('/rettungsmittel', urlencodedParser, function(req, res){
 				}
 				
 				db.collection('Rettungskraft').find({funkruf: {$in: queryArray}}).toArray(function(err, queryRettungskraefte1) {
+						if (err) throw err;
 					
-					db.collection('Rettungsmittel').findOneAndUpdate({_id: ObjectID(req.body.rettungsmittel_id)}, {$set: {art: req.body.rettungsmittel_art,
-																														  funkruf: req.body.rettungsmittel_funkruf,
-																														  kraefte: queryRettungskraefte1}},
-																														  function(err, updated){
-						
-						db.collection('Rettungskraft').updateMany({funkruf: {$nin: queryArray}}, {$set: {rettungsmittel: false}}, function(err, result) {
-							if (err) throw err; //not working!
+					db.collection('Rettungsmittel').find({_id: ObjectID(req.body.rettungsmittel_id)}).toArray(function(err, queryRettungsmittel1) {
+						if (err) throw err;
+					
+						db.collection('Rettungsmittel').findOneAndUpdate({_id: ObjectID(req.body.rettungsmittel_id)}, {$set: {art: req.body.rettungsmittel_art,
+																															  funkruf: req.body.rettungsmittel_funkruf,
+																															  kraefte: queryRettungskraefte1}},
+																															  function(err, updated){
 							
-							db.collection('Einsatz').find().sort({timestamp: 1}).toArray(function(err, queryEinsatz) {
-								if (err) throw err;
+							var toChange = queryRettungsmittel1[0].kraefte.map(x => x.funkruf).filter(function(kraft){ if(queryRettungskraefte1.map(x => x.funkruf).includes(kraft)){} else {return kraft;}});
+							
+							db.collection('Rettungskraft').updateMany({funkruf: {$in: toChange}}, {$set: {rettungsmittel: false}}, function(err, result) {
+								if (err) throw err; //not working!
 								
-								db.collection('Fuehrungskraft').find({cookie: req.session.user}).toArray(function(err, queryFuehrungskraft) {
+								db.collection('Einsatz').find().sort({timestamp: 1}).toArray(function(err, queryEinsatz) {
 									if (err) throw err;
 									
-									db.collection('Rettungskraft').find({rettungsmittel: false}).toArray(function(err, queryRettungskraefte2) {
+									db.collection('Fuehrungskraft').find({cookie: req.session.user}).toArray(function(err, queryFuehrungskraft) {
 										if (err) throw err;
 										
-										db.collection('Rettungsmittel').find().toArray(function(err, queryRettungsmittel) {
+										db.collection('Rettungskraft').find({rettungsmittel: false}).toArray(function(err, queryRettungskraefte2) {
+											if (err) throw err;
 											
-											db.collection('Posten').find().toArray(function(err, queryPosten) {
-												if (err) throw err;
-											
-												addHistory({ereignis: "Fahrzeug-Konstellation wurde angepasst", funkruf: req.body.rettungsmittel_funkruf, art: req.body.rettungsmittel_art,
-														rettungskraefte: queryRettungskraefte1, fuehrungskraft: queryFuehrungskraft[0].nachname});
+											db.collection('Rettungsmittel').find().toArray(function(err, queryRettungsmittel) {
 												
-												res.render('mainpage', {title: "Hauptseite - Digitaler Führungsassistent",
-																einsatz: queryEinsatz,
-																rettungskraft: queryRettungskraefte2,
-																rettungsmittel: queryRettungsmittel,
-																posten: queryPosten,
-																fuehrungskraft_nachname: queryFuehrungskraft[0].nachname,
-																fuehrungskraft_quali: queryFuehrungskraft[0].quali,
-																fuehrungskraft_mapstate: queryFuehrungskraft[0].position,
-																fuehrungskraft_mapzoom: queryFuehrungskraft[0].zoom});
-												dbClient.close();
+												db.collection('Posten').find().toArray(function(err, queryPosten) {
+													if (err) throw err;
+												
+													addHistory({ereignis: "Fahrzeug-Konstellation wurde angepasst", funkruf: req.body.rettungsmittel_funkruf, art: req.body.rettungsmittel_art,
+															rettungskraefte: queryRettungskraefte1, fuehrungskraft: queryFuehrungskraft[0].nachname});
+													
+													res.render('mainpage', {title: "Hauptseite - Digitaler Führungsassistent",
+																	einsatz: queryEinsatz,
+																	rettungskraft: queryRettungskraefte2,
+																	rettungsmittel: queryRettungsmittel,
+																	posten: queryPosten,
+																	fuehrungskraft_nachname: queryFuehrungskraft[0].nachname,
+																	fuehrungskraft_quali: queryFuehrungskraft[0].quali,
+																	fuehrungskraft_mapstate: queryFuehrungskraft[0].position,
+																	fuehrungskraft_mapzoom: queryFuehrungskraft[0].zoom});
+													dbClient.close();
+												});
 											});
 										});
 									});
