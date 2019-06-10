@@ -206,9 +206,7 @@ server.post('/login', urlencodedParser, function(req, res){
 																	rettungsmittel: queryRettungsmittel,
 																	posten: queryPosten,
 																	fuehrungskraft_nachname: result.value.nachname,
-																	fuehrungskraft_quali: result.value.quali,
-																	fuehrungskraft_mapstate: result[0].position,
-																	fuehrungskraft_mapzoom: result[0].zoom});
+																	fuehrungskraft_quali: result.value.quali});
 								
 											dbClient.close();
 										});

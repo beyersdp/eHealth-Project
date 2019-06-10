@@ -428,7 +428,7 @@
 
 <script>
 	//beginning view of map [FYI: alternative "panTo"]
-	var map = L.map('map', {contextmenu: true, contextmenuWidth: 140, contextmenuItems: [{
+	var map = L.map('map', {center: [52.521918, 13.413215], zoom: 5, contextmenu: true, contextmenuWidth: 140, contextmenuItems: [{
 		text: 'Karte hier zentrieren', callback: mapZentrieren},
 		]});
 	
@@ -438,7 +438,9 @@
 	});
 	
 	// Kartenansicht bevor Reload einstellen
-	map.setView([{{ fuehrungskraft_mapstate.lat }}, {{ fuehrungskraft_mapstate.lng }}], {{ fuehrungskraft_mapzoom }});
+	{{# if fuehrungskraft_mapstate.lat}}
+		map.setView([{{ fuehrungskraft_mapstate.lat }}, {{ fuehrungskraft_mapstate.lng }}], {{ fuehrungskraft_mapzoom }});
+	{{/if}}
 	
 	//Map Suchfeld
     var searchControl = L.esri.Geocoding.geosearch().addTo(map);
