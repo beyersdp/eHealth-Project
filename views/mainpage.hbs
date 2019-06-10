@@ -430,8 +430,15 @@
 	//beginning view of map [FYI: alternative "panTo"]
 	var map = L.map('map', {contextmenu: true, contextmenuWidth: 140, contextmenuItems: [{
 		text: 'Karte hier zentrieren', callback: mapZentrieren},
-		]})
-		.setView([48.506939, 9.203804], 14);
+		]});
+	
+	// Event, wenn Karte bewegt wurde
+	map.on('moveend', function (e) { 
+		sendView(map.getCenter(), map.getZoom());
+	});
+	
+	// Kartenansicht bevor Reload einstellen
+	map.setView([{{ fuehrungskraft_mapstate.lat }}, {{ fuehrungskraft_mapstate.lng }}], {{ fuehrungskraft_mapzoom }});
 	
 	//Map Suchfeld
     var searchControl = L.esri.Geocoding.geosearch().addTo(map);
@@ -485,7 +492,10 @@
 	}
 	// End Kartenansicht
 	
-
+	function newPosition(e) {
+		console.log("hier");
+	}
+	
 	
 	
 	

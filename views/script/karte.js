@@ -130,7 +130,7 @@ function positionSenden(e) {
 	var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
-			console.log(this.responseText);
+			//console.log(this.responseText);
 		}
 	};
 	xhttp.open("POST", "/position", true);
@@ -138,6 +138,21 @@ function positionSenden(e) {
 	xhttp.send(JSON.stringify(data)); 
 }
 
+// Aktuelle Positionierung der Karte an den Server senden
+function sendView(center, zoom) {
+	
+	var data = {'position': center, 'zoom': zoom};
+	
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			//console.log(this.responseText);
+		}
+	};
+	xhttp.open("POST", "/mapstate", true);
+	xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+	xhttp.send(JSON.stringify(data)); 
+} 
 
 
 /*

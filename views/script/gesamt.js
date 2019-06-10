@@ -238,6 +238,7 @@ var comfyText = (function(){
 })()
 
 
+
 // Direkt startende Funktionen:
 toHour('timestamp');
 shortQuali("medQuali");
