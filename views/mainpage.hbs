@@ -31,8 +31,13 @@
 		<!-- 3 Funktion = Beenden und Bericht erstellen -->
 		<a onclick="gesamteinsatzBeenden()" class="w3-bar-item w3-button w3-padding-larger" style="height:45px; font-size:14px;" title="Großeinsatz beenden & automatischen Bericht erstellen"><i class="fa fa-power-off fa-fw"></i>Beenden</a>
 		
+		<!-- Reload Button: -->
+		<button class="w3-bar-item w3-button w3-hide-small w3-right w3-padding-larger" style="height:45px; width:10px;;" title="Reload Page"><i class="fa fa-refresh w3-right"></i></button>
+		
 		<!-- Information ueber aktive Fuehrungskraft -->
 		<button class="w3-bar-item w3-button w3-hide-small w3-right w3-padding-larger" style="height:45px; font-size:14px;" title="Funktionalitäten">{{ fuehrungskraft_nachname }} ({{ fuehrungskraft_quali }})</button>
+		
+		
 	  
 	</div> <!-- id="navbar" -->
 </div> <!-- id="top" -->
@@ -128,7 +133,7 @@
 			<p></p>
 			
 			{{# if einsatz}}
-			<div class="w3-card w3-round w3-theme-l4" style="overflow-y:scroll; height:530px;" id="left_scrollbar"><p></p>
+			<div class="w3-card w3-round w3-theme-l4" style="overflow-y:scroll; height:590px;" id="left_scrollbar"><p></p>
 				<!-- Auflistung der Einsaetze -->
 				
 				{{# each einsatz}}
@@ -214,9 +219,8 @@
 			<div class ="w3-row-padding">
 				<div class="w3-col m12">
 					<div class="w3-card w3-round w3-white">
-						<!-- in Arbeit... -->
+					
 						<div id="kerndaten" class="w3-container w3-display-container w3-padding w3-white w3-hide-small w3-round w3-border">
-							<!-- onclick="this.parentElement.style.display='hidden' chronik_notfalleinsaetze.style.display='inline'"-->
 							<span onclick="switchInfoDisplay('kerndaten')" class="w3-button w3-theme-l3 w3-display-topright">
 							  <i class="fa fa-play" onclick="switchInfoDisplay('kerndaten')"></i>
 							</span>							
@@ -233,7 +237,7 @@
 						</div>
 						
 						<div id="einsatzChronik" hidden class="w3-container w3-display-container w3-padding w3-white w3-hide-small w3-round w3-border">
-							<span onclick="switchInfoDisplay('einsatzChronik')" steckbrief_gesamteinsatz.style.display='inline'" class="w3-button w3-theme-l3 w3-display-topright">
+							<span onclick="switchInfoDisplay('einsatzChronik')" class="w3-button w3-theme-l3 w3-display-topright">
 							  <i class="fa fa-play" onclick="switchInfoDisplay('einsatzChronik')"></i>
 							</span>							
 							<h6 class="w3-opacity"><i class="fa fa-folder-open w3-large w3-margin-right"> <span class="fa fa-medkit w3-right w3-small"></span></i>Chronologie der Notfalleinsätze</h6>
@@ -255,7 +259,7 @@
 			<br>
 	 
 		</div> <!-- id="middle_colum" -->
-    
+		
 	
 		<!-- Right Column -->
 		<div class="w3-col m2" id="right_column">
@@ -359,7 +363,7 @@
 		
 			<p></p>
 
-			<div class="w3-card w3-round w3-theme-l4" style="overflow-y:scroll; height:480px;" id="right_scrollbar"><p></p>
+			<div class="w3-card w3-round w3-theme-l4" style="overflow-y:scroll; height:540px;" id="right_scrollbar"><p></p>
 				{{# if rettungsmittel }}
 				{{# each rettungsmittel }}
 				<div class="dragElement w3-container w3-white w3-card w3-round w3-hover-shadow" draggable="true" id="{{ _id }}">
@@ -623,31 +627,6 @@
 		{{/if}}
 	{{/each}}
 	{{/if}}
-</script>
-<script>
-	/*
-	var comfyText = (function(){
-		var tag = document.querySelectorAll('textarea')
-		for (var i=0; i<tag.length; i++){
-			tag[i].addEventListener('paste',autoExpand)
-			tag[i].addEventListener('input',autoExpand)
-			tag[i].addEventListener('keyup',autoExpand)
-		}
-		function autoExpand(e,el){
-			var el = el || e.target
-			el.style.height = 'inherit'
-			el.style.height = el.scrollHeight+'px'
-		}
-		window.addEventListener('load',expandAll)
-		window.addEventListener('resize',expandAll)
-		function expandAll(){
-			var tag = document.querySelectorAll('textarea')
-			for (var i=0; i<tag.length; i++){
-			  autoExpand(e,tag[i])
-			}
-		}
-	})()
-	*/
 </script>
 
 
