@@ -534,6 +534,9 @@
 		this.classList.remove('over');  
 	}
 	
+	
+	
+	
 	function handleDrop(e) {
 		// this / e.target is current target element.
 		if (e.stopPropagation) {
@@ -544,24 +547,32 @@
 		
 		if (e.toElement.id == "map") {
 			
-			var nextSibling = null;
+			console.log(getMarker());
 			
-			if (document.getElementById(e.dataTransfer.getData('text')).childNodes[0].className == 'fa fa-user-md w3-small w3-margin-right') {
-				nextSibling = 'Rettungskraft';
+			if (getMarker().includes(e.dataTransfer.getData('text'))) {
+				alert(e.dataTransfer.getData('text') + " befindet sich schon auf der Karte!");
 			}
-			else if (document.getElementById(e.dataTransfer.getData('text')).childNodes[0].className == 'fa fa-flag w3-small w3-margin-right') {
-				nextSibling = 'Posten';
-			}
+			
 			else {
-				nextSibling = document.getElementById(e.dataTransfer.getData('text')).nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.innerText;
+				var nextSibling = null;
+				
+				if (document.getElementById(e.dataTransfer.getData('text')).childNodes[0].className == 'fa fa-user-md w3-small w3-margin-right') {
+					nextSibling = 'Rettungskraft';
+				}
+				else if (document.getElementById(e.dataTransfer.getData('text')).childNodes[0].className == 'fa fa-flag w3-small w3-margin-right') {
+					nextSibling = 'Posten';
+				}
+				else {
+					nextSibling = document.getElementById(e.dataTransfer.getData('text')).nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.innerText;
+				}
+				
+				var coordinates = map.containerPointToLatLng(L.point([e.clientX - 250,e.clientY - 50]));
+				L.marker(coordinates, {icon: getIcon(nextSibling), draggable: true, keyboard: true, contextmenu: true, 
+					contextmenuItems: [{text: 'Marker entfernen', index: 0, callback: markerEntfernen},
+									   {text: 'Position setzen', index: 1, callback: positionSenden}]})
+					.addTo(map)
+					.bindPopup("<b>" + e.dataTransfer.getData('text') + "</b>");
 			}
-			
-			var coordinates = map.containerPointToLatLng(L.point([e.clientX - 250,e.clientY - 50]));
-			L.marker(coordinates, {icon: getIcon(nextSibling), draggable: true, keyboard: true, contextmenu: true, 
-				contextmenuItems: [{text: 'Marker entfernen', index: 0, callback: markerEntfernen},
-								   {text: 'Position setzen', index: 1, callback: positionSenden}]})
-				.addTo(map)
-				.bindPopup("<b>" + e.dataTransfer.getData('text') + "</b>");
 		}
 		
 		return false;

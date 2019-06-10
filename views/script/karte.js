@@ -154,6 +154,18 @@ function sendView(center, zoom) {
 	xhttp.send(JSON.stringify(data)); 
 } 
 
+// Gibt ein Array mit den Popup-Texten der aktuell auf der Map befindlichen Marker zurueck
+function getMarker() {
+	
+	var marker = [];
+	map.eachLayer(function(layer) {
+		if(layer instanceof L.Marker) {
+			marker.push(layer._popup._content.replace("<b>", "").replace("</b>", ""));
+		}
+	  });
+	
+	return marker;
+}
 
 /*
 
