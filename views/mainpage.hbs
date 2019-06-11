@@ -367,8 +367,11 @@
 				{{# if rettungsmittel }}
 				{{# each rettungsmittel }}
 				<div class="dragElement w3-container w3-white w3-card w3-round w3-hover-shadow" draggable="true" id="{{ _id }}">
-					<button onclick="updateRettungsmittel('{{ _id }}')" class="funkruf w3-center w3-button w3-block w3-orange w3-half" style="height:30px; width:75%; font-size:12px;" id="{{ funkruf }}"><i class="fa fa-ambulance w3-small w3-margin-right"></i>{{ funkruf }}</button>
-					<button onclick="" class="w3-center w3-button w3-block w3-blue-grey w3-quarter" style="height:30px; font-size:10px;" title="Decline"><i class="fa fa-trash"></i></button>
+					<button onclick="updateRettungsmittel('{{ _id }}')" class="funkruf w3-center w3-button w3-block w3-orange w3-half" style="height:30px; width:75%; font-size:12px;" id="{{ funkruf }}" title="Bearbeiten"><i class="fa fa-ambulance w3-small w3-margin-right"></i>{{ funkruf }}</button>
+					<form method="POST" action="/rettungsmittelDel" id="rettungsmittelDel_form">
+						<input type="hidden" name="rettungsmittel_id" value="{{ _id }}"></input>
+						<button type="submit" class="w3-center w3-button w3-block w3-blue-grey w3-quarter" style="height:30px; font-size:10px;" title="Löschen"><i class="fa fa-trash"></i></button>
+					</form>
 					<br>
 					<p style="font-size:11px"><i class="fa fa-ambulance fa-fw w3-margin-right"></i>{{ art }}</p>
 					{{# if kraefte }}
@@ -385,8 +388,11 @@
 				{{# if posten }}
 				{{# each posten }}
 				<div class="dragElement w3-container w3-white w3-card w3-round w3-hover-shadow" draggable="true" id="{{ _id }}">
-					<button onclick="updatePosten('{{ _id }}')" class="funkruf w3-center w3-button w3-block w3-yellow w3-half" style="height:30px; width:75%; font-size:12px;" id="{{ funkruf }}"><i class="fa fa-flag w3-small w3-margin-right"></i>{{ funkruf }}</button>
-					<button onclick="{{_id}}.style.display='none'" class="w3-center w3-button w3-block w3-blue-grey w3-quarter" style="height:30px; font-size:10px;" title="Decline"><i class="fa fa-trash"></i></button>
+					<button onclick="updatePosten('{{ _id }}')" class="funkruf w3-center w3-button w3-block w3-yellow w3-half" style="height:30px; width:75%; font-size:12px;" id="{{ funkruf }}" title="Bearbeiten"><i class="fa fa-flag w3-small w3-margin-right"></i>{{ funkruf }}</button>
+					<form method="POST" action="/postenDel" id="postenDel_form">
+						<input type="hidden" name="posten_id" value="{{ _id }}"></input>
+						<button type="submit" class="w3-center w3-button w3-block w3-blue-grey w3-quarter" style="height:30px; font-size:10px;" title="Löschen"><i class="fa fa-trash"></i></button>
+					</form>
 					<br>
 					{{# if kraefte }}
 					{{# each kraefte }}
@@ -403,8 +409,11 @@
 				{{# each rettungskraft}}
 				<p></p>
 				<div class="dragElement w3-container w3-white w3-card w3-round w3-hover-shadow .w3-hover-div" draggable="true" id="{{ _id }}">
-					<button onclick="updateRettungskraft('{{ _id }}')" class="funkruf w3-center w3-button w3-block w3-light-green w3-half" style="height:30px; width:75%; font-size:12px;" id="{{ funkruf }}"><i class="fa fa-user-md w3-small w3-margin-right"></i>{{ funkruf }}</button>
-					<button onclick="{{_id}}.style.display='none'" class="w3-center w3-button w3-block w3-blue-grey w3-quarter" style="height:30px; font-size:10px;" title="Decline"><i class="fa fa-trash"></i></button>
+					<button onclick="updateRettungskraft('{{ _id }}')" class="funkruf w3-center w3-button w3-block w3-light-green w3-half" style="height:30px; width:75%; font-size:12px;" id="{{ funkruf }}" title="Bearbeiten"><i class="fa fa-user-md w3-small w3-margin-right"></i>{{ funkruf }}</button>
+					<form method="POST" action="/rettungskraftDel" id="rettungskraftDel_form">
+						<input type="hidden" name="rettungskraft_id" value="{{ _id }}"></input>
+						<button type="submit" class="w3-center w3-button w3-block w3-blue-grey w3-quarter" style="height:30px; font-size:10px;" title="Löschen"><i class="fa fa-trash"></i></button>
+					</form>
 					<br>
 					<p style="font-size:11px"><i class="fa fa-user-md fa-fw w3-margin-right"></i><span>{{ vorname }}</span> <span>{{ nachname }}</span> <span class="medQuali">{{ quali }}</span></p>
 					<p hidden>{{ hiorg }}</p>

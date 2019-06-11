@@ -112,6 +112,14 @@ function addHistory(args) {
 		var ereignis_grouping = args.ereignis + ": " + args.funkruf + " befindet sich nun an den Koordinaten (" + args.position.lat + ", " + args.position.lng + ")";
 	}
 	
+	if (args.ereignis == "hat den Dienst beendet") {
+		var ereignis_grouping = args.funkruf + " " + args.ereignis;
+	}
+	
+	if (args.ereignis == "wurde stillgelegt") {
+		var ereignis_grouping = args.funkruf + " " + args.ereignis;
+	}
+	
 	console.log(ereignis_grouping);
 	
 	var history_data = {timestamp: moment().format('YYYYMMDDHHmmss'),
@@ -972,7 +980,7 @@ server.post('/rettungsmittel', urlencodedParser, function(req, res){
 							var toChange = queryRettungsmittel1[0].kraefte.map(x => x.funkruf).filter(function(kraft){ if(queryRettungskraefte1.map(x => x.funkruf).includes(kraft)){} else {return kraft;}});
 							
 							db.collection('Rettungskraft').updateMany({funkruf: {$in: toChange}}, {$set: {rettungsmittel: false}}, function(err, result) {
-								if (err) throw err; //not working!
+								if (err) throw err;
 								
 								db.collection('Einsatz').find().sort({timestamp: 1}).toArray(function(err, queryEinsatz) {
 									if (err) throw err;
@@ -1015,6 +1023,196 @@ server.post('/rettungsmittel', urlencodedParser, function(req, res){
 			});
 		}
 	
+	}
+	else {
+		console.log("L1-Info: Cookie false");
+		res.send("Cookie false");
+	}
+});
+
+
+
+/* /rettungskraftDel - Empfangen eines POST-Requests ueber Port 8080  */
+server.post('/rettungskraftDel', urlencodedParser, function(req, res){
+	console.log("L2-Info: POST-REQUEST for /rettungskraftDel");
+	//console.log(req.body); //DEBUG Kontrollausgabe
+	
+	if(req.session && req.session.user) { 
+		console.log("L1-Info: Cookie true");
+		
+		mongodbClient.connect(url, { useNewUrlParser: true }, function(err, dbClient) {
+			if (err) throw err;
+			var db = dbClient.db('DigitalerFuehrungsassistent');
+			console.log("L2-Info: DB-Connection true");
+			
+			db.collection('Rettungskraft').find({_id: ObjectID(req.body.rettungskraft_id)}).toArray(function(err, queryRettungskraefte1) {
+				if (err) throw err;
+			
+				db.collection('Rettungskraft').deleteOne({_id: ObjectID(req.body.rettungskraft_id)}, function(err, deleted) {
+					if (err) throw err;
+					
+					db.collection('Fuehrungskraft').find({cookie: req.session.user}).toArray(function(err, queryFuehrungskraft) {
+					if (err) throw err;
+					
+						db.collection('Einsatz').find().sort({timestamp: 1}).toArray(function(err, queryEinsatz) {
+							if (err) throw err;
+							
+							db.collection('Rettungskraft').find({rettungsmittel: false}).toArray(function(err, queryRettungskrafte2) {
+								if (err) throw err;
+								
+								db.collection('Rettungsmittel').find().toArray(function(err, queryRettungsmittel) {
+									
+									db.collection('Posten').find().toArray(function(err, queryPosten) {
+										if (err) throw err;
+									
+										addHistory({ereignis: "hat den Dienst beendet", funkruf: queryRettungskraefte1[0].funkruf});
+										
+										res.render('mainpage', {title: "Hauptseite - Digitaler Führungsassistent",
+														einsatz: queryEinsatz,
+														rettungskraft: queryRettungskrafte2,
+														rettungsmittel: queryRettungsmittel,
+														posten: queryPosten,
+														fuehrungskraft_nachname: queryFuehrungskraft[0].nachname,
+														fuehrungskraft_quali: queryFuehrungskraft[0].quali,
+														fuehrungskraft_mapstate: queryFuehrungskraft[0].position,
+														fuehrungskraft_mapzoom: queryFuehrungskraft[0].zoom});
+										dbClient.close();
+									});
+								});
+							});
+						});
+					});
+				});
+			});
+		});
+	}
+	else {
+		console.log("L1-Info: Cookie false");
+		res.send("Cookie false");
+	}
+});
+
+
+
+/* /postenDel - Empfangen eines POST-Requests ueber Port 8080  */
+server.post('/postenDel', urlencodedParser, function(req, res){
+	console.log("L2-Info: POST-REQUEST for /postenDel");
+	//console.log(req.body); //DEBUG Kontrollausgabe
+	
+	if(req.session && req.session.user) { 
+		console.log("L1-Info: Cookie true");
+		
+		mongodbClient.connect(url, { useNewUrlParser: true }, function(err, dbClient) {
+			if (err) throw err;
+			var db = dbClient.db('DigitalerFuehrungsassistent');
+			console.log("L2-Info: DB-Connection true");
+			
+			db.collection('Posten').find({_id: ObjectID(req.body.posten_id)}).toArray(function(err, queryPosten1) {
+				if (err) throw err;
+				
+				db.collection('Rettungskraft').updateMany({funkruf: {$in: queryPosten1[0].kraefte.map(x => x.funkruf)}}, {$set: {rettungsmittel: false}});   
+			
+				db.collection('Posten').deleteOne({_id: ObjectID(req.body.posten_id)}, function(err, deleted) {
+					if (err) throw err;
+					
+					db.collection('Fuehrungskraft').find({cookie: req.session.user}).toArray(function(err, result) {
+					if (err) throw err;
+					
+						db.collection('Einsatz').find().sort({timestamp: 1}).toArray(function(err, queryEinsatz) {
+							if (err) throw err;
+							
+							db.collection('Rettungskraft').find({rettungsmittel: false}).toArray(function(err, queryRettungskrafte) {
+								if (err) throw err;
+								
+								db.collection('Rettungsmittel').find().toArray(function(err, queryRettungsmittel) {
+									
+									db.collection('Posten').find().toArray(function(err, queryPosten2) {
+										if (err) throw err;
+										
+										addHistory({ereignis: "wurde stillgelegt", funkruf: queryPosten1[0].funkruf});
+										
+										res.render('mainpage', {title: "Hauptseite - Digitaler Führungsassistent",
+														einsatz: queryEinsatz,
+														rettungskraft: queryRettungskrafte,
+														rettungsmittel: queryRettungsmittel,
+														posten: queryPosten2,
+														fuehrungskraft_nachname: result[0].nachname,
+														fuehrungskraft_quali: result[0].quali,
+														fuehrungskraft_mapstate: result[0].position,
+														fuehrungskraft_mapzoom: result[0].zoom});
+										dbClient.close();
+									});
+								});
+							});
+						});
+					});
+				});
+			});
+		});
+	}
+	else {
+		console.log("L1-Info: Cookie false");
+		res.send("Cookie false");
+	}
+});
+
+
+
+/* /rettungsmittelDel - Empfangen eines POST-Requests ueber Port 8080  */
+server.post('/rettungsmittelDel', urlencodedParser, function(req, res){
+	console.log("L2-Info: POST-REQUEST for /rettungsmittelnDel");
+	//console.log(req.body); //DEBUG Kontrollausgabe
+	
+	if(req.session && req.session.user) { 
+		console.log("L1-Info: Cookie true");
+		
+		mongodbClient.connect(url, { useNewUrlParser: true }, function(err, dbClient) {
+			if (err) throw err;
+			var db = dbClient.db('DigitalerFuehrungsassistent');
+			console.log("L2-Info: DB-Connection true");
+			
+			db.collection('Rettungsmittel').find({_id: ObjectID(req.body.rettungsmittel_id)}).toArray(function(err, queryRettungsmittel1) {
+				if (err) throw err;
+				
+				db.collection('Rettungskraft').updateMany({funkruf: {$in: queryRettungsmittel1[0].kraefte.map(x => x.funkruf)}}, {$set: {rettungsmittel: false}});   
+			
+				db.collection('Rettungsmittel').deleteOne({_id: ObjectID(req.body.rettungsmittel_id)}, function(err, deleted) {
+					if (err) throw err;
+					
+					db.collection('Fuehrungskraft').find({cookie: req.session.user}).toArray(function(err, result) {
+					if (err) throw err;
+					
+						db.collection('Einsatz').find().sort({timestamp: 1}).toArray(function(err, queryEinsatz) {
+							if (err) throw err;
+							
+							db.collection('Rettungskraft').find({rettungsmittel: false}).toArray(function(err, queryRettungskrafte) {
+								if (err) throw err;
+								
+								db.collection('Rettungsmittel').find().toArray(function(err, queryRettungsmittel) {
+									
+									db.collection('Posten').find().toArray(function(err, queryPosten2) {
+										if (err) throw err;
+										
+										addHistory({ereignis: "wurde stillgelegt", funkruf: queryRettungsmittel1[0].funkruf});
+										
+										res.render('mainpage', {title: "Hauptseite - Digitaler Führungsassistent",
+														einsatz: queryEinsatz,
+														rettungskraft: queryRettungskrafte,
+														rettungsmittel: queryRettungsmittel,
+														posten: queryPosten2,
+														fuehrungskraft_nachname: result[0].nachname,
+														fuehrungskraft_quali: result[0].quali,
+														fuehrungskraft_mapstate: result[0].position,
+														fuehrungskraft_mapzoom: result[0].zoom});
+										dbClient.close();
+									});
+								});
+							});
+						});
+					});
+				});
+			});
+		});
 	}
 	else {
 		console.log("L1-Info: Cookie false");
@@ -1231,7 +1429,7 @@ server.get('/history', function(req, res){
 
 /* /mapstate- Empfangen eines POST-Requests ueber Port 8080  */
 server.post('/mapstate', urlencodedParser, function(req, res){
-	console.log("L2-Info: POST-REQUEST for /position");
+	console.log("L2-Info: POST-REQUEST for /mapstate");
 	//console.log(req.body); //DEBUG Kontrollausgabe
 	
 	if(req.session && req.session.user) { 
