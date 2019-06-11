@@ -13,7 +13,7 @@
 				<a href="javascript:void(0)"  onclick="clickOn('rettungsmittelNew_button')" style="font-size:12px" class="w3-bar-item w3-button"><i class="fa fa-plus w3-small w3-margin-right"> <span class="fa fa-ambulance w3-right w3-large"></span></i>Rettungsmittel hinzufügen</a>
 				<a href="javascript:void(0)"  onclick="clickOn('postenNew_button')" style="font-size:12px" class="w3-bar-item w3-button"><i class="fa fa-plus w3-small w3-margin-right"> <span class="fa fa-flag w3-right w3-large"></span></i> Sanitätsposten hinzufügen</a>
 				<a href="javascript:void(0)"  onclick="clickOn('rettungskraftNew_button')" style="font-size:12px" class="w3-bar-item w3-button"><i class="fa fa-plus w3-small w3-margin-right"> <span class="fa fa-user-md w3-right w3-large"></span></i> Rettungskräfte hinzufügen</a>
-				<a href="javascript:void(0)" style="font-size:12px" class="w3-bar-item w3-button"><i class="fa fa-address-card w3-large w3-margin-right"> <span class="fa fa-pencil w3-right w3-small"></span></i>Führungsposition ändern</a>
+				<a onclick="openModal()" style="font-size:12px" class="w3-bar-item w3-button"><i class="fa fa-address-card w3-large w3-margin-right"> <span class="fa fa-pencil w3-right w3-small"></span></i>Führungsposition ändern</a>
 			</div> <!-- id="navbar_element1_dropdown -->
 		</div> <!-- id="navbar_element1" -->
 		
@@ -42,7 +42,6 @@
 
 
 <br>
-
 
 <!-- Page Container -->
 <div class="w3-container w3-content" style="max-width:1700px; margin-top:35px">    
@@ -198,6 +197,39 @@
 				</div>
 			</div>
 		
+			<p></p>
+			
+			<!-- das Modal soll nach dem LOGIN/der  REGISTRATION auf "display:block;" stehen, damit zum Einsatzbeginn sofort die Führungsposition festgelegt werden kann: -->
+			<!-- Bedingung: Es darf nicht bei jedem "Reload" der mainpage auf "display:block;" stehen-->
+			<div id="modal_einsatzbeginn" class="w3-modal" style="z-index:5000; display:block;">
+				<div class="w3-modal-content w3-card w3-padding-small">
+				  <div class="w3-modal-header w3-light-grey">
+					<span onclick="fuehrungspositionSpeichern()" class="w3-button w3-light-grey w3-display-topright w3-padding-small">
+							  <i class="fa fa-remove" ></i>
+				    </span>	
+					<h3 style="font-size:26px;"><center>Festlegung der Führung:</center></h3>
+				  </div>
+				  <div class="w3-modal-body w3-white">
+					<p class="w3-orange"><i class="fa fa-exclamation-triangle fa-fw w3-margin-right"></i> Beachten Sie bitte den Einsatzleiter <b>vor</b> dem Start einzutragen und über den Gesamteinsatz <b>aktuell</b> zu halten!</p>
+					<p><i class="fa fa-info-circle fa-fw w3-margin-right"></i> Die Führungsposition kann jederzeit über den Reiter "Funktionen"-->"Führungsposition ändern" in der oberen Leiste der Hauptseite geändert werden.</p>
+					<p>
+					Hier kommt noch folgene Abfragen hin:
+					<br>
+					--> ob sich die eingeloggte Person um die Einsatzleitung oder Führungsassistenz handelt:
+					<br>Lösung mittels Buttons oder schönen Checkboxes.<br>
+					[ANLEGEN VON] Attribut ist_EL [ja / nein] in Collection des jeweiligen Benutzers.
+					
+					</p>
+					<!--mit einen Klick auf Speichern soll nicht nur die Auswahl gespeichert werden, sondern auch das Modal/Fenster geschlossen werden koennen!-->
+					<!--Speicherfunktion fehlt noch-->
+					<button onclick="closeModal()" style="margin-left:auto; margin-right:auto; height:35px; width:200px;" type="submit" class="w3-button w3-block w3-blue-grey">Speichern</button>
+				  </div>
+				  <div class="w3-modal-footer">
+					<h6 class="w3-light-grey">Der Gesamteinsatz kann über "" gestartet werden.</h6>
+				  </div>
+				</div>
+			</div>
+			
 			<p></p>
 		
 			<div class="w3-row-padding">
@@ -778,6 +810,7 @@
 	{{/each}}
 	{{/if}}
 </script>
+
 
 
 <!-- Include von externen Funktionen -->

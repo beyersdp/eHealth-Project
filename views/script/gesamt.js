@@ -31,6 +31,28 @@ function gesamteinsatzBeenden() {
   }
 }
 
+// Sicherheitsabfrage, bevor der Gesamteinsatz gestartet wird, sodass die Führungsposition auch tatsächlich gespeichert wurde:
+function fuehrungspositionSpeichern(){
+	var txt= "Wollen Sie das Fenster wirklich ohne Speichern beenden?";
+	if (confirm(txt)) {
+		closeModal();
+	}
+}
+
+// Modal, um die Führungsposition festzulegen:
+// Get Modal Element
+var modal = document.getElementById('modal_einsatzbeginn');
+
+// Open
+function openModal() {
+  modal.style.display = 'block';
+}
+
+// Close
+function closeModal() {
+  modal.style.display = 'none';
+}
+
 // Aus default Date-String die Stunden, Minuten und Sekunden extrahieren
 function toHour(className) {
 	
