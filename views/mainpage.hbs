@@ -226,7 +226,34 @@
 							  <i class="fa fa-play" onclick="switchInfoDisplay('kerndaten')"></i>
 							</span>							
 							<h6><i class="fa fa-plus-square w3-large w3-margin-right"> <span class="fa fa-info-circle w3-right w3-small"></span></i> Steckbrief Gesamteinsatz</h6>
-							<p> ....</p>
+							{{# if gesamteinsatz}}
+							<div class="w3-card w3-round w3-theme-l4" style="overflow-y:scroll; height:650px;" id="middle_scrollbar1"><p></p>
+								<!-- Uebersicht aller Randdaten ueber den Gesamteinsatz: -->
+								<!-- Titel, Adresse, Risikoeinstufung-->
+								{{# each gesamteinsatz}}
+								<div class="w3-container w3-white w3-card w3-round w3-hover-shadow" id="{{ _id }}">
+										<div class="w3-row w3-center w3-block w3-blue-grey" style="height:30px; font-size:12px; LINE-HEIGHT:0px;">
+											<div class="w3-third w3-left-align">
+											  <p style="font-size:11px">&emsp; [Datum]</p>
+											</div>
+											<div class="w3-third">
+											  <p style="font-size:12px"><i class="fa fa-plus-square fa-fw w3-margin-right"></i> Motocross <!-- {{ titel }}--></p>
+											</div>
+											<div class="w3-third w3-right-align">
+											  <p style="font-size:11px"><img class="icon w3-margin-right" src="./img/icons/einsatzleiter.png" alt="EL" style="width:15px; height:15px;">Führungskraft: &emsp; {{ fuehrungskraft.vorname }}  {{ fuehrungskraft.nachname }} ({{ fuehrungskraft.quali }})&emsp;</p>
+											</div>
+										</div>
+									
+									<p style="font-size:11px"><i class="fa fa-marker fa-fw w3-margin-right"></i>Adresse/Position: <div style="font-size:11px; padding-left:30px;"> {{ adresse }} </div></p>
+									<p style="font-size:11px"><i class="fa fa-exclamation-triangle fa-fw w3-margin-right"></i>Risikoeinstufung: <div style="font-size:11px; padding-left:30px;"> {{ risikoeinstufung }} </div></p>
+									<!-- falls noetig:-->
+									<p style="font-size:11px"><i class="fa fa-info-circle fa-fw w3-margin-right"></i>Erweiterte Informationen: <div style="font-size:11px; padding-left:30px;"> {{ text }}</div></p>
+								</div> <!-- id="{{ _id }}" -->
+									
+								<p></p>
+								{{/each}}
+							</div> <!-- id="middle_scrollbar1 -->
+							{{/if}}
 						</div>
 						
 						<div id="notiz" hidden class="w3-container w3-display-container w3-padding w3-white w3-hide-small w3-round w3-border">
@@ -235,9 +262,22 @@
 							</span>							
 							<h6><i class="fa fa-folder-open w3-large w3-margin-right"> <span class="fa fa-clipboard w3-right w3-small"></span></i>Gemeinsame Notizen</h6>
 							{{# if notiz}}
-							{{# each notiz}}
-								<p>{{ text }}</p>
-							{{/each}}
+							<div class="w3-card w3-round w3-theme-l4" style="overflow-y:scroll; height:650px;" id="middle_scrollbar2"><p></p>
+								<!-- Auflistung aller gespeicherten Notizen: -->
+								
+								{{# each notiz}}
+								<div class="w3-container w3-white w3-card w3-round w3-hover-shadow" id="{{ _id }}">
+									<!-- TimeStamp evtl. sinnvoll (& Verfasser)
+									<p class="w3-center w3-block w3-blue-grey" style="height:20px; font-size:12px;"><i class="fa fa-clock-o fa-fw "></i><span class="timestamp"> {{ timestamp }}</span> Uhr </p>
+									-->
+									<p class="w3-center w3-block w3-blue-grey" style="height:20px; font-size:12px;"><i class="fa fa-clock-o fa-fw "></i> Zeitstempel/Stichwort..</p> <!-- wenn das oben auskommentierte anstelle diesen Platzhalters verwenden.-->
+									
+									<p style="font-size:11px"><i class="fa fa-clipboard fa-fw w3-margin-right"></i> {{ text }} </p>
+								</div> <!-- id="{{ _id }}" -->
+									
+								<p></p>
+								{{/each}}
+							</div> <!-- id="middle_scrollbar2 -->
 							{{/if}}
 						</div>
 						
