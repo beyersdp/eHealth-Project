@@ -35,9 +35,7 @@
 		<button class="w3-bar-item w3-button w3-hide-small w3-right w3-padding-larger" style="height:45px; width:10px;;" title="Reload Page"><i class="fa fa-refresh w3-right"></i></button>
 		
 		<!-- Information ueber aktive Fuehrungskraft -->
-		<button class="w3-bar-item w3-button w3-hide-small w3-right w3-padding-larger" style="height:45px; font-size:14px;" title="Funktionalitäten">{{ fuehrungskraft_nachname }} ({{ fuehrungskraft_quali }})</button>
-		
-		
+		<button class="w3-bar-item w3-button w3-hide-small w3-right w3-padding-larger" style="height:45px; font-size:14px;" title="Einsatzleiter"> <img class="icon w3-margin-right" src="./img/icons/einsatzleiter.png" alt="EL" style="width:15px; height:15px;"> {{ fuehrungskraft_nachname }} ({{ fuehrungskraft_quali }})</button>
 	  
 	</div> <!-- id="navbar" -->
 </div> <!-- id="top" -->
@@ -224,7 +222,7 @@
 							<span onclick="switchInfoDisplay('kerndaten')" class="w3-button w3-theme-l3 w3-display-topright">
 							  <i class="fa fa-play" onclick="switchInfoDisplay('kerndaten')"></i>
 							</span>							
-							<h6 class="w3-opacity"><i class="fa fa-plus-square w3-large w3-margin-right"> <span class="fa fa-info-circle w3-right w3-small"></span></i> Steckbrief Gesamteinsatz</h6>
+							<h6><i class="fa fa-plus-square w3-large w3-margin-right"> <span class="fa fa-info-circle w3-right w3-small"></span></i> Steckbrief Gesamteinsatz</h6>
 							<p> ....</p>
 						</div>
 						
@@ -232,7 +230,7 @@
 							<span onclick="switchInfoDisplay('notiz')" class="w3-button w3-theme-l3 w3-display-topright">
 							  <i class="fa fa-play" onclick="switchInfoDisplay('notiz')"></i>
 							</span>							
-							<h6 class="w3-opacity"><i class="fa fa-folder-open w3-large w3-margin-right"> <span class="fa fa-clipboard w3-right w3-small"></span></i>Gemeinsame Notizen</h6>
+							<h6><i class="fa fa-folder-open w3-large w3-margin-right"> <span class="fa fa-clipboard w3-right w3-small"></span></i>Gemeinsame Notizen</h6>
 							<p> ....</p>
 						</div>
 						
@@ -240,15 +238,61 @@
 							<span onclick="switchInfoDisplay('einsatzChronik')" class="w3-button w3-theme-l3 w3-display-topright">
 							  <i class="fa fa-play" onclick="switchInfoDisplay('einsatzChronik')"></i>
 							</span>							
-							<h6 class="w3-opacity"><i class="fa fa-folder-open w3-large w3-margin-right"> <span class="fa fa-medkit w3-right w3-small"></span></i>Chronologie der Notfalleinsätze</h6>
-							<p> ....</p>
+							<h6><i class="fa fa-folder-open w3-large w3-margin-right"> <span class="fa fa-medkit w3-right w3-small"></span></i>Chronologie der Notfalleinsätze</h6>
+							<p style="font-size:13px"> Informationen zu allen abgeschlossenen und laufenden Notfalleinsätzen: </p>
+								{{# if einsatz}}
+								<div class="w3-card w3-round w3-theme-l4" style="overflow-y:scroll; height:650px;" id="left_scrollbar"><p></p>
+									<!-- Auflistung aller bisher eingegangenen Einsaetze mit Einsicht aller betreffenden Informationen-->
+									
+									{{# each einsatz}}
+									<div class="w3-container w3-white w3-card w3-round w3-hover-shadow" id="{{ _id }}">
+										<!--<p class="w3-center w3-block w3-blue-grey" style="height:20px; font-size:12px;"><i class="fa fa-clock-o fa-fw "></i><span class="timestamp"> {{ timestamp }}</span> Uhr &emsp; {{ meldebild }}</p>
+										-->
+										<div class="w3-row w3-center w3-block w3-blue-grey" style="height:30px; font-size:12px; LINE-HEIGHT:0px;">
+											<div class="w3-third w3-left-align">
+											  <p style="font-size:11px">&emsp;<i class="fa fa-clock-o fa-fw w3-margin-right"></i><span class="timestamp"> {{ timestamp }}</span> Uhr</p>
+											</div>
+											<div class="w3-third">
+											  <p style="font-size:12px"><i class="fa fa-stethoscope fa-fw w3-margin-right"></i> {{ meldebild }}</p>
+											</div>
+											<div class="w3-third w3-right-align">
+											  <p style="font-size:11px"><i class="fa fa-list fa-fw w3-margin-right"></i> {{ status }} &emsp;</p>
+											</div>
+										</div>
+										
+										
+										<div class="w3-row">
+											<div class="w3-half">
+											  <p style="font-size:11px"><i class="fa fa-pencil fa-fw w3-margin-right"></i>Ersteller des Einsatzauftrages: &emsp; {{ sender }}</p>
+											</div>
+											<div class="w3-half">
+											  <p style="font-size:11px"><img class="icon w3-margin-right" src="./img/icons/einsatzleiter.png" alt="EL" style="width:15px; height:15px;">Führungskraft: &emsp; {{ fuehrungskraft.vorname }}  {{ fuehrungskraft.nachname }} ({{ fuehrungskraft.quali }})</p>
+											</div>
+										</div>
+										
+										<div class="w3-row">
+											<div class="w3-half">
+											  <p style="font-size:11px"><i class="fa fa-users fa-fw w3-margin-right"></i>Anzahl der Verletzten: &emsp;{{ anzVerletzte }}</p>
+											</div>
+											<div class="w3-half">
+											  <p style="font-size:11px"><i class="fa fa-map-marker fa-fw w3-margin-right"></i>Standort: &emsp;{{ standort }}</p>  
+											</div>
+										</div>
+										<p style="font-size:11px"><i class="fa fa-user-md fa-fw w3-margin-right"></i>Zugeteilte Kräfte: &emsp;{{ rettungskraefte.funkruf }} {{ posten.funkruf  }} {{ rettungsmittel.funkruf  }}</p>
+										<p style="font-size:11px"><i class="fa fa-info-circle fa-fw w3-margin-right"></i>Erweiterte Informationen: &emsp;<div style="font-size:11px; padding-left:30px;" >{{ text }}</div></p>
+									</div> <!-- id="{{ _id }}" -->
+										
+									<p></p>
+									{{/each}}
+								</div> <!-- id="left_scrollbar -->
+								{{/if}}
 						</div>
 						
 						<div id="funkChronik" hidden class="w3-container w3-display-container w3-padding w3-white w3-hide-small w3-round w3-border">
 							<span onclick="switchInfoDisplay('funkChronik')" class="w3-button w3-theme-l3 w3-display-topright">
 							  <i class="fa fa-play" onclick="switchInfoDisplay(funkChronik')"></i>
 							</span>							
-							<h6 class="w3-opacity"><i class="fa fa-folder-open w3-large w3-margin-right"><span class="fa fa-comments w3-right w3-small"></span></i>Chronologie der Funksprüche</h6>
+							<h6><i class="fa fa-folder-open w3-large w3-margin-right"><span class="fa fa-comments w3-right w3-small"></span></i>Chronologie der Funksprüche</h6>
 							<p> ....</p>
 						</div>
 						
