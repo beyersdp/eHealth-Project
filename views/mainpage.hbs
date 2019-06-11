@@ -207,7 +207,10 @@
 					<div class="w3-card w3-round w3-white">
 						<div class="w3-container w3-padding">
 							<h6 class="w3-opacity">Speichern Sie Notizen, um diese später zu bearbeiten...</h6>
-							<p style="font-size:12px"><input class="w3-input w3-border" type="text" placeholder="Hier tippen..."></p>
+							<form method="POST" action="/notizNew" id="notizNew_form">
+								<p style="font-size:12px"><input class="w3-input w3-border" type="text" name="text" placeholder="Hier tippen..."></input></p>
+								<button type="submit" hidden></button>
+							</form>
 						</div>
 					</div>
 				</div>
@@ -233,7 +236,11 @@
 							  <i class="fa fa-play" onclick="switchInfoDisplay('notiz')"></i>
 							</span>							
 							<h6 class="w3-opacity"><i class="fa fa-folder-open w3-large w3-margin-right"> <span class="fa fa-clipboard w3-right w3-small"></span></i>Gemeinsame Notizen</h6>
-							<p> ....</p>
+							{{# if notiz}}
+							{{# each notiz}}
+								<p>{{ text }}</p>
+							{{/each}}
+							{{/if}}
 						</div>
 						
 						<div id="einsatzChronik" hidden class="w3-container w3-display-container w3-padding w3-white w3-hide-small w3-round w3-border">
@@ -308,7 +315,7 @@
 						<form method="POST" action="/posten" style="LINE-HEIGHT:5px;" id="rettungskraftNew_form">
 							<input type="hidden" name="posten_id" value="" id="posten_id"></input>
 							<p style="font-size:9px"><i class="fa fa-bullhorn w3-small w3-margin-right"></i>Funkrufname:</p>
-							<p style="font-size:10px"><input class="w3-input w3-border" type="text"  placeholder="Funkrufname" name="posten_funkruf" style="height:25px; margin-left:auto; margin-right:auto;" id="posten_funkruf"></p>
+							<p style="font-size:10px"><input class="w3-input w3-border" type="text" placeholder="Funkrufname" name="posten_funkruf" style="height:25px; margin-left:auto; margin-right:auto;" id="posten_funkruf"></p>
 							<p style="font-size:9px"><i class="fa fa-user-md w3-small w3-margin-right"></i>Zugeteilte Kräfte:<i class="fa fa-plus fa-fw w3-small w3-hover-blue-grey" onclick="addInputField('div_postenNew', 'posten_kraefte')" id="posten_addInputField"></i><i class="fa fa-minus fa-fw w3-small w3-hover-blue-grey" onclick="removeInputField('div_postenNew', 'posten_kraefte')" id="posten_removeInputField"></i></p>
 							<p style="font-size:10px"><input class="posten_kraefte dropElement w3-input w3-border" list="funkrufDataList" type="text"  placeholder="Tippen oder Drag&Drop" name="posten_kraefte" value="" style="height:25px; margin-left:auto; margin-right:auto;" id="posten_kraefte"></p>
 							<div id="div_postenNew">
@@ -335,14 +342,14 @@
 							<p style="font-size:9px"><i class="fa fa-address-book w3-small w3-margin-right"></i>Nachname:</p>
 							<p style="font-size:10px"><input class="w3-input w3-border" type="text" placeholder="Nachname" name="rettungskraft_nachname" style="height:25px; margin-left:auto; margin-right:auto;" id="rettungskraft_nachname"></p>
 							<p style="font-size:9px"><i class="fa fa-home w3-small w3-margin-right"></i>Hilfsorganisation:</p>
-							<p style="font-size:10px"><input class="w3-input w3-border" type="text" placeholder="Hilfsorganisation" name="rettungskraft_hiorg" style="height:25px; margin-left:auto; margin-right:auto;" id="rettungskraft_hiorg"></p>
+							<p style="font-size:10px"><input class="w3-input w3-border" type="text" list="hiorgDataList" placeholder="Hilfsorganisation" name="rettungskraft_hiorg" style="height:25px; margin-left:auto; margin-right:auto;" id="rettungskraft_hiorg"></p>
 							<p style="font-size:9px"><i class="fa fa-graduation-cap w3-small w3-margin-right"></i>Medizinische Qualifikation:</p>
 							<p style="font-size:10px; color:gray;">
 								<select class="w3-input w3-border" placeholder="Med. Qualifikation" name="rettungskraft_quali" id="rettungskraft_quali" style="height:30px;">
 									<option value="" hidden>Med. Qualifikation</option>
 									<option>Praktikant/-in (Erste Hilfe)</option>
 									<option>Sanitätshelfer/-in</option>
-									<option>Rettungshelfer/-in</option>
+									<option>Rettungshelfer/-in</option>	
 									<option>Rettungssanitäter/-in</option>
 									<option>Rettungsassistent/-in</option>
 									<option>Notfallsanitäter/in</option>
@@ -416,7 +423,7 @@
 					</form>
 					<br>
 					<p style="font-size:11px"><i class="fa fa-user-md fa-fw w3-margin-right"></i><span>{{ vorname }}</span> <span>{{ nachname }}</span> <span class="medQuali">{{ quali }}</span></p>
-					<p hidden>{{ hiorg }}</p>
+					<p hidden class="hiorg">{{ hiorg }}</p>
 					<p hidden>{{ tel }}</p>
 				</div> <!-- id="{{ _id }}" -->
 				{{/each}}
