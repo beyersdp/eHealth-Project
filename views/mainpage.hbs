@@ -35,7 +35,7 @@
 		<button class="w3-bar-item w3-button w3-hide-small w3-right w3-padding-larger" style="height:45px; width:10px;;" title="Reload Page"><i class="fa fa-refresh w3-right"></i></button>
 		
 		<!-- Information ueber aktive Fuehrungskraft -->
-		<button class="w3-bar-item w3-button w3-hide-small w3-right w3-padding-larger" style="height:45px; font-size:14px;" title="Einsatzleiter"> <img class="icon w3-margin-right" src="./img/icons/einsatzleiter.png" alt="EL" style="width:15px; height:15px;"> {{ fuehrungskraft_nachname }} ({{ fuehrungskraft_quali }})</button>
+		<button class="w3-bar-item w3-button w3-hide-small w3-right w3-padding-larger" style="height:45px; font-size:14px;" title="Einsatzleiter"> <img class="icon" src="./img/icons/einsatzleiter.png" alt="EL" style="width:20px; height:20px;"> {{ fuehrungskraft_nachname }} ({{ fuehrungskraft_quali }})</button>
 	  
 	</div> <!-- id="navbar" -->
 </div> <!-- id="top" -->
@@ -233,7 +233,7 @@
 							<span onclick="switchInfoDisplay('notiz')" class="w3-button w3-theme-l3 w3-display-topright">
 							  <i class="fa fa-play" onclick="switchInfoDisplay('notiz')"></i>
 							</span>							
-							<h6 class="w3-opacity"><i class="fa fa-folder-open w3-large w3-margin-right"> <span class="fa fa-clipboard w3-right w3-small"></span></i>Gemeinsame Notizen</h6>
+							<h6><i class="fa fa-folder-open w3-large w3-margin-right"> <span class="fa fa-clipboard w3-right w3-small"></span></i>Gemeinsame Notizen</h6>
 							{{# if notiz}}
 							{{# each notiz}}
 								<p>{{ text }}</p>
@@ -248,13 +248,12 @@
 							<h6><i class="fa fa-folder-open w3-large w3-margin-right"> <span class="fa fa-medkit w3-right w3-small"></span></i>Chronologie der Notfalleinsätze</h6>
 							<p style="font-size:13px"> Informationen zu allen abgeschlossenen und laufenden Notfalleinsätzen: </p>
 								{{# if einsatz}}
-								<div class="w3-card w3-round w3-theme-l4" style="overflow-y:scroll; height:650px;" id="left_scrollbar"><p></p>
+								<div class="w3-card w3-round w3-theme-l4" style="overflow-y:scroll; height:650px;" id="middle_scrollbar3"><p></p>
 									<!-- Auflistung aller bisher eingegangenen Einsaetze mit Einsicht aller betreffenden Informationen-->
 									
 									{{# each einsatz}}
 									<div class="w3-container w3-white w3-card w3-round w3-hover-shadow" id="{{ _id }}">
-										<!--<p class="w3-center w3-block w3-blue-grey" style="height:20px; font-size:12px;"><i class="fa fa-clock-o fa-fw "></i><span class="timestamp"> {{ timestamp }}</span> Uhr &emsp; {{ meldebild }}</p>
-										-->
+
 										<div class="w3-row w3-center w3-block w3-blue-grey" style="height:30px; font-size:12px; LINE-HEIGHT:0px;">
 											<div class="w3-third w3-left-align">
 											  <p style="font-size:11px">&emsp;<i class="fa fa-clock-o fa-fw w3-margin-right"></i><span class="timestamp"> {{ timestamp }}</span> Uhr</p>
@@ -266,7 +265,6 @@
 											  <p style="font-size:11px"><i class="fa fa-list fa-fw w3-margin-right"></i> {{ status }} &emsp;</p>
 											</div>
 										</div>
-										
 										
 										<div class="w3-row">
 											<div class="w3-half">
@@ -291,7 +289,7 @@
 										
 									<p></p>
 									{{/each}}
-								</div> <!-- id="left_scrollbar -->
+								</div> <!-- id="middle_scrollbar3 -->
 								{{/if}}
 						</div>
 						
@@ -300,7 +298,40 @@
 							  <i class="fa fa-play" onclick="switchInfoDisplay(funkChronik')"></i>
 							</span>							
 							<h6><i class="fa fa-folder-open w3-large w3-margin-right"><span class="fa fa-comments w3-right w3-small"></span></i>Chronologie der Funksprüche</h6>
-							<p> ....</p>
+							<p style="font-size:13px"> Auflistung aller Funksprüche: </p>
+								{{# if funkspruch }}
+								<div class="w3-card w3-round w3-theme-l4" style="overflow-y:scroll; height:650px;" id="middle_scrollbar4"><p></p>
+									
+									{{# each funkspruch }}
+									<div class="w3-container w3-white w3-card w3-round w3-hover-shadow" id="{{ _id }}">
+
+										<div class="w3-row w3-center w3-block w3-blue-grey" style="height:30px; font-size:12px; LINE-HEIGHT:0px;">
+											<div class="w3-half ">
+											  <p style="font-size:11px"><i class="fa fa-clock-o fa-fw w3-margin-right"></i><span class="timestamp"> {{ timestamp }}</span> Uhr</p>
+											</div>
+											<div class="w3-half">
+											  <p style="font-size:12px"><i class="fa fa-inbox fa-fw w3-margin-right"></i> {{ kategorie }}</p>
+											</div>
+											<!-- evtl. kann man hier noch einen Status einfuegen... (abgeschlossen oder nicht z.B.)-->
+										</div>
+										
+										<div class="w3-row">
+											<div class="w3-half">
+											  <p style="font-size:11px"><i class="fa fa-send fa-fw w3-margin-right"></i>Sender: &emsp; {{ sender }}</p>
+											</div>
+											<div class="w3-half">
+											  <p style="font-size:11px"><i class="fa fa-envelope-open fa-fw w3-margin-right"></i>Empfänger: &emsp; {{ empfaenger }} </p>
+											</div>
+										</div>
+										
+										<p style="font-size:11px"><i class="fa fa-envelope-open fa-fw w3-margin-right"></i>Führungskraft: &emsp; {{ fuehrungskraft.vorname }}  {{ fuehrungskraft.nachname }} ({{ fuehrungskraft.quali }})</p>
+										<p style="font-size:11px"><i class="fa fa-file-o fa-fw w3-margin-right"></i>Erweiterte Informationen: &emsp;<div style="font-size:11px; padding-left:30px;" >{{ text }}</div></p>
+									</div> <!-- id="{{ _id }}" -->
+										
+									<p></p>
+									{{/each}}
+								</div> <!-- id="middle_scrollbar4 -->
+								{{/if}}
 						</div>
 						
 					</div>
