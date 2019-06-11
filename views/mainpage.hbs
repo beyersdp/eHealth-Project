@@ -201,7 +201,7 @@
 			
 			<!-- das Modal soll nach dem LOGIN/der  REGISTRATION auf "display:block;" stehen, damit zum Einsatzbeginn sofort die Führungsposition festgelegt werden kann: -->
 			<!-- Bedingung: Es darf nicht bei jedem "Reload" der mainpage auf "display:block;" stehen-->
-			<div id="modal_einsatzbeginn" class="w3-modal" style="z-index:5000; display:block;">
+			<div id="modal_einsatzbeginn" class="w3-modal" style="z-index:5000;">
 				<div class="w3-modal-content w3-card w3-padding-small">
 				  <div class="w3-modal-header w3-light-grey">
 					<span onclick="fuehrungspositionSpeichern()" class="w3-button w3-light-grey w3-display-topright w3-padding-small">
@@ -209,23 +209,32 @@
 				    </span>	
 					<h3 style="font-size:26px;"><center>Festlegung der Führung:</center></h3>
 				  </div>
-				  <div class="w3-modal-body w3-white">
+				  <div class="w3-modal-body w3-white" style="font-size:14px;">
 					<p class="w3-orange"><i class="fa fa-exclamation-triangle fa-fw w3-margin-right"></i> Beachten Sie bitte den Einsatzleiter <b>vor</b> dem Start einzutragen und über den Gesamteinsatz <b>aktuell</b> zu halten!</p>
-					<p><i class="fa fa-info-circle fa-fw w3-margin-right"></i> Die Führungsposition kann jederzeit über den Reiter "Funktionen"-->"Führungsposition ändern" in der oberen Leiste der Hauptseite geändert werden.</p>
+					<p style="font-size:12px;"><i class="fa fa-info-circle fa-fw w3-margin-right"></i> Die Führungsposition kann jederzeit über den Reiter "Funktionen"-->"Führungsposition ändern" in der oberen Leiste der Hauptseite geändert werden.</p>
 					<p>
-					Hier kommt noch folgene Abfragen hin:
-					<br>
-					--> ob sich die eingeloggte Person um die Einsatzleitung oder Führungsassistenz handelt:
-					<br>Lösung mittels Buttons oder schönen Checkboxes.<br>
-					[ANLEGEN VON] Attribut ist_EL [ja / nein] in Collection des jeweiligen Benutzers.
+					
+					<form>
+					  "Ich bin an dem Gesamteinsatz als... <br>
+					  &emsp; <input id="EL_true" type="radio" name="fuehrungsposten" value="einsatzleiter" checked> Einsatzleiter/in<br>
+					  &emsp; <input id="EL_false"type="radio" name="fuehrungsposten" value="fuehrungsassistent"> Fuehrungsassistent/in<br>
+					</form> 
+					...beteiligt."
+					
+					<form id="declareEL" style="display:none">
+					<p> Bitte füllen Sie Folgendes nur aus, wenn sie selbst <b> kein/e </b> Einsatzleiter/in sind:</p>
+					<p style="font-size:10px"><input class="w3-input w3-border" type="text" placeholder="Funkrufname des Einsatzleiters" name="EL_funkruf" style="height:25px; margin-left:auto; margin-right:auto;" id="EL_funkruf"></p>
+					<p style="font-size:10px"><input class="w3-input w3-border" type="text" placeholder="Vorname des Einsatzleiters" name="EL_vorname" style="height:25px; margin-left:auto; margin-right:auto;" id="vorname"></p>
+					<p style="font-size:10px"><input class="w3-input w3-border" type="text" placeholder="Nachname des Einsatzleiters" name="EL_nachname" style="height:25px; margin-left:auto; margin-right:auto;" id="nachname"></p>
+					</form>
 					
 					</p>
-					<!--mit einen Klick auf Speichern soll nicht nur die Auswahl gespeichert werden, sondern auch das Modal/Fenster geschlossen werden koennen!-->
 					<!--Speicherfunktion fehlt noch-->
-					<button onclick="closeModal()" style="margin-left:auto; margin-right:auto; height:35px; width:200px;" type="submit" class="w3-button w3-block w3-blue-grey">Speichern</button>
+					<button style="margin-left:auto; margin-right:auto; height:35px; width:200px;" type="submit" class="w3-button w3-block w3-blue-grey">Speichern</button>
 				  </div>
 				  <div class="w3-modal-footer">
-					<h6 class="w3-light-grey">Der Gesamteinsatz kann über "" gestartet werden.</h6>
+				  <!-- Falls es einen extra START-Button gibt-->
+					<h6 class="w3-light-grey" Style="font-size:12px;">Der Gesamteinsatz kann über "xxx" gestartet werden. </h6>
 				  </div>
 				</div>
 			</div>

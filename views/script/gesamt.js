@@ -33,7 +33,7 @@ function gesamteinsatzBeenden() {
 
 // Sicherheitsabfrage, bevor der Gesamteinsatz gestartet wird, sodass die Führungsposition auch tatsächlich gespeichert wurde:
 function fuehrungspositionSpeichern(){
-	var txt= "Wollen Sie das Fenster wirklich ohne Speichern beenden?";
+	var txt= "Vor dem Schließen bitte Speichern nicht vergessen!";
 	if (confirm(txt)) {
 		closeModal();
 	}
@@ -52,6 +52,18 @@ function openModal() {
 function closeModal() {
   modal.style.display = 'none';
 }
+
+// Input-Felder für die Angabe einess externen Einsatzleiters: 
+var text = document.getElementById("declareEL");
+var checkBox_EL = document.getElementById("EL_false");
+checkBox_EL.addEventListener( 'change', function() {
+    if(this.checked) {
+        text.style.display = "block";
+    } else {
+        text.style.display = "none";
+    }
+});
+
 
 // Aus default Date-String die Stunden, Minuten und Sekunden extrahieren
 function toHour(className) {
@@ -274,6 +286,7 @@ function checkChildNodesHide(id) {
 
 // Direkt startende Funktionen:
 toHour('timestamp');
+openModal();
 shortQuali("medQuali");
 addDataList("funkrufDataList", "funkruf");
 checkChildNodesHide("right_scrollbar");
