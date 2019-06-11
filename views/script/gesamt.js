@@ -213,7 +213,6 @@ function switchInfoDisplayNavBar(source) {
 	}
 }
 
-
 // Dynamisch anpassbare Textareas:
 var autoExpand = function (field) {
 	// Reset field height
@@ -242,9 +241,19 @@ document.addEventListener('input', function (event) {
 	autoExpand(event.target);
 }, false);
 
+// Element ausblenden, wenn die Anzahl ChildNodes zu gering
+function checkChildNodesHide(id) {
+	console.log(document.getElementById(id).childNodes);
+	if (document.getElementById(id).childNodes.length == 2) {
+		document.getElementById(id).hidden = true;
+	}
+}
+
+
 
 
 // Direkt startende Funktionen:
 toHour('timestamp');
 shortQuali("medQuali");
 addDataList("funkrufDataList", "funkruf");
+checkChildNodesHide("right_scrollbar");
