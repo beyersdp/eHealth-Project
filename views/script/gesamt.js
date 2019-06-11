@@ -85,6 +85,7 @@ function addDataList(listName, className) {
 	var classElements = document.getElementsByClassName(className);
 	
 	Array.prototype.forEach.call(classElements, function(classElement) {
+		
 		var newOption = document.createElement("option");
 		newOption.innerHTML = classElement.innerText;
 		document.getElementById(listName).appendChild(newOption);
@@ -243,14 +244,11 @@ document.addEventListener('input', function (event) {
 
 // Element ausblenden, wenn die Anzahl ChildNodes zu gering
 function checkChildNodesHide(id) {
-	console.log(document.getElementById(id).childNodes);
+
 	if (document.getElementById(id).childNodes.length == 2) {
 		document.getElementById(id).hidden = true;
 	}
 }
-
-
-
 
 // Direkt startende Funktionen:
 toHour('timestamp');
