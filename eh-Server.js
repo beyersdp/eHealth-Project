@@ -367,13 +367,13 @@ server.post('/el', urlencodedParser, function(req, res){
 			
 			if (req.body.fuehrungsposten == 'einsatzleiter') {
 			
-				db.collection('Fuehrungskraft').findOneAndUpdate({cookie: req.session.user}, {$set: {ist_EL: true}}, function(err, updated) {
+				db.collection('Fuehrungskraft').findOneAndUpdate({cookie: req.session.user}, {$set: {ist_EL: true, set_EL: true}}, function(err, updated) {
 					if (err) throw err;
 				});
 			}
 			
 			else {
-				db.collection('Fuehrungskraft').findOneAndUpdate({cookie: req.session.user}, {$set: {ist_EL: false}}, function(err, updated) {
+				db.collection('Fuehrungskraft').findOneAndUpdate({cookie: req.session.user}, {$set: {ist_EL: false, set_EL: true}}, function(err, updated) {
 					if (err) throw err;
 				});
 			}
@@ -407,9 +407,80 @@ server.post('/el', urlencodedParser, function(req, res){
 														fuehrungskraft_quali: queryFuehrungskraft[0].quali,
 														fuehrungskraft_mapstate: queryFuehrungskraft[0].position,
 														fuehrungskraft_mapzoom: queryFuehrungskraft[0].zoom,
-														fuehrungskraft_istEL: queryFuehrungskraft[0].ist_EL});
+														fuehrungskraft_istEL: queryFuehrungskraft[0].ist_EL,
+														fuehrungskraft_setEL: queryFuehrungskraft[0].set_EL});
 														
 										dbClient.close();
+									});
+								});
+							});
+						});
+					});
+				});
+			});
+		});
+	}
+	
+	else {
+		console.log("L1-Info: Cookie false");
+		res.send("Cookie false");
+	}
+});
+
+
+
+
+/* /elNEW - Empfangen eines POST-Requests ueber Port 8080  */
+server.get('/elNEW', function(req, res){
+	console.log("L2-Info: POST-REQUEST for /elNEW");
+	//console.log(req.body); //DEBUG Kontrollausgabe
+	
+	if(req.session && req.session.user) { 
+		console.log("L1-Info: Cookie true");
+		
+		mongodbClient.connect(url, { useNewUrlParser: true }, function(err, dbClient) {
+			if (err) throw err;
+			var db = dbClient.db('DigitalerFuehrungsassistent');
+			console.log("L2-Info: DB-Connection true");
+			
+			
+			db.collection('Fuehrungskraft').findOneAndUpdate({cookie: req.session.user}, {$set: {set_EL: false}}, function(err, updated) {
+				if (err) throw err;
+			
+				db.collection('Fuehrungskraft').find({cookie: req.session.user}).toArray(function(err, queryFuehrungskraft) {
+					if (err) throw err;
+					
+					db.collection('Einsatz').find().sort({timestamp: 1}).toArray(function(err, queryEinsatz) {
+						if (err) throw err;
+						
+						db.collection('Rettungskraft').find({rettungsmittel: false}).toArray(function(err, queryRettungskrafte) {
+							if (err) throw err;
+							
+							db.collection('Rettungsmittel').find().toArray(function(err, queryRettungsmittel) {
+								
+								db.collection('Posten').find().toArray(function(err, queryPosten) {
+									if (err) throw err;
+									
+									db.collection('Notiz').find().toArray(function(err, queryNotiz) {
+										
+										db.collection('Funkspruch').find().sort({timestamp: 1}).toArray(function(err, queryFunkspruch) {
+										
+											res.render('mainpage', {title: "Hauptseite - Digitaler Führungsassistent",
+															einsatz: queryEinsatz,
+															rettungskraft: queryRettungskrafte,
+															rettungsmittel: queryRettungsmittel,
+															posten: queryPosten,
+															notiz: queryNotiz,
+															funkspruch: queryFunkspruch,
+															fuehrungskraft_nachname: queryFuehrungskraft[0].nachname,
+															fuehrungskraft_quali: queryFuehrungskraft[0].quali,
+															fuehrungskraft_mapstate: queryFuehrungskraft[0].position,
+															fuehrungskraft_mapzoom: queryFuehrungskraft[0].zoom,
+															fuehrungskraft_istEL: queryFuehrungskraft[0].ist_EL,
+															fuehrungskraft_setEL: queryFuehrungskraft[0].set_EL});
+															
+											dbClient.close();
+										});
 									});
 								});
 							});
@@ -443,7 +514,7 @@ server.post('/einsatz', urlencodedParser, function(req, res){
 				var db = dbClient.db('DigitalerFuehrungsassistent');
 				console.log("L2-Info: DB-Connection true I");
 		
-				db.collection('Fuehrungskraft').find({cookie: req.session.user}).toArray(function(err, result) {
+				db.collection('Fuehrungskraft').find({cookie: req.session.user}).toArray(function(err, queryFuehrungskraft) {
 					if (err) throw err;
 					
 					if (Array.isArray(req.body.einsatz_kraefte)) {
@@ -506,8 +577,10 @@ server.post('/einsatz', urlencodedParser, function(req, res){
 																					funkspruch: queryFunkspruch,
 																					fuehrungskraft_nachname: result[0].nachname,
 																					fuehrungskraft_quali: result[0].quali,
-																					fuehrungskraft_mapstate: result[0].position,
-																					fuehrungskraft_mapzoom: result[0].zoom});
+																					fuehrungskraft_mapstate: queryFuehrungskraft[0].position,
+																					fuehrungskraft_mapzoom: queryFuehrungskraft[0].zoom,
+																					fuehrungskraft_istEL: queryFuehrungskraft[0].ist_EL,
+																					fuehrungskraft_setEL: queryFuehrungskraft[0].set_EL});
 															dbClient.close();
 														});
 													});
@@ -586,7 +659,7 @@ server.post('/funkspruch', urlencodedParser, function(req, res){
 			var db = dbClient.db('DigitalerFuehrungsassistent');
 			console.log("L2-Info: DB-Connection true");
 	
-			db.collection('Fuehrungskraft').find({cookie: req.session.user}).toArray(function(err, result) {
+			db.collection('Fuehrungskraft').find({cookie: req.session.user}).toArray(function(err, queryFuehrungskraft) {
 				if (err) throw err;
 				
 				funkspruch_data = {sender: req.body.funkspruch_sender,
@@ -626,10 +699,12 @@ server.post('/funkspruch', urlencodedParser, function(req, res){
 																	posten: queryPosten,
 																	notiz: queryNotiz,
 																	funkspruch: queryFunkspruch,
-																	fuehrungskraft_nachname: result[0].nachname,
-																	fuehrungskraft_quali: result[0].quali,
-																	fuehrungskraft_mapstate: result[0].position,
-																	fuehrungskraft_mapzoom: result[0].zoom});
+																	fuehrungskraft_nachname: queryFuehrungskraft[0].nachname,
+																	fuehrungskraft_quali: queryFuehrungskraft[0].quali,
+																	fuehrungskraft_mapstate: queryFuehrungskraft[0].position,
+																	fuehrungskraft_mapzoom: queryFuehrungskraft[0].zoom,
+																	fuehrungskraft_istEL: queryFuehrungskraft[0].ist_EL,
+																	fuehrungskraft_setEL: queryFuehrungskraft[0].set_EL});
 											dbClient.close();
 										});
 									});
@@ -735,7 +810,9 @@ server.post('/rettungskraft', urlencodedParser, function(req, res){
 																		fuehrungskraft_nachname: queryFuehrungskraft[0].nachname,
 																		fuehrungskraft_quali: queryFuehrungskraft[0].quali,
 																		fuehrungskraft_mapstate: queryFuehrungskraft[0].position,
-																		fuehrungskraft_mapzoom: queryFuehrungskraft[0].zoom});
+																		fuehrungskraft_mapzoom: queryFuehrungskraft[0].zoom,
+																		fuehrungskraft_istEL: queryFuehrungskraft[0].ist_EL,
+																		fuehrungskraft_setEL: queryFuehrungskraft[0].set_EL});
 												dbClient.close();
 											});
 										});
@@ -818,7 +895,9 @@ server.post('/rettungskraft', urlencodedParser, function(req, res){
 																fuehrungskraft_nachname: queryFuehrungskraft[0].nachname,
 																fuehrungskraft_quali: queryFuehrungskraft[0].quali,
 																fuehrungskraft_mapstate: queryFuehrungskraft[0].position,
-																fuehrungskraft_mapzoom: queryFuehrungskraft[0].zoom});
+																fuehrungskraft_mapzoom: queryFuehrungskraft[0].zoom,
+																fuehrungskraft_istEL: queryFuehrungskraft[0].ist_EL,
+																fuehrungskraft_setEL: queryFuehrungskraft[0].set_EL});
 												dbClient.close();
 											});
 										});
@@ -902,7 +981,9 @@ server.post('/posten', urlencodedParser, function(req, res){
 																	fuehrungskraft_nachname: queryFuehrungskraft[0].nachname,
 																	fuehrungskraft_quali: queryFuehrungskraft[0].quali,
 																	fuehrungskraft_mapstate: queryFuehrungskraft[0].position,
-																	fuehrungskraft_mapzoom: queryFuehrungskraft[0].zoom});
+																	fuehrungskraft_mapzoom: queryFuehrungskraft[0].zoom,
+																	fuehrungskraft_istEL: queryFuehrungskraft[0].ist_EL,
+																	fuehrungskraft_setEL: queryFuehrungskraft[0].set_EL});
 													dbClient.close();
 												});
 											});
@@ -980,7 +1061,9 @@ server.post('/posten', urlencodedParser, function(req, res){
 																					fuehrungskraft_nachname: queryFuehrungskraft[0].nachname,
 																					fuehrungskraft_quali: queryFuehrungskraft[0].quali,
 																					fuehrungskraft_mapstate: queryFuehrungskraft[0].position,
-																					fuehrungskraft_mapzoom: queryFuehrungskraft[0].zoom});
+																					fuehrungskraft_mapzoom: queryFuehrungskraft[0].zoom,
+																					fuehrungskraft_istEL: queryFuehrungskraft[0].ist_EL,
+																					fuehrungskraft_setEL: queryFuehrungskraft[0].set_EL});
 															dbClient.close();
 														});
 													});
@@ -1069,7 +1152,9 @@ server.post('/rettungsmittel', urlencodedParser, function(req, res){
 																	fuehrungskraft_nachname: queryFuehrungskraft[0].nachname,
 																	fuehrungskraft_quali: queryFuehrungskraft[0].quali,
 																	fuehrungskraft_mapstate: queryFuehrungskraft[0].position,
-																	fuehrungskraft_mapzoom: queryFuehrungskraft[0].zoom});
+																	fuehrungskraft_mapzoom: queryFuehrungskraft[0].zoom,
+																	fuehrungskraft_istEL: queryFuehrungskraft[0].ist_EL,
+																	fuehrungskraft_setEL: queryFuehrungskraft[0].set_EL});
 													dbClient.close();
 												});
 											});
@@ -1146,7 +1231,9 @@ server.post('/rettungsmittel', urlencodedParser, function(req, res){
 																			fuehrungskraft_nachname: queryFuehrungskraft[0].nachname,
 																			fuehrungskraft_quali: queryFuehrungskraft[0].quali,
 																			fuehrungskraft_mapstate: queryFuehrungskraft[0].position,
-																			fuehrungskraft_mapzoom: queryFuehrungskraft[0].zoom});
+																			fuehrungskraft_mapzoom: queryFuehrungskraft[0].zoom,
+																			fuehrungskraft_istEL: queryFuehrungskraft[0].ist_EL,
+																			fuehrungskraft_setEL: queryFuehrungskraft[0].set_EL});
 															dbClient.close();
 														});
 													});
@@ -1222,7 +1309,9 @@ server.post('/rettungskraftDel', urlencodedParser, function(req, res){
 																fuehrungskraft_nachname: queryFuehrungskraft[0].nachname,
 																fuehrungskraft_quali: queryFuehrungskraft[0].quali,
 																fuehrungskraft_mapstate: queryFuehrungskraft[0].position,
-																fuehrungskraft_mapzoom: queryFuehrungskraft[0].zoom});
+																fuehrungskraft_mapzoom: queryFuehrungskraft[0].zoom,
+																fuehrungskraft_istEL: queryFuehrungskraft[0].ist_EL,
+																fuehrungskraft_setEL: queryFuehrungskraft[0].set_EL});
 												dbClient.close();
 											});
 										});
@@ -1264,7 +1353,7 @@ server.post('/postenDel', urlencodedParser, function(req, res){
 				db.collection('Posten').deleteOne({_id: ObjectID(req.body.posten_id)}, function(err, deleted) {
 					if (err) throw err;
 					
-					db.collection('Fuehrungskraft').find({cookie: req.session.user}).toArray(function(err, result) {
+					db.collection('Fuehrungskraft').find({cookie: req.session.user}).toArray(function(err, queryFuehrungskraft) {
 					if (err) throw err;
 					
 						db.collection('Einsatz').find().sort({timestamp: 1}).toArray(function(err, queryEinsatz) {
@@ -1291,10 +1380,12 @@ server.post('/postenDel', urlencodedParser, function(req, res){
 																posten: queryPosten2,
 																notiz: queryNotiz,
 																funkspruch: queryFunkspruch,
-																fuehrungskraft_nachname: result[0].nachname,
-																fuehrungskraft_quali: result[0].quali,
-																fuehrungskraft_mapstate: result[0].position,
-																fuehrungskraft_mapzoom: result[0].zoom});
+																fuehrungskraft_nachname: queryFuehrungskraft[0].nachname,
+																fuehrungskraft_quali: queryFuehrungskraft[0].quali,
+																fuehrungskraft_mapstate: queryFuehrungskraft[0].position,
+																fuehrungskraft_mapzoom: queryFuehrungskraft[0].zoom,
+																fuehrungskraft_istEL: queryFuehrungskraft[0].ist_EL,
+																fuehrungskraft_setEL: queryFuehrungskraft[0].set_EL});
 												dbClient.close();
 											});
 										});
@@ -1336,7 +1427,7 @@ server.post('/rettungsmittelDel', urlencodedParser, function(req, res){
 				db.collection('Rettungsmittel').deleteOne({_id: ObjectID(req.body.rettungsmittel_id)}, function(err, deleted) {
 					if (err) throw err;
 					
-					db.collection('Fuehrungskraft').find({cookie: req.session.user}).toArray(function(err, result) {
+					db.collection('Fuehrungskraft').find({cookie: req.session.user}).toArray(function(err, queryFuehrungskraft) {
 					if (err) throw err;
 					
 						db.collection('Einsatz').find().sort({timestamp: 1}).toArray(function(err, queryEinsatz) {
@@ -1363,10 +1454,12 @@ server.post('/rettungsmittelDel', urlencodedParser, function(req, res){
 																posten: queryPosten2,
 																notiz: queryNotiz,
 																funkspruch: queryFunkspruch,
-																fuehrungskraft_nachname: result[0].nachname,
-																fuehrungskraft_quali: result[0].quali,
-																fuehrungskraft_mapstate: result[0].position,
-																fuehrungskraft_mapzoom: result[0].zoom});
+																fuehrungskraft_nachname: queryFuehrungskraft[0].nachname,
+																fuehrungskraft_quali: queryFuehrungskraft[0].quali,
+																fuehrungskraft_mapstate: queryFuehrungskraft[0].position,
+																fuehrungskraft_mapzoom: queryFuehrungskraft[0].zoom,
+																fuehrungskraft_istEL: queryFuehrungskraft[0].ist_EL,
+																fuehrungskraft_setEL: queryFuehrungskraft[0].set_EL});
 												dbClient.close();
 											});
 										});
@@ -1517,7 +1610,7 @@ server.post('/notizNew', urlencodedParser, function(req, res){
 			db.collection('Notiz').insertOne(req.body, function(err, inserted) {
 				if (err) throw err;
 				
-				db.collection('Fuehrungskraft').find({cookie: req.session.user}).toArray(function(err, result) {
+				db.collection('Fuehrungskraft').find({cookie: req.session.user}).toArray(function(err, queryFuehrungskraft) {
 				if (err) throw err;
 				
 					db.collection('Einsatz').find().sort({timestamp: 1}).toArray(function(err, queryEinsatz) {
@@ -1542,10 +1635,12 @@ server.post('/notizNew', urlencodedParser, function(req, res){
 															posten: queryPosten,
 															notiz: queryNotiz,
 															funkspruch: queryFunkspruch,
-															fuehrungskraft_nachname: result[0].nachname,
-															fuehrungskraft_quali: result[0].quali,
-															fuehrungskraft_mapstate: result[0].position,
-															fuehrungskraft_mapzoom: result[0].zoom});
+															fuehrungskraft_nachname: queryFuehrungskraft[0].nachname,
+															fuehrungskraft_quali: queryFuehrungskraft[0].quali,
+															fuehrungskraft_mapstate: queryFuehrungskraft[0].position,
+															fuehrungskraft_mapzoom: queryFuehrungskraft[0].zoom,
+															fuehrungskraft_istEL: queryFuehrungskraft[0].ist_EL,
+															fuehrungskraft_setEL: queryFuehrungskraft[0].set_EL});
 											dbClient.close();
 										});
 									});
@@ -1556,25 +1651,6 @@ server.post('/notizNew', urlencodedParser, function(req, res){
 				});
 			});
 		});
-	}
-	
-	else {
-		console.log("L1-Info: Cookie false");
-		res.send("Cookie false");
-	}
-	
-});	
-
-
-/* /cookietest - Empfangen eines GET-Requests ueber Port 8080  */
-server.get('/cookietest', function(req, res){
-	console.log("L2-Info: GET-REQUEST for /cookietest");
-	
-	if(req.session && req.session.user) { 
-		console.log("L1-Info: Cookie true");
-		console.log("L3-Info: Cookie = " + req.session.user);
-		
-		res.send(req.session.user);
 	}
 	
 	else {
@@ -1598,7 +1674,7 @@ server.get('/mainpage', function(req, res){
 			var db = dbClient.db('DigitalerFuehrungsassistent');
 			console.log("L2-Info: DB-Connection true");
 		
-			db.collection('Fuehrungskraft').find({cookie: req.session.user}).toArray(function(err, result) {
+			db.collection('Fuehrungskraft').find({cookie: req.session.user}).toArray(function(err, queryFuehrungskraft) {
 				if (err) throw err;
 				
 				db.collection('Einsatz').find().sort({timestamp: 1}).toArray(function(err, queryEinsatz) {
@@ -1623,10 +1699,12 @@ server.get('/mainpage', function(req, res){
 														posten: queryPosten,
 														notiz: queryNotiz,
 														funkspruch: queryFunkspruch,
-														fuehrungskraft_nachname: result[0].nachname,
-														fuehrungskraft_quali: result[0].quali,
-														fuehrungskraft_mapstate: result[0].position,
-														fuehrungskraft_mapzoom: result[0].zoom});
+														fuehrungskraft_nachname: queryFuehrungskraft[0].nachname,
+														fuehrungskraft_quali: queryFuehrungskraft[0].quali,
+														fuehrungskraft_mapstate: queryFuehrungskraft[0].position,
+														fuehrungskraft_mapzoom: queryFuehrungskraft[0].zoom,
+														fuehrungskraft_istEL: queryFuehrungskraft[0].ist_EL,
+														fuehrungskraft_setEL: queryFuehrungskraft[0].set_EL});
 														
 										dbClient.close();
 									});
@@ -1697,4 +1775,30 @@ server.post('/mapstate', urlencodedParser, function(req, res){
 		console.log("L1-Info: Cookie false");
 		res.send("Cookie false");
 	}
+});	
+
+
+
+
+
+
+
+// Debuggin Routing-Funktionen
+
+/* /cookietest - Empfangen eines GET-Requests ueber Port 8080  */
+server.get('/cookietest', function(req, res){
+	console.log("L2-Info: GET-REQUEST for /cookietest");
+	
+	if(req.session && req.session.user) { 
+		console.log("L1-Info: Cookie true");
+		console.log("L3-Info: Cookie = " + req.session.user);
+		
+		res.send(req.session.user);
+	}
+	
+	else {
+		console.log("L1-Info: Cookie false");
+		res.send("Cookie false");
+	}
+	
 });	

@@ -13,7 +13,7 @@
 				<a href="javascript:void(0)"  onclick="clickOn('rettungsmittelNew_button')" style="font-size:12px" class="w3-bar-item w3-button"><i class="fa fa-plus w3-small w3-margin-right"> <span class="fa fa-ambulance w3-right w3-large"></span></i>Rettungsmittel hinzufügen</a>
 				<a href="javascript:void(0)"  onclick="clickOn('postenNew_button')" style="font-size:12px" class="w3-bar-item w3-button"><i class="fa fa-plus w3-small w3-margin-right"> <span class="fa fa-flag w3-right w3-large"></span></i> Sanitätsposten hinzufügen</a>
 				<a href="javascript:void(0)"  onclick="clickOn('rettungskraftNew_button')" style="font-size:12px" class="w3-bar-item w3-button"><i class="fa fa-plus w3-small w3-margin-right"> <span class="fa fa-user-md w3-right w3-large"></span></i> Rettungskräfte hinzufügen</a>
-				<a onclick="openModal()" style="font-size:12px" class="w3-bar-item w3-button"><i class="fa fa-address-card w3-large w3-margin-right"> <span class="fa fa-pencil w3-right w3-small"></span></i>Führungsposition ändern</a>
+				<a href="/elNEW" style="font-size:12px" class="w3-bar-item w3-button"><i class="fa fa-address-card w3-large w3-margin-right"> <span class="fa fa-pencil w3-right w3-small"></span></i>Führungsposition ändern</a>
 			</div> <!-- id="navbar_element1_dropdown -->
 		</div> <!-- id="navbar_element1" -->
 		
@@ -198,7 +198,8 @@
 			</div>
 		
 			<p></p>
-			
+			{{# if fuehrungskraft_setEL }}
+			{{else}}
 			<!-- das Modal soll nach dem LOGIN/der  REGISTRATION auf "display:block;" stehen, damit zum Einsatzbeginn sofort die Führungsposition festgelegt werden kann: -->
 			<!-- Bedingung: Es darf nicht bei jedem "Reload" der mainpage auf "display:block;" stehen-->
 			<div id="modal_einsatzbeginn" class="w3-modal" style="z-index:5000;">
@@ -239,6 +240,7 @@
 				  </div>
 				</div>
 			</div>
+			{{/if}}
 			
 			<p></p>
 		
