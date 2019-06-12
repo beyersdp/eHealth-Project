@@ -1366,7 +1366,7 @@ server.post('/postenDel', urlencodedParser, function(req, res){
 			db.collection('Posten').find({_id: ObjectID(req.body.posten_id)}).toArray(function(err, queryPosten1) {
 				if (err) throw err;
 				
-				db.collection('Rettungskraft').updateMany({funkruf: {$in: queryPosten1[0].kraefte.map(x => x.funkruf)}}, {$set: {rettungsmittel: false}});   
+				db.collection('Rettungskraft').updateMany({funkruf: {$in: queryPosten1[0].kraefte.map(x => x.funkruf)}}, {$set: {rettungsmittel: false, position: queryPosten1[0].position}});   
 			
 				db.collection('Posten').deleteOne({_id: ObjectID(req.body.posten_id)}, function(err, deleted) {
 					if (err) throw err;
@@ -1440,7 +1440,7 @@ server.post('/rettungsmittelDel', urlencodedParser, function(req, res){
 			db.collection('Rettungsmittel').find({_id: ObjectID(req.body.rettungsmittel_id)}).toArray(function(err, queryRettungsmittel1) {
 				if (err) throw err;
 				
-				db.collection('Rettungskraft').updateMany({funkruf: {$in: queryRettungsmittel1[0].kraefte.map(x => x.funkruf)}}, {$set: {rettungsmittel: false}});   
+				db.collection('Rettungskraft').updateMany({funkruf: {$in: queryRettungsmittel1[0].kraefte.map(x => x.funkruf)}}, {$set: {rettungsmittel: false,position: queryRettungsmittel1[0].position}});   
 			
 				db.collection('Rettungsmittel').deleteOne({_id: ObjectID(req.body.rettungsmittel_id)}, function(err, deleted) {
 					if (err) throw err;
