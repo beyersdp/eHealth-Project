@@ -13,7 +13,7 @@
 				<a href="javascript:void(0)"  onclick="clickOn('rettungsmittelNew_button')" style="font-size:12px" class="w3-bar-item w3-button"><i class="fa fa-plus w3-small w3-margin-right"> <span class="fa fa-ambulance w3-right w3-large"></span></i>Rettungsmittel hinzufügen</a>
 				<a href="javascript:void(0)"  onclick="clickOn('postenNew_button')" style="font-size:12px" class="w3-bar-item w3-button"><i class="fa fa-plus w3-small w3-margin-right"> <span class="fa fa-flag w3-right w3-large"></span></i> Sanitätsposten hinzufügen</a>
 				<a href="javascript:void(0)"  onclick="clickOn('rettungskraftNew_button')" style="font-size:12px" class="w3-bar-item w3-button"><i class="fa fa-plus w3-small w3-margin-right"> <span class="fa fa-user-md w3-right w3-large"></span></i> Rettungskräfte hinzufügen</a>
-				<a onclick="openModal()" style="font-size:12px" class="w3-bar-item w3-button"><i class="fa fa-address-card w3-large w3-margin-right"> <span class="fa fa-pencil w3-right w3-small"></span></i>Führungsposition ändern</a>
+				<a href="/elNEW" style="font-size:12px" class="w3-bar-item w3-button"><i class="fa fa-address-card w3-large w3-margin-right"> <span class="fa fa-pencil w3-right w3-small"></span></i>Führungsposition ändern</a>
 			</div> <!-- id="navbar_element1_dropdown -->
 		</div> <!-- id="navbar_element1" -->
 		
@@ -35,7 +35,7 @@
 		<button class="w3-bar-item w3-button w3-hide-small w3-right w3-padding-larger" style="height:45px; width:10px;;" title="Reload Page"><i class="fa fa-refresh w3-right"></i></button>
 		
 		<!-- Information ueber aktive Fuehrungskraft -->
-		<button class="w3-bar-item w3-button w3-hide-small w3-right w3-padding-larger" style="height:45px; font-size:14px;" title="Einsatzleiter"> <img class="icon" src="./img/icons/einsatzleiter.png" alt="EL" style="width:20px; height:20px;"> {{ fuehrungskraft_nachname }} ({{ fuehrungskraft_quali }})</button>
+		<button class="w3-bar-item w3-button w3-hide-small w3-right w3-padding-larger" style="height:45px; font-size:14px;" title="Einsatzleiter">{{# if fuehrungskraft_istEL }}<img class="icon" src="./img/icons/einsatzleiter.png" alt="Einsatzleiter" style="width:20px; height:20px;">{{/if}} {{ fuehrungskraft_nachname }} ({{ fuehrungskraft_quali }})</button>
 	  
 	</div> <!-- id="navbar" -->
 </div> <!-- id="top" -->
@@ -198,7 +198,8 @@
 			</div>
 		
 			<p></p>
-			
+			{{# if fuehrungskraft_setEL }}
+			{{else}}
 			<!-- das Modal soll nach dem LOGIN/der  REGISTRATION auf "display:block;" stehen, damit zum Einsatzbeginn sofort die Führungsposition festgelegt werden kann: -->
 			<!-- Bedingung: Es darf nicht bei jedem "Reload" der mainpage auf "display:block;" stehen-->
 			<div id="modal_einsatzbeginn" class="w3-modal" style="z-index:5000;">
@@ -214,23 +215,24 @@
 					<p style="font-size:12px;"><i class="fa fa-info-circle fa-fw w3-margin-right"></i> Die Führungsposition kann jederzeit über den Reiter "Funktionen"-->"Führungsposition ändern" in der oberen Leiste der Hauptseite geändert werden.</p>
 					<p>
 					
-					<form>
-					  "Ich bin an dem Gesamteinsatz als... <br>
-					  &emsp; <input id="EL_true" type="radio" name="fuehrungsposten" value="einsatzleiter" checked> Einsatzleiter/in<br>
-					  &emsp; <input id="EL_false"type="radio" name="fuehrungsposten" value="fuehrungsassistent"> Fuehrungsassistent/in<br>
-					</form> 
-					...beteiligt."
-					
-					<form id="declareEL" style="display:none">
-					<p> Bitte füllen Sie Folgendes nur aus, wenn sie selbst <b> kein/e </b> Einsatzleiter/in sind:</p>
-					<p style="font-size:10px"><input class="w3-input w3-border" type="text" placeholder="Funkrufname des Einsatzleiters" name="EL_funkruf" style="height:25px; margin-left:auto; margin-right:auto;" id="EL_funkruf"></p>
-					<p style="font-size:10px"><input class="w3-input w3-border" type="text" placeholder="Vorname des Einsatzleiters" name="EL_vorname" style="height:25px; margin-left:auto; margin-right:auto;" id="vorname"></p>
-					<p style="font-size:10px"><input class="w3-input w3-border" type="text" placeholder="Nachname des Einsatzleiters" name="EL_nachname" style="height:25px; margin-left:auto; margin-right:auto;" id="nachname"></p>
-					</form>
-					
-					</p>
-					<!--Speicherfunktion fehlt noch-->
-					<button style="margin-left:auto; margin-right:auto; height:35px; width:200px;" type="submit" class="w3-button w3-block w3-blue-grey">Speichern</button>
+					<form method="POST" action="/el" id="el_form">
+						"Ich bin an dem Gesamteinsatz als... <br><br>
+						&emsp; <input id="EL_true" type="radio" name="fuehrungsposten" value="einsatzleiter" checked> Einsatzleiter/in<br>
+						&emsp; <input id="EL_false"type="radio" name="fuehrungsposten" value="fuehrungsassistent"> Fuehrungsassistent/in<br>
+						<br>...beteiligt."
+						
+						<!-- Besprechen wir am Freitag nochmal :)
+						<span id="declareEL" style="display:none">
+							<p> Bitte füllen Sie Folgendes nur aus, wenn sie selbst <b> kein/e </b> Einsatzleiter/in sind:</p>
+							<p style="font-size:10px"><input class="w3-input w3-border" type="text" placeholder="Funkrufname des Einsatzleiters" name="EL_funkruf" style="height:25px; margin-left:auto; margin-right:auto;" id="EL_funkruf"></input></p>
+							<p style="font-size:10px"><input class="w3-input w3-border" type="text" placeholder="Vorname des Einsatzleiters" name="EL_vorname" style="height:25px; margin-left:auto; margin-right:auto;" id="vorname"></input></p>
+							<p style="font-size:10px"><input class="w3-input w3-border" type="text" placeholder="Nachname des Einsatzleiters" name="EL_nachname" style="height:25px; margin-left:auto; margin-right:auto;" id="nachname"></input></p>
+						<span>
+						-->
+						</p>
+						<!--Speicherfunktion fehlt noch-->
+						<button style="margin-left:auto; margin-right:auto; height:35px; width:200px;" type="submit" class="w3-button w3-block w3-blue-grey">Speichern</button>
+					</form> <!-- id="el_form" -->
 				  </div>
 				  <div class="w3-modal-footer">
 				  <!-- Falls es einen extra START-Button gibt-->
@@ -238,6 +240,7 @@
 				  </div>
 				</div>
 			</div>
+			{{/if}}
 			
 			<p></p>
 		
@@ -820,8 +823,6 @@
 	{{/if}}
 </script>
 
-
-
 <!-- Include von externen Funktionen -->
 <script type="text/javascript" src="script/moment.js"></script>
 <script type="text/javascript" src="script/gesamt.js"></script>
@@ -829,3 +830,44 @@
 <script type="text/javascript" src="script/rettungsmittel.js"></script>
 <script type="text/javascript" src="script/rettungskraft.js"></script>
 <script type="text/javascript" src="script/posten.js"></script>
+
+{{# if fuehrungskraft_setEL }}
+{{else}}
+<script>
+	// Sicherheitsabfrage, bevor der Gesamteinsatz gestartet wird, sodass die Führungsposition auch tatsächlich gespeichert wurde:
+	function fuehrungspositionSpeichern(){
+		var txt= "Vor dem Schließen bitte Speichern nicht vergessen!";
+		if (confirm(txt)) {
+			closeModal();
+		}
+	}
+
+	// Modal, um die Führungsposition festzulegen:
+	// Get Modal Element
+	var modal = document.getElementById('modal_einsatzbeginn');
+
+	// Open
+	function openModal() {
+	  modal.style.display = 'block';
+	}
+
+	// Close
+	function closeModal() {
+	  modal.style.display = 'none';
+	}
+
+
+	// Input-Felder für die Angabe einess externen Einsatzleiters: 
+	var text = document.getElementById("declareEL");
+	var checkBox_EL = document.getElementById("EL_false");
+	checkBox_EL.addEventListener( 'change', function() {
+		if(this.checked) {
+			text.style.display = "block";
+		} else {
+			text.style.display = "none";
+		}
+	});
+	
+	openModal();
+</script>
+{{/if}}

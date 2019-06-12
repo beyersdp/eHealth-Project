@@ -120,6 +120,14 @@ function addHistory(args) {
 		var ereignis_grouping = args.funkruf + " " + args.ereignis;
 	}
 	
+	if (args.ereignis == "Einsatzleiters gewählt") {
+		var ereignis_grouping = args.fuehrungskraft_vorname + " " + args.fuehrungskraft_nachname + " hat die Position des " + args.ereignis;
+	}
+	
+	if (args.ereignis == "Fuehrungsassistenten gewählt") {
+		var ereignis_grouping = args.fuehrungskraft_vorname + " " + args.fuehrungskraft_nachname + " hat die Position des " + args.ereignis;
+	}
+	
 	console.log(ereignis_grouping);
 	
 	var history_data = {timestamp: moment().format('YYYYMMDDHHmmss'),
@@ -352,6 +360,163 @@ server.post('/registration', urlencodedParser, function(req, res){
 
 
 
+/* /el - Empfangen eines POST-Requests ueber Port 8080  */
+server.post('/el', urlencodedParser, function(req, res){
+	console.log("L2-Info: POST-REQUEST for /el");
+	//console.log(req.body); //DEBUG Kontrollausgabe
+	
+	if(req.session && req.session.user) { 
+		console.log("L1-Info: Cookie true");
+		
+		mongodbClient.connect(url, { useNewUrlParser: true }, function(err, dbClient) {
+			if (err) throw err;
+			var db = dbClient.db('DigitalerFuehrungsassistent');
+			console.log("L2-Info: DB-Connection true");
+			
+			if (req.body.fuehrungsposten == 'einsatzleiter') {
+			
+				db.collection('Fuehrungskraft').findOneAndUpdate({cookie: req.session.user}, {$set: {ist_EL: true, set_EL: true}}, function(err, updated) {
+					if (err) throw err;
+				});
+			}
+			
+			else {
+				db.collection('Fuehrungskraft').findOneAndUpdate({cookie: req.session.user}, {$set: {ist_EL: false, set_EL: true}}, function(err, updated) {
+					if (err) throw err;
+				});
+			}
+			
+			db.collection('Fuehrungskraft').find({cookie: req.session.user}).toArray(function(err, queryFuehrungskraft) {
+				if (err) throw err;
+				
+				db.collection('Einsatz').find().sort({timestamp: 1}).toArray(function(err, queryEinsatz) {
+					if (err) throw err;
+					
+					db.collection('Rettungskraft').find({rettungsmittel: false}).toArray(function(err, queryRettungskrafte) {
+						if (err) throw err;
+						
+						db.collection('Rettungsmittel').find().toArray(function(err, queryRettungsmittel) {
+							
+							db.collection('Posten').find().toArray(function(err, queryPosten) {
+								if (err) throw err;
+								
+								db.collection('Notiz').find().toArray(function(err, queryNotiz) {
+									
+									db.collection('Funkspruch').find().sort({timestamp: 1}).toArray(function(err, queryFunkspruch) {
+										
+										if (req.body.fuehrungsposten == 'einsatzleiter') {
+											addHistory({ereignis: "Einsatzleiters gewählt", fuehrungskraft_vorname: queryFuehrungskraft[0].vorname,
+														fuehrungskraft_nachname: queryFuehrungskraft[0].nachname});
+										}
+										
+										else { 
+											addHistory({ereignis: "Fuehrungsassistenten gewählt", fuehrungskraft_vorname: queryFuehrungskraft[0].vorname,
+														fuehrungskraft_nachname: queryFuehrungskraft[0].nachname});
+										}
+										
+										res.render('mainpage', {title: "Hauptseite - Digitaler Führungsassistent",
+														einsatz: queryEinsatz,
+														rettungskraft: queryRettungskrafte,
+														rettungsmittel: queryRettungsmittel,
+														posten: queryPosten,
+														notiz: queryNotiz,
+														funkspruch: queryFunkspruch,
+														fuehrungskraft_nachname: queryFuehrungskraft[0].nachname,
+														fuehrungskraft_quali: queryFuehrungskraft[0].quali,
+														fuehrungskraft_mapstate: queryFuehrungskraft[0].position,
+														fuehrungskraft_mapzoom: queryFuehrungskraft[0].zoom,
+														fuehrungskraft_istEL: queryFuehrungskraft[0].ist_EL,
+														fuehrungskraft_setEL: queryFuehrungskraft[0].set_EL});
+														
+										dbClient.close();
+									});
+								});
+							});
+						});
+					});
+				});
+			});
+		});
+	}
+	
+	else {
+		console.log("L1-Info: Cookie false");
+		res.send("Cookie false");
+	}
+});
+
+
+
+
+/* /elNEW - Empfangen eines POST-Requests ueber Port 8080  */
+server.get('/elNEW', function(req, res){
+	console.log("L2-Info: POST-REQUEST for /elNEW");
+	//console.log(req.body); //DEBUG Kontrollausgabe
+	
+	if(req.session && req.session.user) { 
+		console.log("L1-Info: Cookie true");
+		
+		mongodbClient.connect(url, { useNewUrlParser: true }, function(err, dbClient) {
+			if (err) throw err;
+			var db = dbClient.db('DigitalerFuehrungsassistent');
+			console.log("L2-Info: DB-Connection true");
+			
+			
+			db.collection('Fuehrungskraft').findOneAndUpdate({cookie: req.session.user}, {$set: {set_EL: false}}, function(err, updated) {
+				if (err) throw err;
+			
+				db.collection('Fuehrungskraft').find({cookie: req.session.user}).toArray(function(err, queryFuehrungskraft) {
+					if (err) throw err;
+					
+					db.collection('Einsatz').find().sort({timestamp: 1}).toArray(function(err, queryEinsatz) {
+						if (err) throw err;
+						
+						db.collection('Rettungskraft').find({rettungsmittel: false}).toArray(function(err, queryRettungskrafte) {
+							if (err) throw err;
+							
+							db.collection('Rettungsmittel').find().toArray(function(err, queryRettungsmittel) {
+								
+								db.collection('Posten').find().toArray(function(err, queryPosten) {
+									if (err) throw err;
+									
+									db.collection('Notiz').find().toArray(function(err, queryNotiz) {
+										
+										db.collection('Funkspruch').find().sort({timestamp: 1}).toArray(function(err, queryFunkspruch) {
+										
+											res.render('mainpage', {title: "Hauptseite - Digitaler Führungsassistent",
+															einsatz: queryEinsatz,
+															rettungskraft: queryRettungskrafte,
+															rettungsmittel: queryRettungsmittel,
+															posten: queryPosten,
+															notiz: queryNotiz,
+															funkspruch: queryFunkspruch,
+															fuehrungskraft_nachname: queryFuehrungskraft[0].nachname,
+															fuehrungskraft_quali: queryFuehrungskraft[0].quali,
+															fuehrungskraft_mapstate: queryFuehrungskraft[0].position,
+															fuehrungskraft_mapzoom: queryFuehrungskraft[0].zoom,
+															fuehrungskraft_istEL: queryFuehrungskraft[0].ist_EL,
+															fuehrungskraft_setEL: queryFuehrungskraft[0].set_EL});
+															
+											dbClient.close();
+										});
+									});
+								});
+							});
+						});
+					});
+				});
+			});
+		});
+	}
+	
+	else {
+		console.log("L1-Info: Cookie false");
+		res.send("Cookie false");
+	}
+});
+
+
+
 /* /einsatz - Empfangen eines POST-Requests ueber Port 8080  */
 server.post('/einsatz', urlencodedParser, function(req, res){
 	console.log("L2-Info: POST-REQUEST for /einsatz");
@@ -367,7 +532,7 @@ server.post('/einsatz', urlencodedParser, function(req, res){
 				var db = dbClient.db('DigitalerFuehrungsassistent');
 				console.log("L2-Info: DB-Connection true I");
 		
-				db.collection('Fuehrungskraft').find({cookie: req.session.user}).toArray(function(err, result) {
+				db.collection('Fuehrungskraft').find({cookie: req.session.user}).toArray(function(err, queryFuehrungskraft) {
 					if (err) throw err;
 					
 					if (Array.isArray(req.body.einsatz_kraefte)) {
@@ -413,23 +578,29 @@ server.post('/einsatz', urlencodedParser, function(req, res){
 													if (err) throw err;
 													
 													db.collection('Notiz').find().toArray(function(err, queryNotiz) {
-													
-														addHistory({ereignis: "Notfalleinsatz", sender: req.body.einsatz_sender, meldebild: req.body.einsatz_meldebild,
-																	anzVerletzte: req.body.einsatz_anzVerletzte, status: req.body.einsatz_status, text: req.body.einsatz_text,
-																	rettungskraefte: queryRettungskrafte1, posten: queryPosten1, rettungsmittel: queryRettungsmittel1,
-																	fuehrungskraft: result[0].nachname})
 														
-														res.render('mainpage', {title: "Einsatz - Digitaler Führungsassistent",
-																				einsatz: queryEinsatz,
-																				rettungskraft: queryRettungskrafte2,
-																				rettungsmittel: queryRettungsmittel2,
-																				posten: queryPosten2,
-																				notiz: queryNotiz,
-																				fuehrungskraft_nachname: result[0].nachname,
-																				fuehrungskraft_quali: result[0].quali,
-																				fuehrungskraft_mapstate: result[0].position,
-																				fuehrungskraft_mapzoom: result[0].zoom});
-														dbClient.close();
+														db.collection('Funkspruch').find().sort({timestamp: 1}).toArray(function(err, queryFunkspruch) {
+													
+															addHistory({ereignis: "Notfalleinsatz", sender: req.body.einsatz_sender, meldebild: req.body.einsatz_meldebild,
+																		anzVerletzte: req.body.einsatz_anzVerletzte, status: req.body.einsatz_status, text: req.body.einsatz_text,
+																		rettungskraefte: queryRettungskrafte1, posten: queryPosten1, rettungsmittel: queryRettungsmittel1,
+																		fuehrungskraft: result[0].nachname})
+															
+															res.render('mainpage', {title: "Einsatz - Digitaler Führungsassistent",
+																					einsatz: queryEinsatz,
+																					rettungskraft: queryRettungskrafte2,
+																					rettungsmittel: queryRettungsmittel2,
+																					posten: queryPosten2,
+																					notiz: queryNotiz,
+																					funkspruch: queryFunkspruch,
+																					fuehrungskraft_nachname: result[0].nachname,
+																					fuehrungskraft_quali: result[0].quali,
+																					fuehrungskraft_mapstate: queryFuehrungskraft[0].position,
+																					fuehrungskraft_mapzoom: queryFuehrungskraft[0].zoom,
+																					fuehrungskraft_istEL: queryFuehrungskraft[0].ist_EL,
+																					fuehrungskraft_setEL: queryFuehrungskraft[0].set_EL});
+															dbClient.close();
+														});
 													});
 												});
 											});
@@ -506,7 +677,7 @@ server.post('/funkspruch', urlencodedParser, function(req, res){
 			var db = dbClient.db('DigitalerFuehrungsassistent');
 			console.log("L2-Info: DB-Connection true");
 	
-			db.collection('Fuehrungskraft').find({cookie: req.session.user}).toArray(function(err, result) {
+			db.collection('Fuehrungskraft').find({cookie: req.session.user}).toArray(function(err, queryFuehrungskraft) {
 				if (err) throw err;
 				
 				funkspruch_data = {sender: req.body.funkspruch_sender,
@@ -532,22 +703,28 @@ server.post('/funkspruch', urlencodedParser, function(req, res){
 									if (err) throw err;
 									
 									db.collection('Notiz').find().toArray(function(err, queryNotiz) {
+										
+										db.collection('Funkspruch').find().sort({timestamp: 1}).toArray(function(err, queryFunkspruch) {
 									
-										addHistory({ereignis: "Funkspruch", sender: req.body.funkspruch_sender, 
-												   empfaenger: req.body.funkspruch_empfaenger, fuehrungskraft: result[0].nachname, 
-												   kategorie: req.body.funkspruch_kategorie, text: req.body.funkspruch_text});
-												   
-										res.render('mainpage', {title: "Hauptseite - Digitaler Führungsassistent",
-																einsatz: queryEinsatz,
-																rettungskraft: queryRettungskrafte,
-																rettungsmittel: queryRettungsmittel,
-																posten: queryPosten,
-																notiz: queryNotiz,
-																fuehrungskraft_nachname: result[0].nachname,
-																fuehrungskraft_quali: result[0].quali,
-																fuehrungskraft_mapstate: result[0].position,
-																fuehrungskraft_mapzoom: result[0].zoom});
-										dbClient.close();
+											addHistory({ereignis: "Funkspruch", sender: req.body.funkspruch_sender, 
+													   empfaenger: req.body.funkspruch_empfaenger, fuehrungskraft: result[0].nachname, 
+													   kategorie: req.body.funkspruch_kategorie, text: req.body.funkspruch_text});
+													   
+											res.render('mainpage', {title: "Hauptseite - Digitaler Führungsassistent",
+																	einsatz: queryEinsatz,
+																	rettungskraft: queryRettungskrafte,
+																	rettungsmittel: queryRettungsmittel,
+																	posten: queryPosten,
+																	notiz: queryNotiz,
+																	funkspruch: queryFunkspruch,
+																	fuehrungskraft_nachname: queryFuehrungskraft[0].nachname,
+																	fuehrungskraft_quali: queryFuehrungskraft[0].quali,
+																	fuehrungskraft_mapstate: queryFuehrungskraft[0].position,
+																	fuehrungskraft_mapzoom: queryFuehrungskraft[0].zoom,
+																	fuehrungskraft_istEL: queryFuehrungskraft[0].ist_EL,
+																	fuehrungskraft_setEL: queryFuehrungskraft[0].set_EL});
+											dbClient.close();
+										});
 									});
 								});
 							});
@@ -624,32 +801,38 @@ server.post('/rettungskraft', urlencodedParser, function(req, res){
 										if (err) throw err;
 										
 										db.collection('Notiz').find().toArray(function(err, queryNotiz) {
+											
+											db.collection('Funkspruch').find().sort({timestamp: 1}).toArray(function(err, queryFunkspruch) {
 										
-											if (req.body.rettungskraft_funkruf == "") {
-												addHistory({ereignis: "Rettungskraft hat Ihre Schicht begonnen", vorname: req.body.rettungskraft_vorname,
-															nachname: req.body.rettungskraft_nachname, hiorg: req.body.rettungskraft_hiorg, quali: req.body.rettungskraft_quali, 
-															funkruf: req.body.rettungskraft_vorname + " " + req.body.rettungskraft_nachname,
-															tel: req.body.rettungskraft_tel, fuehrungskraft: queryFuehrungskraft[0].nachname});
-											}
-											
-											else {
-												addHistory({ereignis: "Rettungskraft hat Ihre Schicht begonnen", vorname: req.body.rettungskraft_vorname, 
-															nachname: req.body.rettungskraft_nachname, hiorg: req.body.rettungskraft_hiorg, quali: req.body.rettungskraft_quali, 
-															funkruf: req.body.rettungskraft_funkruf, tel: req.body.rettungskraft_tel,
-															fuehrungskraft: queryFuehrungskraft[0].nachname});
-											}
-											
-											res.render('mainpage', {title: "Hauptseite - Digitaler Führungsassistent",
-																	einsatz: queryEinsatz,
-																	rettungskraft: queryRettungskrafte,
-																	rettungsmittel: queryRettungsmittel,
-																	posten: queryPosten,
-																	notiz: queryNotiz,
-																	fuehrungskraft_nachname: queryFuehrungskraft[0].nachname,
-																	fuehrungskraft_quali: queryFuehrungskraft[0].quali,
-																	fuehrungskraft_mapstate: queryFuehrungskraft[0].position,
-																	fuehrungskraft_mapzoom: queryFuehrungskraft[0].zoom});
-											dbClient.close();
+												if (req.body.rettungskraft_funkruf == "") {
+													addHistory({ereignis: "Rettungskraft hat Ihre Schicht begonnen", vorname: req.body.rettungskraft_vorname,
+																nachname: req.body.rettungskraft_nachname, hiorg: req.body.rettungskraft_hiorg, quali: req.body.rettungskraft_quali, 
+																funkruf: req.body.rettungskraft_vorname + " " + req.body.rettungskraft_nachname,
+																tel: req.body.rettungskraft_tel, fuehrungskraft: queryFuehrungskraft[0].nachname});
+												}
+												
+												else {
+													addHistory({ereignis: "Rettungskraft hat Ihre Schicht begonnen", vorname: req.body.rettungskraft_vorname, 
+																nachname: req.body.rettungskraft_nachname, hiorg: req.body.rettungskraft_hiorg, quali: req.body.rettungskraft_quali, 
+																funkruf: req.body.rettungskraft_funkruf, tel: req.body.rettungskraft_tel,
+																fuehrungskraft: queryFuehrungskraft[0].nachname});
+												}
+												
+												res.render('mainpage', {title: "Hauptseite - Digitaler Führungsassistent",
+																		einsatz: queryEinsatz,
+																		rettungskraft: queryRettungskrafte,
+																		rettungsmittel: queryRettungsmittel,
+																		posten: queryPosten,
+																		notiz: queryNotiz,
+																		funkspruch: queryFunkspruch,
+																		fuehrungskraft_nachname: queryFuehrungskraft[0].nachname,
+																		fuehrungskraft_quali: queryFuehrungskraft[0].quali,
+																		fuehrungskraft_mapstate: queryFuehrungskraft[0].position,
+																		fuehrungskraft_mapzoom: queryFuehrungskraft[0].zoom,
+																		fuehrungskraft_istEL: queryFuehrungskraft[0].ist_EL,
+																		fuehrungskraft_setEL: queryFuehrungskraft[0].set_EL});
+												dbClient.close();
+											});
 										});
 									});
 								});
@@ -703,32 +886,38 @@ server.post('/rettungskraft', urlencodedParser, function(req, res){
 										if (err) throw err;
 										
 										db.collection('Notiz').find().toArray(function(err, queryNotiz) {
+											
+											db.collection('Funkspruch').find().sort({timestamp: 1}).toArray(function(err, queryFunkspruch) {
 										
-											if (req.body.rettungskraft_funkruf == "") {
-												addHistory({ereignis: "Personaldaten einer Rettungskraft wurden bearbeitet", vorname: req.body.rettungskraft_vorname,
-															nachname: req.body.rettungskraft_nachname, hiorg: req.body.rettungskraft_hiorg, quali: req.body.rettungskraft_quali, 
-															funkruf: req.body.rettungskraft_vorname + " " + req.body.rettungskraft_nachname,
-															tel: req.body.rettungskraft_tel, fuehrungskraft: queryFuehrungskraft[0].nachname});
-											}
-											
-											else {
-												addHistory({ereignis: "Personaldaten einer Rettungskraft wurden bearbeitet", vorname: req.body.rettungskraft_vorname, 
-															nachname: req.body.rettungskraft_nachname, hiorg: req.body.rettungskraft_hiorg, quali: req.body.rettungskraft_quali, 
-															funkruf: req.body.rettungskraft_funkruf, tel: req.body.rettungskraft_tel,
-															fuehrungskraft: queryFuehrungskraft[0].nachname});
-											}
-											
-											res.render('mainpage', {title: "Hauptseite - Digitaler Führungsassistent",
-															einsatz: queryEinsatz,
-															rettungskraft: queryRettungskraefte,
-															rettungsmittel: queryRettungsmittel,
-															posten: queryPosten,
-															notiz: queryNotiz,
-															fuehrungskraft_nachname: queryFuehrungskraft[0].nachname,
-															fuehrungskraft_quali: queryFuehrungskraft[0].quali,
-															fuehrungskraft_mapstate: queryFuehrungskraft[0].position,
-															fuehrungskraft_mapzoom: queryFuehrungskraft[0].zoom});
-											dbClient.close();
+												if (req.body.rettungskraft_funkruf == "") {
+													addHistory({ereignis: "Personaldaten einer Rettungskraft wurden bearbeitet", vorname: req.body.rettungskraft_vorname,
+																nachname: req.body.rettungskraft_nachname, hiorg: req.body.rettungskraft_hiorg, quali: req.body.rettungskraft_quali, 
+																funkruf: req.body.rettungskraft_vorname + " " + req.body.rettungskraft_nachname,
+																tel: req.body.rettungskraft_tel, fuehrungskraft: queryFuehrungskraft[0].nachname});
+												}
+												
+												else {
+													addHistory({ereignis: "Personaldaten einer Rettungskraft wurden bearbeitet", vorname: req.body.rettungskraft_vorname, 
+																nachname: req.body.rettungskraft_nachname, hiorg: req.body.rettungskraft_hiorg, quali: req.body.rettungskraft_quali, 
+																funkruf: req.body.rettungskraft_funkruf, tel: req.body.rettungskraft_tel,
+																fuehrungskraft: queryFuehrungskraft[0].nachname});
+												}
+												
+												res.render('mainpage', {title: "Hauptseite - Digitaler Führungsassistent",
+																einsatz: queryEinsatz,
+																rettungskraft: queryRettungskraefte,
+																rettungsmittel: queryRettungsmittel,
+																posten: queryPosten,
+																notiz: queryNotiz,
+																funkspruch: queryFunkspruch,
+																fuehrungskraft_nachname: queryFuehrungskraft[0].nachname,
+																fuehrungskraft_quali: queryFuehrungskraft[0].quali,
+																fuehrungskraft_mapstate: queryFuehrungskraft[0].position,
+																fuehrungskraft_mapzoom: queryFuehrungskraft[0].zoom,
+																fuehrungskraft_istEL: queryFuehrungskraft[0].ist_EL,
+																fuehrungskraft_setEL: queryFuehrungskraft[0].set_EL});
+												dbClient.close();
+											});
 										});
 									});
 								});
@@ -794,21 +983,27 @@ server.post('/posten', urlencodedParser, function(req, res){
 											if (err) throw err;
 											
 											db.collection('Notiz').find().toArray(function(err, queryNotiz) {
-											
-												addHistory({ereignis: "Sanitätsposten wurde erstellt", funkruf: req.body.posten_funkruf, rettungskraefte: queryRettungskraefte1,
-															fuehrungskraft: queryFuehrungskraft[0].nachname})
 												
-												res.render('mainpage', {title: "Hauptseite - Digitaler Führungsassistent",
-																einsatz: queryEinsatz,
-																rettungskraft: queryRettungskraefte2,
-																rettungsmittel: queryRettungsmittel,
-																posten: queryPosten,
-																notiz: queryNotiz,
-																fuehrungskraft_nachname: queryFuehrungskraft[0].nachname,
-																fuehrungskraft_quali: queryFuehrungskraft[0].quali,
-																fuehrungskraft_mapstate: queryFuehrungskraft[0].position,
-																fuehrungskraft_mapzoom: queryFuehrungskraft[0].zoom});
-												dbClient.close();
+												db.collection('Funkspruch').find().sort({timestamp: 1}).toArray(function(err, queryFunkspruch) {
+											
+													addHistory({ereignis: "Sanitätsposten wurde erstellt", funkruf: req.body.posten_funkruf, rettungskraefte: queryRettungskraefte1,
+																fuehrungskraft: queryFuehrungskraft[0].nachname})
+													
+													res.render('mainpage', {title: "Hauptseite - Digitaler Führungsassistent",
+																	einsatz: queryEinsatz,
+																	rettungskraft: queryRettungskraefte2,
+																	rettungsmittel: queryRettungsmittel,
+																	posten: queryPosten,
+																	notiz: queryNotiz,
+																	funkspruch: queryFunkspruch,
+																	fuehrungskraft_nachname: queryFuehrungskraft[0].nachname,
+																	fuehrungskraft_quali: queryFuehrungskraft[0].quali,
+																	fuehrungskraft_mapstate: queryFuehrungskraft[0].position,
+																	fuehrungskraft_mapzoom: queryFuehrungskraft[0].zoom,
+																	fuehrungskraft_istEL: queryFuehrungskraft[0].ist_EL,
+																	fuehrungskraft_setEL: queryFuehrungskraft[0].set_EL});
+													dbClient.close();
+												});
 											});
 										});
 									});
@@ -868,21 +1063,27 @@ server.post('/posten', urlencodedParser, function(req, res){
 													if (err) throw err;
 													
 													db.collection('Notiz').find().toArray(function(err, queryNotiz) {
-													
-														addHistory({ereignis: "Sanitätsposten wurde bearbeitet", funkruf: req.body.posten_funkruf, rettungskraefte: queryRettungskraefte1,
-																	fuehrungskraft: queryFuehrungskraft[0].nachname})
 														
-														res.render('mainpage', {title: "Hauptseite - Digitaler Führungsassistent",
-																				einsatz: queryEinsatz,
-																				rettungskraft: queryRettungskraefte2,
-																				rettungsmittel: queryRettungsmittel,
-																				posten: queryPosten2,
-																				notiz: queryNotiz,
-																				fuehrungskraft_nachname: queryFuehrungskraft[0].nachname,
-																				fuehrungskraft_quali: queryFuehrungskraft[0].quali,
-																				fuehrungskraft_mapstate: queryFuehrungskraft[0].position,
-																				fuehrungskraft_mapzoom: queryFuehrungskraft[0].zoom});
-														dbClient.close();
+														db.collection('Funkspruch').find().sort({timestamp: 1}).toArray(function(err, queryFunkspruch) {
+													
+															addHistory({ereignis: "Sanitätsposten wurde bearbeitet", funkruf: req.body.posten_funkruf, rettungskraefte: queryRettungskraefte1,
+																		fuehrungskraft: queryFuehrungskraft[0].nachname})
+															
+															res.render('mainpage', {title: "Hauptseite - Digitaler Führungsassistent",
+																					einsatz: queryEinsatz,
+																					rettungskraft: queryRettungskraefte2,
+																					rettungsmittel: queryRettungsmittel,
+																					posten: queryPosten2,
+																					notiz: queryNotiz,
+																					funkspruch: queryFunkspruch,
+																					fuehrungskraft_nachname: queryFuehrungskraft[0].nachname,
+																					fuehrungskraft_quali: queryFuehrungskraft[0].quali,
+																					fuehrungskraft_mapstate: queryFuehrungskraft[0].position,
+																					fuehrungskraft_mapzoom: queryFuehrungskraft[0].zoom,
+																					fuehrungskraft_istEL: queryFuehrungskraft[0].ist_EL,
+																					fuehrungskraft_setEL: queryFuehrungskraft[0].set_EL});
+															dbClient.close();
+														});
 													});
 												});
 											});
@@ -953,21 +1154,27 @@ server.post('/rettungsmittel', urlencodedParser, function(req, res){
 											if (err) throw err;
 											
 											db.collection('Notiz').find().toArray(function(err, queryNotiz) {
-											
-												addHistory({ereignis: "Fahrzeug wurde besetzt", funkruf: req.body.rettungsmittel_funkruf, art: req.body.rettungsmittel_art,
-															rettungskraefte: queryRettungskraefte1, fuehrungskraft: queryFuehrungskraft[0].nachname});
 												
-												res.render('mainpage', {title: "Hauptseite - Digitaler Führungsassistent",
-																einsatz: queryEinsatz,
-																rettungskraft: queryRettungskrafte2,
-																rettungsmittel: queryRettungsmittel,
-																posten: queryPosten,
-																notiz: queryNotiz,
-																fuehrungskraft_nachname: queryFuehrungskraft[0].nachname,
-																fuehrungskraft_quali: queryFuehrungskraft[0].quali,
-																fuehrungskraft_mapstate: queryFuehrungskraft[0].position,
-																fuehrungskraft_mapzoom: queryFuehrungskraft[0].zoom});
-												dbClient.close();
+												db.collection('Funkspruch').find().sort({timestamp: 1}).toArray(function(err, queryFunkspruch) {
+											
+													addHistory({ereignis: "Fahrzeug wurde besetzt", funkruf: req.body.rettungsmittel_funkruf, art: req.body.rettungsmittel_art,
+																rettungskraefte: queryRettungskraefte1, fuehrungskraft: queryFuehrungskraft[0].nachname});
+													
+													res.render('mainpage', {title: "Hauptseite - Digitaler Führungsassistent",
+																	einsatz: queryEinsatz,
+																	rettungskraft: queryRettungskrafte2,
+																	rettungsmittel: queryRettungsmittel,
+																	posten: queryPosten,
+																	notiz: queryNotiz,
+																	funkspruch: queryFunkspruch,
+																	fuehrungskraft_nachname: queryFuehrungskraft[0].nachname,
+																	fuehrungskraft_quali: queryFuehrungskraft[0].quali,
+																	fuehrungskraft_mapstate: queryFuehrungskraft[0].position,
+																	fuehrungskraft_mapzoom: queryFuehrungskraft[0].zoom,
+																	fuehrungskraft_istEL: queryFuehrungskraft[0].ist_EL,
+																	fuehrungskraft_setEL: queryFuehrungskraft[0].set_EL});
+													dbClient.close();
+												});
 											});
 										});
 									});
@@ -1026,21 +1233,27 @@ server.post('/rettungsmittel', urlencodedParser, function(req, res){
 													if (err) throw err;
 													
 													db.collection('Notiz').find().toArray(function(err, queryNotiz) {
-												
-														addHistory({ereignis: "Fahrzeug-Konstellation wurde angepasst", funkruf: req.body.rettungsmittel_funkruf, art: req.body.rettungsmittel_art,
-																rettungskraefte: queryRettungskraefte1, fuehrungskraft: queryFuehrungskraft[0].nachname});
 														
-														res.render('mainpage', {title: "Hauptseite - Digitaler Führungsassistent",
-																		einsatz: queryEinsatz,
-																		rettungskraft: queryRettungskraefte2,
-																		rettungsmittel: queryRettungsmittel,
-																		posten: queryPosten,
-																		notiz: queryNotiz,
-																		fuehrungskraft_nachname: queryFuehrungskraft[0].nachname,
-																		fuehrungskraft_quali: queryFuehrungskraft[0].quali,
-																		fuehrungskraft_mapstate: queryFuehrungskraft[0].position,
-																		fuehrungskraft_mapzoom: queryFuehrungskraft[0].zoom});
-														dbClient.close();
+														db.collection('Funkspruch').find().sort({timestamp: 1}).toArray(function(err, queryFunkspruch) {
+												
+															addHistory({ereignis: "Fahrzeug-Konstellation wurde angepasst", funkruf: req.body.rettungsmittel_funkruf, art: req.body.rettungsmittel_art,
+																	rettungskraefte: queryRettungskraefte1, fuehrungskraft: queryFuehrungskraft[0].nachname});
+															
+															res.render('mainpage', {title: "Hauptseite - Digitaler Führungsassistent",
+																			einsatz: queryEinsatz,
+																			rettungskraft: queryRettungskraefte2,
+																			rettungsmittel: queryRettungsmittel,
+																			posten: queryPosten,
+																			notiz: queryNotiz,
+																			funkspruch: queryFunkspruch,
+																			fuehrungskraft_nachname: queryFuehrungskraft[0].nachname,
+																			fuehrungskraft_quali: queryFuehrungskraft[0].quali,
+																			fuehrungskraft_mapstate: queryFuehrungskraft[0].position,
+																			fuehrungskraft_mapzoom: queryFuehrungskraft[0].zoom,
+																			fuehrungskraft_istEL: queryFuehrungskraft[0].ist_EL,
+																			fuehrungskraft_setEL: queryFuehrungskraft[0].set_EL});
+															dbClient.close();
+														});
 													});
 												});
 											});
@@ -1099,20 +1312,26 @@ server.post('/rettungskraftDel', urlencodedParser, function(req, res){
 										if (err) throw err;
 										
 										db.collection('Notiz').find().toArray(function(err, queryNotiz) {
-									
-											addHistory({ereignis: "hat den Dienst beendet", funkruf: queryRettungskraefte1[0].funkruf});
 											
-											res.render('mainpage', {title: "Hauptseite - Digitaler Führungsassistent",
-															einsatz: queryEinsatz,
-															rettungskraft: queryRettungskrafte2,
-															rettungsmittel: queryRettungsmittel,
-															posten: queryPosten,
-															notiz: queryNotiz,
-															fuehrungskraft_nachname: queryFuehrungskraft[0].nachname,
-															fuehrungskraft_quali: queryFuehrungskraft[0].quali,
-															fuehrungskraft_mapstate: queryFuehrungskraft[0].position,
-															fuehrungskraft_mapzoom: queryFuehrungskraft[0].zoom});
-											dbClient.close();
+											db.collection('Funkspruch').find().sort({timestamp: 1}).toArray(function(err, queryFunkspruch) {
+									
+												addHistory({ereignis: "hat den Dienst beendet", funkruf: queryRettungskraefte1[0].funkruf});
+												
+												res.render('mainpage', {title: "Hauptseite - Digitaler Führungsassistent",
+																einsatz: queryEinsatz,
+																rettungskraft: queryRettungskrafte2,
+																rettungsmittel: queryRettungsmittel,
+																posten: queryPosten,
+																notiz: queryNotiz,
+																funkspruch: queryFunkspruch,
+																fuehrungskraft_nachname: queryFuehrungskraft[0].nachname,
+																fuehrungskraft_quali: queryFuehrungskraft[0].quali,
+																fuehrungskraft_mapstate: queryFuehrungskraft[0].position,
+																fuehrungskraft_mapzoom: queryFuehrungskraft[0].zoom,
+																fuehrungskraft_istEL: queryFuehrungskraft[0].ist_EL,
+																fuehrungskraft_setEL: queryFuehrungskraft[0].set_EL});
+												dbClient.close();
+											});
 										});
 									});
 								});
@@ -1147,12 +1366,12 @@ server.post('/postenDel', urlencodedParser, function(req, res){
 			db.collection('Posten').find({_id: ObjectID(req.body.posten_id)}).toArray(function(err, queryPosten1) {
 				if (err) throw err;
 				
-				db.collection('Rettungskraft').updateMany({funkruf: {$in: queryPosten1[0].kraefte.map(x => x.funkruf)}}, {$set: {rettungsmittel: false}});   
+				db.collection('Rettungskraft').updateMany({funkruf: {$in: queryPosten1[0].kraefte.map(x => x.funkruf)}}, {$set: {rettungsmittel: false, position: queryPosten1[0].position}});   
 			
 				db.collection('Posten').deleteOne({_id: ObjectID(req.body.posten_id)}, function(err, deleted) {
 					if (err) throw err;
 					
-					db.collection('Fuehrungskraft').find({cookie: req.session.user}).toArray(function(err, result) {
+					db.collection('Fuehrungskraft').find({cookie: req.session.user}).toArray(function(err, queryFuehrungskraft) {
 					if (err) throw err;
 					
 						db.collection('Einsatz').find().sort({timestamp: 1}).toArray(function(err, queryEinsatz) {
@@ -1167,20 +1386,26 @@ server.post('/postenDel', urlencodedParser, function(req, res){
 										if (err) throw err;
 										
 										db.collection('Notiz').find().toArray(function(err, queryNotiz) {
-										
-											addHistory({ereignis: "wurde stillgelegt", funkruf: queryPosten1[0].funkruf});
 											
-											res.render('mainpage', {title: "Hauptseite - Digitaler Führungsassistent",
-															einsatz: queryEinsatz,
-															rettungskraft: queryRettungskrafte,
-															rettungsmittel: queryRettungsmittel,
-															posten: queryPosten2,
-															notiz: queryNotiz,
-															fuehrungskraft_nachname: result[0].nachname,
-															fuehrungskraft_quali: result[0].quali,
-															fuehrungskraft_mapstate: result[0].position,
-															fuehrungskraft_mapzoom: result[0].zoom});
-											dbClient.close();
+											db.collection('Funkspruch').find().sort({timestamp: 1}).toArray(function(err, queryFunkspruch) {
+											
+												addHistory({ereignis: "wurde stillgelegt", funkruf: queryPosten1[0].funkruf});
+												
+												res.render('mainpage', {title: "Hauptseite - Digitaler Führungsassistent",
+																einsatz: queryEinsatz,
+																rettungskraft: queryRettungskrafte,
+																rettungsmittel: queryRettungsmittel,
+																posten: queryPosten2,
+																notiz: queryNotiz,
+																funkspruch: queryFunkspruch,
+																fuehrungskraft_nachname: queryFuehrungskraft[0].nachname,
+																fuehrungskraft_quali: queryFuehrungskraft[0].quali,
+																fuehrungskraft_mapstate: queryFuehrungskraft[0].position,
+																fuehrungskraft_mapzoom: queryFuehrungskraft[0].zoom,
+																fuehrungskraft_istEL: queryFuehrungskraft[0].ist_EL,
+																fuehrungskraft_setEL: queryFuehrungskraft[0].set_EL});
+												dbClient.close();
+											});
 										});
 									});
 								});
@@ -1215,12 +1440,12 @@ server.post('/rettungsmittelDel', urlencodedParser, function(req, res){
 			db.collection('Rettungsmittel').find({_id: ObjectID(req.body.rettungsmittel_id)}).toArray(function(err, queryRettungsmittel1) {
 				if (err) throw err;
 				
-				db.collection('Rettungskraft').updateMany({funkruf: {$in: queryRettungsmittel1[0].kraefte.map(x => x.funkruf)}}, {$set: {rettungsmittel: false}});   
+				db.collection('Rettungskraft').updateMany({funkruf: {$in: queryRettungsmittel1[0].kraefte.map(x => x.funkruf)}}, {$set: {rettungsmittel: false,position: queryRettungsmittel1[0].position}});   
 			
 				db.collection('Rettungsmittel').deleteOne({_id: ObjectID(req.body.rettungsmittel_id)}, function(err, deleted) {
 					if (err) throw err;
 					
-					db.collection('Fuehrungskraft').find({cookie: req.session.user}).toArray(function(err, result) {
+					db.collection('Fuehrungskraft').find({cookie: req.session.user}).toArray(function(err, queryFuehrungskraft) {
 					if (err) throw err;
 					
 						db.collection('Einsatz').find().sort({timestamp: 1}).toArray(function(err, queryEinsatz) {
@@ -1235,20 +1460,26 @@ server.post('/rettungsmittelDel', urlencodedParser, function(req, res){
 										if (err) throw err;
 										
 										db.collection('Notiz').find().toArray(function(err, queryNotiz) {
-										
-											addHistory({ereignis: "wurde stillgelegt", funkruf: queryRettungsmittel1[0].funkruf});
 											
-											res.render('mainpage', {title: "Hauptseite - Digitaler Führungsassistent",
-															einsatz: queryEinsatz,
-															rettungskraft: queryRettungskrafte,
-															rettungsmittel: queryRettungsmittel,
-															posten: queryPosten2,
-															notiz: queryNotiz,
-															fuehrungskraft_nachname: result[0].nachname,
-															fuehrungskraft_quali: result[0].quali,
-															fuehrungskraft_mapstate: result[0].position,
-															fuehrungskraft_mapzoom: result[0].zoom});
-											dbClient.close();
+											db.collection('Funkspruch').find().sort({timestamp: 1}).toArray(function(err, queryFunkspruch) {
+										
+												addHistory({ereignis: "wurde stillgelegt", funkruf: queryRettungsmittel1[0].funkruf});
+												
+												res.render('mainpage', {title: "Hauptseite - Digitaler Führungsassistent",
+																einsatz: queryEinsatz,
+																rettungskraft: queryRettungskrafte,
+																rettungsmittel: queryRettungsmittel,
+																posten: queryPosten2,
+																notiz: queryNotiz,
+																funkspruch: queryFunkspruch,
+																fuehrungskraft_nachname: queryFuehrungskraft[0].nachname,
+																fuehrungskraft_quali: queryFuehrungskraft[0].quali,
+																fuehrungskraft_mapstate: queryFuehrungskraft[0].position,
+																fuehrungskraft_mapzoom: queryFuehrungskraft[0].zoom,
+																fuehrungskraft_istEL: queryFuehrungskraft[0].ist_EL,
+																fuehrungskraft_setEL: queryFuehrungskraft[0].set_EL});
+												dbClient.close();
+											});
 										});
 									});
 								});
@@ -1397,7 +1628,7 @@ server.post('/notizNew', urlencodedParser, function(req, res){
 			db.collection('Notiz').insertOne(req.body, function(err, inserted) {
 				if (err) throw err;
 				
-				db.collection('Fuehrungskraft').find({cookie: req.session.user}).toArray(function(err, result) {
+				db.collection('Fuehrungskraft').find({cookie: req.session.user}).toArray(function(err, queryFuehrungskraft) {
 				if (err) throw err;
 				
 					db.collection('Einsatz').find().sort({timestamp: 1}).toArray(function(err, queryEinsatz) {
@@ -1413,17 +1644,23 @@ server.post('/notizNew', urlencodedParser, function(req, res){
 									
 									db.collection('Notiz').find().toArray(function(err, queryNotiz) {
 										
-										res.render('mainpage', {title: "Hauptseite - Digitaler Führungsassistent",
-														einsatz: queryEinsatz,
-														rettungskraft: queryRettungskrafte,
-														rettungsmittel: queryRettungsmittel,
-														posten: queryPosten,
-														notiz: queryNotiz,
-														fuehrungskraft_nachname: result[0].nachname,
-														fuehrungskraft_quali: result[0].quali,
-														fuehrungskraft_mapstate: result[0].position,
-														fuehrungskraft_mapzoom: result[0].zoom});
-										dbClient.close();
+										db.collection('Funkspruch').find().sort({timestamp: 1}).toArray(function(err, queryFunkspruch) {
+										
+											res.render('mainpage', {title: "Hauptseite - Digitaler Führungsassistent",
+															einsatz: queryEinsatz,
+															rettungskraft: queryRettungskrafte,
+															rettungsmittel: queryRettungsmittel,
+															posten: queryPosten,
+															notiz: queryNotiz,
+															funkspruch: queryFunkspruch,
+															fuehrungskraft_nachname: queryFuehrungskraft[0].nachname,
+															fuehrungskraft_quali: queryFuehrungskraft[0].quali,
+															fuehrungskraft_mapstate: queryFuehrungskraft[0].position,
+															fuehrungskraft_mapzoom: queryFuehrungskraft[0].zoom,
+															fuehrungskraft_istEL: queryFuehrungskraft[0].ist_EL,
+															fuehrungskraft_setEL: queryFuehrungskraft[0].set_EL});
+											dbClient.close();
+										});
 									});
 								});
 							});
@@ -1432,25 +1669,6 @@ server.post('/notizNew', urlencodedParser, function(req, res){
 				});
 			});
 		});
-	}
-	
-	else {
-		console.log("L1-Info: Cookie false");
-		res.send("Cookie false");
-	}
-	
-});	
-
-
-/* /cookietest - Empfangen eines GET-Requests ueber Port 8080  */
-server.get('/cookietest', function(req, res){
-	console.log("L2-Info: GET-REQUEST for /cookietest");
-	
-	if(req.session && req.session.user) { 
-		console.log("L1-Info: Cookie true");
-		console.log("L3-Info: Cookie = " + req.session.user);
-		
-		res.send(req.session.user);
 	}
 	
 	else {
@@ -1474,7 +1692,7 @@ server.get('/mainpage', function(req, res){
 			var db = dbClient.db('DigitalerFuehrungsassistent');
 			console.log("L2-Info: DB-Connection true");
 		
-			db.collection('Fuehrungskraft').find({cookie: req.session.user}).toArray(function(err, result) {
+			db.collection('Fuehrungskraft').find({cookie: req.session.user}).toArray(function(err, queryFuehrungskraft) {
 				if (err) throw err;
 				
 				db.collection('Einsatz').find().sort({timestamp: 1}).toArray(function(err, queryEinsatz) {
@@ -1490,18 +1708,24 @@ server.get('/mainpage', function(req, res){
 								
 								db.collection('Notiz').find().toArray(function(err, queryNotiz) {
 									
-									res.render('mainpage', {title: "Hauptseite - Digitaler Führungsassistent",
-													einsatz: queryEinsatz,
-													rettungskraft: queryRettungskrafte,
-													rettungsmittel: queryRettungsmittel,
-													posten: queryPosten,
-													notiz: queryNotiz,
-													fuehrungskraft_nachname: result[0].nachname,
-													fuehrungskraft_quali: result[0].quali,
-													fuehrungskraft_mapstate: result[0].position,
-													fuehrungskraft_mapzoom: result[0].zoom});
-													
-									dbClient.close();
+									db.collection('Funkspruch').find().sort({timestamp: 1}).toArray(function(err, queryFunkspruch) {
+									
+										res.render('mainpage', {title: "Hauptseite - Digitaler Führungsassistent",
+														einsatz: queryEinsatz,
+														rettungskraft: queryRettungskrafte,
+														rettungsmittel: queryRettungsmittel,
+														posten: queryPosten,
+														notiz: queryNotiz,
+														funkspruch: queryFunkspruch,
+														fuehrungskraft_nachname: queryFuehrungskraft[0].nachname,
+														fuehrungskraft_quali: queryFuehrungskraft[0].quali,
+														fuehrungskraft_mapstate: queryFuehrungskraft[0].position,
+														fuehrungskraft_mapzoom: queryFuehrungskraft[0].zoom,
+														fuehrungskraft_istEL: queryFuehrungskraft[0].ist_EL,
+														fuehrungskraft_setEL: queryFuehrungskraft[0].set_EL});
+														
+										dbClient.close();
+									});
 								});
 							});
 						});
@@ -1576,4 +1800,30 @@ server.post('/mapstate', urlencodedParser, function(req, res){
 		console.log("L1-Info: Cookie false");
 		res.send("Cookie false");
 	}
+});	
+
+
+
+
+
+
+
+// Debuggin Routing-Funktionen
+
+/* /cookietest - Empfangen eines GET-Requests ueber Port 8080  */
+server.get('/cookietest', function(req, res){
+	console.log("L2-Info: GET-REQUEST for /cookietest");
+	
+	if(req.session && req.session.user) { 
+		console.log("L1-Info: Cookie true");
+		console.log("L3-Info: Cookie = " + req.session.user);
+		
+		res.send(req.session.user);
+	}
+	
+	else {
+		console.log("L1-Info: Cookie false");
+		res.send("Cookie false");
+	}
+	
 });	
