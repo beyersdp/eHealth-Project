@@ -120,6 +120,14 @@ function addHistory(args) {
 		var ereignis_grouping = args.funkruf + " " + args.ereignis;
 	}
 	
+	if (args.ereignis == "Einsatzleiters gewählt") {
+		var ereignis_grouping = args.fuehrungskraft_vorname + " " + args.fuehrungskraft_nachname + " hat die Position des " + args.ereignis;
+	}
+	
+	if (args.ereignis == "Fuehrungsassistenten gewählt") {
+		var ereignis_grouping = args.fuehrungskraft_vorname + " " + args.fuehrungskraft_nachname + " hat die Position des " + args.ereignis;
+	}
+	
 	console.log(ereignis_grouping);
 	
 	var history_data = {timestamp: moment().format('YYYYMMDDHHmmss'),
@@ -395,7 +403,17 @@ server.post('/el', urlencodedParser, function(req, res){
 								db.collection('Notiz').find().toArray(function(err, queryNotiz) {
 									
 									db.collection('Funkspruch').find().sort({timestamp: 1}).toArray(function(err, queryFunkspruch) {
-									
+										
+										if (req.body.fuehrungsposten == 'einsatzleiter') {
+											addHistory({ereignis: "Einsatzleiters gewählt", fuehrungskraft_vorname: queryFuehrungskraft[0].vorname,
+														fuehrungskraft_nachname: queryFuehrungskraft[0].nachname});
+										}
+										
+										else { 
+											addHistory({ereignis: "Fuehrungsassistenten gewählt", fuehrungskraft_vorname: queryFuehrungskraft[0].vorname,
+														fuehrungskraft_nachname: queryFuehrungskraft[0].nachname});
+										}
+										
 										res.render('mainpage', {title: "Hauptseite - Digitaler Führungsassistent",
 														einsatz: queryEinsatz,
 														rettungskraft: queryRettungskrafte,

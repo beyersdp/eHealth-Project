@@ -30,41 +30,6 @@ function gesamteinsatzBeenden() {
 	href="#";
   }
 }
-/*
-// Sicherheitsabfrage, bevor der Gesamteinsatz gestartet wird, sodass die Führungsposition auch tatsächlich gespeichert wurde:
-function fuehrungspositionSpeichern(){
-	var txt= "Vor dem Schließen bitte Speichern nicht vergessen!";
-	if (confirm(txt)) {
-		closeModal();
-	}
-}
-
-// Modal, um die Führungsposition festzulegen:
-// Get Modal Element
-var modal = document.getElementById('modal_einsatzbeginn');
-
-// Open
-function openModal() {
-  modal.style.display = 'block';
-}
-
-// Close
-function closeModal() {
-  modal.style.display = 'none';
-}
-
-
-// Input-Felder für die Angabe einess externen Einsatzleiters: 
-var text = document.getElementById("declareEL");
-var checkBox_EL = document.getElementById("EL_false");
-checkBox_EL.addEventListener( 'change', function() {
-    if(this.checked) {
-        text.style.display = "block";
-    } else {
-        text.style.display = "none";
-    }
-});
-*/
 
 // Aus default Date-String die Stunden, Minuten und Sekunden extrahieren
 function toHour(className) {
