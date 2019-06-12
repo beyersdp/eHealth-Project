@@ -16,20 +16,42 @@
  </div>
 </div>
 
-<!-- Footer -->
-  <footer class="center w3-padding-64 w3-light-grey w3-small w3-center" id="footer">
-    <div class="w3-row-padding">
-        <h4>Passwort ändern</h4>
-        <p>Bitte geben füllen Sie die folgenden Felder aus.</p>
-		<p style="color:red"><b>{{ error }}</b></p>
-        <form method="POST" action="/passwortNEU">
-		  <p><input class="w3-input w3-border" type="text" placeholder="E-Mail" name="login_mail" style="margin-left:auto; margin-right:auto; width:300px;" required></p>
-		  <p><input class="w3-input w3-border" type="text" placeholder="Telefonnummer" name="login_tel" style="margin-left:auto; margin-right:auto; width:300px;" required></p>
-          <p><input class="w3-input w3-border" type="password" placeholder="Neues Passwort" name="login_passwort" style="margin-left:auto; margin-right:auto; width:300px;" required></p>
-          <button style="margin-left:auto; margin-right:auto; width:300px;" type="submit" class="w3-button w3-block w3-blue-grey">EINLOGGEN</button>
-          </form>
+<div class="w3-display-container w3-container w3-margin-top color:#f2ffe6">
+    <img src="./img/background1.jpg" alt="background_login" style="width:100%">
+    <div class="w3-display-topmiddle" style="padding-top:55px;">
+	
+			<div class="w3-row-padding w3-margin-top" style="margin-left:auto; margin-right:auto; width:350px;">
+				<div class="w3-card w3-round" id="pw_vergessen">
+					<div class="w3-white">
+						<p class="w3-center" style="color:red; font-size:11px;"><b>{{ error }}</b></p>
+						<button onclick="showDetails('pw_vergessen_input')" class="w3-button w3-block w3-theme-d2 w3-hover-light-grey w3-card" style= "font-size:15px;">Passwort ändern</button>
+						<!-- Passwort ändern - Rolldown Menue -->
+						<div class="w3-hide w3-container w3-light-grey" id="pw_vergessen_input">
+							<p><center style="font-size:12px">Bitte füllen Sie die folgenden Felder aus:</center></p>
+							<form method="POST" action="/passwortNEU" style="LINE-HEIGHT:5px;">
+							  <p style="font-size:10px" class="w3-left-align"><i class="fa fa-envelope w3-small w3-margin-right"></i>E-Mail:</p>
+							  <p style="font-size:10px"><input class="w3-input w3-border" type="text" placeholder="E-Mail" name="login_mail" style="margin-left:auto; margin-right:auto; width:300px; font-size:10px" required></p>
+							  <p style="font-size:10px" class="w3-left-align"><i class="fa fa-phone-square w3-small w3-margin-right"></i>Telefonnummer:</p>
+							  <p style="font-size:10px"><input class="w3-input w3-border" type="text" placeholder="Telefonnummer" name="login_tel" style="margin-left:auto; margin-right:auto; width:300px; font-size:10px" required></p>
+							  <p style="font-size:10px" class="w3-left-align"><i class="fa fa-ellipsis-h w3-small w3-margin-right"></i>Passwort:</p>
+							  <p style="font-size:10px"><input class="w3-input w3-border" type="password" placeholder="Neues Passwort" name="login_passwort" style="margin-left:auto; margin-right:auto; width:300px; font-size:10px" required></p>
+							  <button style="margin-left:auto; margin-right:auto; width:300px; LINE-HEIGHT:15px;" type="submit" class="w3-button w3-block w3-blue-grey">EINLOGGEN</button>
+							</form>
+							<br>
+						</div> <!-- id="pw_vergessen_input" -->
+					</div>
+				</div> <!-- id="pw_vergessen" -->  
+			</div>
+			
 	</div>
-  </footer>
+</div>
+
+<!-- Footer -->
+  <!--<footer class="center w3-padding-64 w3-light-grey w3-small w3-center" id="footer">-->
+   		
+<footer class="w3-container color:#faffe6">
+  <p style="font-size:12px;"><i class="fa fa-copyright" style="font-size:12px;"></i> 2019</p>
+</footer>
  
 <script>
 // Accordion
@@ -56,3 +78,6 @@ function openNav() {
 }
 
 </script>
+
+<!-- Include von externen Funktionen -->
+<script type="text/javascript" src="script/gesamt.js"></script>
