@@ -211,15 +211,15 @@
 					<h3 style="font-size:26px;"><center>Festlegung der Führung:</center></h3>
 				  </div>
 				  <div class="w3-modal-body w3-white" style="font-size:14px;">
-					<p class="w3-orange"><i class="fa fa-exclamation-triangle fa-fw w3-margin-right"></i> Beachten Sie bitte den Einsatzleiter <b>vor</b> dem Start einzutragen und über den Gesamteinsatz <b>aktuell</b> zu halten!</p>
+					<p class="w3-yellow"><i class="fa fa-exclamation-triangle fa-fw w3-margin-right"></i> Beachten Sie bitte den <b>Einsatzleiter </b><b>vor</b> dem Start einzutragen und über den Gesamteinsatz <b>aktuell</b> zu halten!</p>
 					<p style="font-size:12px;"><i class="fa fa-info-circle fa-fw w3-margin-right"></i> Die Führungsposition kann jederzeit über den Reiter "Funktionen"-->"Führungsposition ändern" in der oberen Leiste der Hauptseite geändert werden.</p>
-					<p>
+					
 					
 					<form method="POST" action="/el" id="el_form">
-						"Ich bin an dem Gesamteinsatz als... <br><br>
+						<p>"Ich bin an dem Gesamteinsatz als... </p>
 						&emsp; <input id="EL_true" type="radio" name="fuehrungsposten" value="einsatzleiter" checked> Einsatzleiter/in<br>
 						&emsp; <input id="EL_false"type="radio" name="fuehrungsposten" value="fuehrungsassistent"> Fuehrungsassistent/in<br>
-						<br>...beteiligt."
+						<p>...beteiligt."</p>
 						
 						<!-- Besprechen wir am Freitag nochmal :)
 						<span id="declareEL" style="display:none">
@@ -229,14 +229,35 @@
 							<p style="font-size:10px"><input class="w3-input w3-border" type="text" placeholder="Nachname des Einsatzleiters" name="EL_nachname" style="height:25px; margin-left:auto; margin-right:auto;" id="nachname"></input></p>
 						<span>
 						-->
-						</p>
+					</form>
+					<br>
+					<div class="w3-modal-header w3-light-grey">
+					<h3 style="font-size:26px;"><center>Angaben über den Gesamteinsatz:</center></h3>
+					</div>
+					<form method="POST" action="/kerndaten" id="kerndaten_form">
+						<p class="w3-yellow"><i class="fa fa-exclamation-triangle fa-fw w3-margin-right"></i> Bitte geben Sie <b> vor </b> dem Einsatzbeginn noch folgende <b>Kerndaten des Gesamteinsatzes</b> an:</p>
+						
+						<p style="font-size:10px"><i class="fa fa-tag w3-small w3-margin-right"></i>Titel des Gesamteinsatzes:</p>
+						<p style="font-size:10px"><input class="w3-input w3-border" type="text"  placeholder="Titel" name="kerndaten_titel" value="" id="kerndaten_titel" style="height:25px; margin-left:auto; margin-right:auto;" required></p>
+						<p style="font-size:10px"><i class="fa fa-road w3-small w3-margin-right"></i>Straße:</p>
+						<p style="font-size:10px"><input class="w3-input w3-border" type="text" placeholder="Straße" name="kerndaten_strasse" id="kerndaten_strasse" style="height:25px; margin-left:auto; margin-right:auto;" required></input></p>
+						<p style="font-size:10px"><i class="fa fa-map-o w3-small w3-margin-right"></i>Postleitzahl:</p>
+						<p style="font-size:10px"><input class="w3-input w3-border" type="text" placeholder="Postleitzahl" name="kerndaten_plz" id="kerndaten_plz" style="height:25px; margin-left:auto; margin-right:auto;" required></input></p>
+						<p style="font-size:10px"><i class="fa fa-map-signs w3-small w3-margin-right"></i>Ort:</p>
+						<p style="font-size:10px"><input class="w3-input w3-border" type="text" placeholder="Ort" name="kerndaten_ort" id="kerndaten_ort" style="height:25px; margin-left:auto; margin-right:auto;" required></input></p>
+						<p style="font-size:10px"><i class="fa fa-info-circle w3-small w3-margin-right"></i>Erweiterte Informationen:</p>
+						<p style="font-size:10px"><textarea class="w3-input w3-border" type="text" placeholder="Beschreibung" name="kerndaten_text" style="height:30px; margin-left:auto; margin-right:auto; LINE-HEIGHT:11px;"></textarea></p>
+						
+						<p></p>
+						
 						<!--Speicherfunktion fehlt noch-->
-						<button style="margin-left:auto; margin-right:auto; height:35px; width:200px;" type="submit" class="w3-button w3-block w3-blue-grey">Speichern</button>
+						<button style="margin-left:auto; margin-right:auto; height:35px; width:400px;" type="submit" class="w3-button w3-block w3-blue-grey">Speichern & Gesamteinsatz starten.</button>
+						<!--vielleicht wäre es dann an dieser Stelle sinnvoll außer dem obigen Speicher-Button kein close-Button zu erlauben-->
 					</form> <!-- id="el_form" -->
 				  </div>
 				  <div class="w3-modal-footer">
 				  <!-- Falls es einen extra START-Button gibt-->
-					<h6 class="w3-light-grey" Style="font-size:12px;">Der Gesamteinsatz kann über "xxx" gestartet werden. </h6>
+					<h6 class="w3-light-grey" Style="font-size:12px;"> Nach Eingabe der geforderten Angaben wird der Gesamteinsatz automatisch gestartet.</h6>
 				  </div>
 				</div>
 			</div>
