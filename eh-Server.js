@@ -352,6 +352,82 @@ server.post('/registration', urlencodedParser, function(req, res){
 
 
 
+/* /el - Empfangen eines POST-Requests ueber Port 8080  */
+server.post('/el', urlencodedParser, function(req, res){
+	console.log("L2-Info: POST-REQUEST for /el");
+	//console.log(req.body); //DEBUG Kontrollausgabe
+	
+	if(req.session && req.session.user) { 
+		console.log("L1-Info: Cookie true");
+		
+		mongodbClient.connect(url, { useNewUrlParser: true }, function(err, dbClient) {
+			if (err) throw err;
+			var db = dbClient.db('DigitalerFuehrungsassistent');
+			console.log("L2-Info: DB-Connection true");
+			
+			if (req.body.fuehrungsposten == 'einsatzleiter') {
+			
+				db.collection('Fuehrungskraft').findOneAndUpdate({cookie: req.session.user}, {$set: {ist_EL: true}}, function(err, updated) {
+					if (err) throw err;
+				});
+			}
+			
+			else {
+				db.collection('Fuehrungskraft').findOneAndUpdate({cookie: req.session.user}, {$set: {ist_EL: false}}, function(err, updated) {
+					if (err) throw err;
+				});
+			}
+			
+			db.collection('Fuehrungskraft').find({cookie: req.session.user}).toArray(function(err, queryFuehrungskraft) {
+				if (err) throw err;
+				
+				db.collection('Einsatz').find().sort({timestamp: 1}).toArray(function(err, queryEinsatz) {
+					if (err) throw err;
+					
+					db.collection('Rettungskraft').find({rettungsmittel: false}).toArray(function(err, queryRettungskrafte) {
+						if (err) throw err;
+						
+						db.collection('Rettungsmittel').find().toArray(function(err, queryRettungsmittel) {
+							
+							db.collection('Posten').find().toArray(function(err, queryPosten) {
+								if (err) throw err;
+								
+								db.collection('Notiz').find().toArray(function(err, queryNotiz) {
+									
+									db.collection('Funkspruch').find().sort({timestamp: 1}).toArray(function(err, queryFunkspruch) {
+									
+										res.render('mainpage', {title: "Hauptseite - Digitaler Führungsassistent",
+														einsatz: queryEinsatz,
+														rettungskraft: queryRettungskrafte,
+														rettungsmittel: queryRettungsmittel,
+														posten: queryPosten,
+														notiz: queryNotiz,
+														funkspruch: queryFunkspruch,
+														fuehrungskraft_nachname: queryFuehrungskraft[0].nachname,
+														fuehrungskraft_quali: queryFuehrungskraft[0].quali,
+														fuehrungskraft_mapstate: queryFuehrungskraft[0].position,
+														fuehrungskraft_mapzoom: queryFuehrungskraft[0].zoom,
+														fuehrungskraft_istEL: queryFuehrungskraft[0].ist_EL});
+														
+										dbClient.close();
+									});
+								});
+							});
+						});
+					});
+				});
+			});
+		});
+	}
+	
+	else {
+		console.log("L1-Info: Cookie false");
+		res.send("Cookie false");
+	}
+});
+
+
+
 /* /einsatz - Empfangen eines POST-Requests ueber Port 8080  */
 server.post('/einsatz', urlencodedParser, function(req, res){
 	console.log("L2-Info: POST-REQUEST for /einsatz");
