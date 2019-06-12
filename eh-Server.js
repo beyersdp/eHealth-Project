@@ -1748,6 +1748,13 @@ server.get('/mainpage', function(req, res){
 });	
 
 
+/* /gesamtdoku - Empfangen eines GET-Requests ueber Port 8080  */
+server.get('/gesamtdoku', function(req, res){
+	console.log("L2-Info: GET-REQUEST for /gesamtdoku");
+	
+	res.render('gesamtdoku', {title: "automatische Gesamtdoku - Digitaler Führungsassistent"});
+});	
+
 
 /* /checkHistory - Empfangen eines GET-Requests ueber Port 8080  */
 server.get('/checkHistory', function(req, res){
