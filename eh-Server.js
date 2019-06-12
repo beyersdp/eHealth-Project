@@ -179,14 +179,14 @@ server.post('/login', urlencodedParser, function(req, res){
 		var db = dbClient.db('DigitalerFuehrungsassistent');
 		console.log("L2-Info: DB-Connection true");
 		
-		db.collection('Fuehrungskraft').find({mail: req.body.login_mail}).toArray(function(err, result) {
+		db.collection('Fuehrungskraft').find({mail: req.body.login_mail}).toArray(function(err, queryFuehrungskraft) {
 			
-			if (result.length != 0 && bcrypt.compareSync(req.body.login_passwort, result[0].passwort)) {
+			if (queryFuehrungskraft.length != 0 && bcrypt.compareSync(req.body.login_passwort, queryFuehrungskraft[0].passwort)) {
 				console.log("L1-Info: Login true");
 				
 				//Kontrolle, ob angegebener HiOrg-Key valide
-				db.collection('HiOrgKey').find({key: req.body.login_key}).toArray(function(err, result) {
-					if (result.length == 0) {
+				db.collection('HiOrgKey').find({key: req.body.login_key}).toArray(function(err, queryFuehrungskraft) {
+					if (queryFuehrungskraft.length == 0) {
 						console.log("L1-Info: HiOrg Key not valide");
 						res.render('login', {title: "Login - Digitaler Führungsassistent",
 											 loginFalse: "Der angegebene HiOrg-Schlüssel ist ungültig!",
@@ -204,7 +204,7 @@ server.post('/login', urlencodedParser, function(req, res){
 							if (err) throw err;
 						});
 						
-						db.collection('Fuehrungskraft').findOneAndUpdate({mail: req.body.login_mail}, {$set: {cookie: req.session.user}}, function(err, result) {
+						db.collection('Fuehrungskraft').findOneAndUpdate({mail: req.body.login_mail}, {$set: {cookie: req.session.user}}, function(err, queryFuehrungskraft) {
 							if (err) throw err;
 							
 							db.collection('Einsatz').find().sort({timestamp: 1}).toArray(function(err, queryEinsatz) {
@@ -224,8 +224,8 @@ server.post('/login', urlencodedParser, function(req, res){
 																	rettungskraft: queryRettungskrafte,
 																	rettungsmittel: queryRettungsmittel,
 																	posten: queryPosten,
-																	fuehrungskraft_nachname: result.value.nachname,
-																	fuehrungskraft_quali: result.value.quali});
+																	fuehrungskraft_nachname: queryFuehrungskraft.value.nachname,
+																	fuehrungskraft_quali: queryFuehrungskraft.value.quali});
 								
 											dbClient.close();
 										});
@@ -563,7 +563,7 @@ server.post('/einsatz', urlencodedParser, function(req, res){
 												rettungskraefte: queryRettungskrafte1,
 												posten: queryPosten1,
 												rettungsmittel: queryRettungsmittel1,
-												fuehrungskraft: result[0]};
+												fuehrungskraft: queryFuehrungskraft[0]};
 					
 								db.collection('Einsatz').insertOne(einsatz_data, function(err, inserted) {
 									if (err) throw err;
@@ -587,7 +587,7 @@ server.post('/einsatz', urlencodedParser, function(req, res){
 															addHistory({ereignis: "Notfalleinsatz", sender: req.body.einsatz_sender, meldebild: req.body.einsatz_meldebild,
 																		anzVerletzte: req.body.einsatz_anzVerletzte, status: req.body.einsatz_status, text: req.body.einsatz_text,
 																		rettungskraefte: queryRettungskrafte1, posten: queryPosten1, rettungsmittel: queryRettungsmittel1,
-																		fuehrungskraft_nachname: result[0].nachname, fuehrungskraft_cookie: req.session.user})
+																		fuehrungskraft_nachname: queryFuehrungskraft[0].nachname, fuehrungskraft_cookie: req.session.user})
 															
 															res.render('mainpage', {title: "Einsatz - Digitaler Führungsassistent",
 																					einsatz: queryEinsatz,
@@ -596,8 +596,8 @@ server.post('/einsatz', urlencodedParser, function(req, res){
 																					posten: queryPosten2,
 																					notiz: queryNotiz,
 																					funkspruch: queryFunkspruch,
-																					fuehrungskraft_nachname: result[0].nachname,
-																					fuehrungskraft_quali: result[0].quali,
+																					fuehrungskraft_nachname: queryFuehrungskraft[0].nachname,
+																					fuehrungskraft_quali: queryFuehrungskraft[0].quali,
 																					fuehrungskraft_mapstate: queryFuehrungskraft[0].position,
 																					fuehrungskraft_mapzoom: queryFuehrungskraft[0].zoom,
 																					fuehrungskraft_istEL: queryFuehrungskraft[0].ist_EL,
@@ -626,7 +626,7 @@ server.post('/einsatz', urlencodedParser, function(req, res){
 				var db = dbClient.db('DigitalerFuehrungsassistent');
 				console.log("L2-Info: DB-Connection true II");
 		
-				db.collection('Fuehrungskraft').find({cookie: req.session.user}).toArray(function(err, result) {
+				db.collection('Fuehrungskraft').find({cookie: req.session.user}).toArray(function(err, queryFuehrungskraft) {
 					if (err) throw err;
 			
 					db.collection('Einsatz').findOneAndUpdate({_id: ObjectID(req.body.einsatz_id)}, {$set: {sender: req.body.einsatz_sender,
@@ -635,12 +635,12 @@ server.post('/einsatz', urlencodedParser, function(req, res){
 																						anzVerletzte: req.body.einsatz_anzVerletzte,
 																						text: req.body.einsatz_text,
 																						status: req.body.einsatz_status,
-																						fuehrungskraft: result[0]}}, function(err, updated){
+																						fuehrungskraft: queryFuehrungskraft[0]}}, function(err, updated){
 																							
 						addHistory({ereignis: "Notfalleinsatz", sender: req.body.einsatz_sender, meldebild: req.body.einsatz_meldebild,
 																anzVerletzte: req.body.einsatz_anzVerletzte, status: req.body.einsatz_status, text: req.body.einsatz_text,
 																rettungskraefte: queryRettungskrafte1, posten: queryPosten1, rettungsmittel: queryRettungsmittel1,
-																fuehrungskraft_nachname: result[0].nachname, fuehrungskraft_cookie: req.session.user})
+																fuehrungskraft_nachname: queryFuehrungskraft[0].nachname, fuehrungskraft_cookie: req.session.user})
 
 						res.render('html_form_dummy', {title: "Einsatz - Digitaler Führungsassistent",
 													   einsatz_id: req.body.einsatz_id,
@@ -651,7 +651,7 @@ server.post('/einsatz', urlencodedParser, function(req, res){
 													   einsatz_text: req.body.einsatz_text,
 													   einsatz_status: req.body.einsatz_status,
 													   einsatz_timestamp: moment(updated.value.timestamp, 'YYYYMMDDHHmmss').format('HH:mm:ss'),
-													   einsatz_fuehrungskraft: result[0].nachname});
+													   einsatz_fuehrungskraft: queryFuehrungskraft[0].nachname});
 						dbClient.close();
 					});
 				});
@@ -688,7 +688,7 @@ server.post('/funkspruch', urlencodedParser, function(req, res){
 								   kategorie: req.body.funkspruch_kategorie,
 								   text: req.body.funkspruch_text,
 								   timestamp: moment().format('YYYYMMDDHHmmss'),
-								   fuehrungskraft: result[0]};
+								   fuehrungskraft: queryFuehrungskraft[0]};
 		
 				db.collection('Funkspruch').insertOne(funkspruch_data, function(err, inserted) {
 					if (err) throw err;
@@ -710,7 +710,7 @@ server.post('/funkspruch', urlencodedParser, function(req, res){
 										db.collection('Funkspruch').find().sort({timestamp: 1}).toArray(function(err, queryFunkspruch) {
 									
 											addHistory({ereignis: "Funkspruch", sender: req.body.funkspruch_sender, 
-													   empfaenger: req.body.funkspruch_empfaenger, fuehrungskraft_nachname: result[0].nachname, 
+													   empfaenger: req.body.funkspruch_empfaenger, fuehrungskraft_nachname: queryFuehrungskraft[0].nachname, 
 													   kategorie: req.body.funkspruch_kategorie, text: req.body.funkspruch_text, fuehrungskraft_cookie: req.session.user});
 													   
 											res.render('mainpage', {title: "Hauptseite - Digitaler Führungsassistent",
@@ -1048,7 +1048,7 @@ server.post('/posten', urlencodedParser, function(req, res){
 							
 							db.collection('Rettungskraft').updateMany({funkruf: {$in: toChange}},
 																	  {$set: {rettungsmittel: false}}, 
-																	  function(err, result) { //not working
+																	  function(err, result) { 
 								if (err) throw err;
 								
 								db.collection('Einsatz').find().sort({timestamp: 1}).toArray(function(err, queryEinsatz) {
@@ -1504,36 +1504,6 @@ server.post('/rettungsmittelDel', urlencodedParser, function(req, res){
 
 
 
-/* /funkspruchCHRONIK - Empfangen eines GET-Requests ueber Port 8080  */
-server.get('/funkspruchCHRONIK', function(req, res){
-	console.log("L2-Info: GET-REQUEST for /funkspruchCHRONIK");
-	
-	if(req.session && req.session.user) { 
-		console.log("L1-Info: Cookie true");
-		
-		mongodbClient.connect(url, { useNewUrlParser: true }, function(err, dbClient) {
-			if (err) throw err;
-			var db = dbClient.db('DigitalerFuehrungsassistent');
-			console.log("L2-Info: DB-Connection true");
-	
-			db.collection('Funkspruch').find().sort({timestamp: 1}).toArray(function(err, result) {
-				if (err) throw err;
-				
-				res.render('html_form_dummy', {funkspruch: result});
-				
-				dbClient.close();
-			});
-		});
-	}
-	
-	else {
-		console.log("L1-Info: Cookie false");
-		res.send("Cookie false");
-	}
-});
-
-
-
 /* /position - Empfangen eines POST-Requests ueber Port 8080  */
 server.post('/position', urlencodedParser, function(req, res){
 	console.log("L2-Info: POST-REQUEST for /position");
@@ -1621,7 +1591,7 @@ server.post('/position', urlencodedParser, function(req, res){
 /* /notizNew - Empfangen eines POST-Requests ueber Port 8080  */
 server.post('/notizNew', urlencodedParser, function(req, res){
 	console.log("L2-Info: POST-REQUEST for /notizNew");
-	console.log(req.body); //DEBUG Kontrollausgabe
+	//console.log(req.body); //DEBUG Kontrollausgabe
 
 	if(req.session && req.session.user) { 
 		console.log("L1-Info: Cookie true");
@@ -1748,13 +1718,6 @@ server.get('/mainpage', function(req, res){
 });	
 
 
-/* /gesamtdoku - Empfangen eines GET-Requests ueber Port 8080  */
-server.get('/gesamtdoku', function(req, res){
-	console.log("L2-Info: GET-REQUEST for /gesamtdoku");
-	
-	res.render('gesamtdoku', {title: "automatische Gesamtdoku - Digitaler Führungsassistent"});
-});	
-
 
 /* /checkHistory - Empfangen eines GET-Requests ueber Port 8080  */
 server.get('/checkHistory', function(req, res){
@@ -1774,17 +1737,25 @@ server.get('/checkHistory', function(req, res){
 				db.collection('Historie').find().sort({timestamp: -1}).toArray(function(err, queryHistorie) {
 					if (err) throw err;
 					
-					if (queryFuehrungskraft[0].lastHistory == queryHistorie[0].ereignis) {
+					if (queryHistorie.length > 0) {
+					
+						if (queryFuehrungskraft[0].lastHistory == queryHistorie[0].ereignis) {
+							res.send("noChange");
+							dbClient.close();
+						}
+						else {
+							res.send("changed");
+							
+							db.collection('Fuehrungskraft').findOneAndUpdate({cookie: req.session.user}, {$set: {lastHistory: queryHistorie[0].ereignis}}, function(err, updated) {
+								if (err) throw err;
+								dbClient.close();
+							});
+						}
+					}
+					
+					else {
 						res.send("noChange");
 						dbClient.close();
-					}
-					else {
-						res.send("changed");
-						
-						db.collection('Fuehrungskraft').findOneAndUpdate({cookie: req.session.user}, {$set: {lastHistory: queryHistorie[0].ereignis}}, function(err, updated) {
-							if (err) throw err;
-							dbClient.close();
-						});
 					}
 				});
 			});
@@ -1834,7 +1805,12 @@ server.post('/mapstate', urlencodedParser, function(req, res){
 
 
 
-
+/* /gesamtdoku - Empfangen eines GET-Requests ueber Port 8080  */
+server.get('/gesamtdoku', function(req, res){
+	console.log("L2-Info: GET-REQUEST for /gesamtdoku");
+	
+	res.render('gesamtdoku', {title: "automatische Gesamtdoku - Digitaler Führungsassistent"});
+});	
 
 
 

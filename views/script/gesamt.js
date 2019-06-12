@@ -27,7 +27,7 @@ function openNav() {
 function gesamteinsatzBeenden() {
   var txt= "Wollen Sie den Großeinsatz wirklich beenden und die Gesamtdokumentation erstellen?";
   if (confirm(txt)) {
-	href="#";
+	href="/gesamtdoku";
   }
 }
 
@@ -244,31 +244,13 @@ document.addEventListener('input', function (event) {
 
 // Element ausblenden, wenn die Anzahl ChildNodes zu gering
 function checkChildNodesHide(id) {
-
-	if (document.getElementById(id).childNodes.length == 2) {
-		document.getElementById(id).hidden = true;
+	
+	if (document.getElementById(id)) {
+		if (document.getElementById(id).childNodes.length == 2) {
+			document.getElementById(id).hidden = true;
+		}
 	}
 }
-
-// Aktualitaet ueberpruefen (alle 10 Sekunden)
-setInterval(function checkHistory(e) {
-
-	var xhttp = new XMLHttpRequest();
-	xhttp.onreadystatechange = function() {
-		if (this.readyState == 4 && this.status == 200) {
-			console.log(this.responseText);
-			
-			if (this.responseText == "changed") {
-				
-				var audio = new Audio('sounds/reloadSound.wav');
-				audio.play();
-				document.getElementById("reloadButton").style.backgroundColor = "#607d8b";
-			}
-		}
-	};
-	xhttp.open("GET", "/checkHistory", true);
-	xhttp.send(); 
-}, 10000);
 
 
 
