@@ -77,9 +77,10 @@ function addHistory(args) {
 	}
 	
 	if (args.ereignis == "Notfalleinsatz") {
-		var ereignis_grouping = args.ereignis + " " + args.meldebild + " (gemeldet durch " + args.sender + "). Anzahl verletzter Personen = " + args.anzVerletzte
-								+ "\nDerzeitiger Bearbeitungsgrad = " + args.status + "\nDerzeitige zugeteilte Kräfte = " + kraefte_grouping.slice(0,-2)
-								+ "\nDerzeitige Anmerkungen: " + args.text;
+		
+		var ereignis_grouping = args.ereignis + " " + args.meldebild + " (gemeldet durch " + args.sender + ").\nDerzeitiger Bearbeitungsgrad = " 
+								+ args.status + "\nDerzeitige zugeteilte Kräfte = " + kraefte_grouping.slice(0,-2)
+								+ "\nDerzeitige Anmerkungen: " + args.text + "\nDerzeitiger Verbleib des Patienten: " + args.verbleibPatient;
 	}
 	
 	if (args.ereignis == "Rettungskraft hat Ihre Schicht begonnen") {
@@ -556,9 +557,9 @@ server.post('/einsatz', urlencodedParser, function(req, res){
 						
 								einsatz_data = {sender: req.body.einsatz_sender,
 												meldebild: req.body.einsatz_meldebild,
-												anzVerletzte: req.body.einsatz_anzVerletzte,
 												text: req.body.einsatz_text,
 												status: req.body.einsatz_status,
+												verbleibPatient: req.body.einsatz_verbleibPatient,
 												timestamp: moment().format('YYYYMMDDHHmmss'),
 												rettungskraefte: queryRettungskrafte1,
 												posten: queryPosten1,
@@ -585,7 +586,7 @@ server.post('/einsatz', urlencodedParser, function(req, res){
 														db.collection('Funkspruch').find().sort({timestamp: 1}).toArray(function(err, queryFunkspruch) {
 													
 															addHistory({ereignis: "Notfalleinsatz", sender: req.body.einsatz_sender, meldebild: req.body.einsatz_meldebild,
-																		anzVerletzte: req.body.einsatz_anzVerletzte, status: req.body.einsatz_status, text: req.body.einsatz_text,
+																		verbleibPatient: req.body.einsatz_verbleibPatient, status: req.body.einsatz_status, text: req.body.einsatz_text,
 																		rettungskraefte: queryRettungskrafte1, posten: queryPosten1, rettungsmittel: queryRettungsmittel1,
 																		fuehrungskraft_nachname: queryFuehrungskraft[0].nachname, fuehrungskraft_cookie: req.session.user})
 															
@@ -632,7 +633,6 @@ server.post('/einsatz', urlencodedParser, function(req, res){
 					db.collection('Einsatz').findOneAndUpdate({_id: ObjectID(req.body.einsatz_id)}, {$set: {sender: req.body.einsatz_sender,
 																						position: req.body.einsatz_position,
 																						meldebild: req.body.einsatz_meldebild,
-																						anzVerletzte: req.body.einsatz_anzVerletzte,
 																						text: req.body.einsatz_text,
 																						status: req.body.einsatz_status,
 																						fuehrungskraft: queryFuehrungskraft[0]}}, function(err, updated){
@@ -647,7 +647,6 @@ server.post('/einsatz', urlencodedParser, function(req, res){
 													   einsatz_sender: req.body.einsatz_sender,
 													   einsatz_position: req.body.einsatz_position,
 													   einsatz_meldebild: req.body.einsatz_meldebild,
-													   einsatz_anzVerletzte: req.body.einsatz_anzVerletzte,
 													   einsatz_text: req.body.einsatz_text,
 													   einsatz_status: req.body.einsatz_status,
 													   einsatz_timestamp: moment(updated.value.timestamp, 'YYYYMMDDHHmmss').format('HH:mm:ss'),

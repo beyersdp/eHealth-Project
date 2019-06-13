@@ -25,9 +25,9 @@ function openNav() {
 
 // Sicherheitsabfrage, bevor der Gesamteinsatz beendet wird
 function gesamteinsatzBeenden() {
-  var txt= "Wollen Sie den Großeinsatz wirklich beenden und die Gesamtdokumentation erstellen?";
+  var txt= "Wollen Sie den Gesamteinsatz wirklich beenden und die Gesamtdokumentation erstellen?";
   if (confirm(txt)) {
-	href="/gesamtdoku";
+	document.getElementById("beendenButton").href= "/gesamtdoku";
   }
 }
 
@@ -153,6 +153,34 @@ function longQuali(quali) {
 	return result;
 }
 
+// Fahrzeugbezeichnungen abkuerzen
+function shortArt(className) {
+	
+	var artElements = document.getElementsByClassName(className);
+	
+	Array.prototype.forEach.call(artElements, function(artElement) {
+		
+		if (artElement.innerText == "Krankentransportwagen (KTW)") {
+			artElement.innerText = "(KTW)"
+		}
+		if (artElement.innerText == "Rettungswagen (RTW)") {
+			artElement.innerText = "(RTW)"
+		}
+		if (artElement.innerText == "Notarzteinsatzfahrzeug (NEF)") {
+			artElement.innerText = "(NEF)"
+		}
+		if (artElement.innerText == "Mannschaftstransportwagen (MTW)") {
+			artElement.innerText = "(MTW)"
+		}
+		if (artElement.innerText == "Gerätewagen (GW)") {
+			artElement.innerText = "(GW)"
+		}
+		if (artElement.innerText == "Einsatzleitwagen (ELW)") {
+			artElement.innerText = "(ELW)"
+		}
+	});
+}
+
 // Simuliert einen Klick auf ein uebergebenes Element
 function clickOn(id) {
 	
@@ -257,5 +285,6 @@ function checkChildNodesHide(id) {
 // Direkt startende Funktionen:
 toHour('timestamp');
 shortQuali("medQuali");
+shortArt("fahrzeugArt");
 addDataList("funkrufDataList", "funkruf");
 checkChildNodesHide("right_scrollbar");
