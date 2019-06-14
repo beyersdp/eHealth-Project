@@ -31,7 +31,7 @@ var url = "mongodb://localhost:27017";
 server.use(session({ 
 	cookieName: 'session',
 	secret: 'crypto-string',
-	duration: 5000*60*1000,
+	duration: 24*60*1000,
 	activeDuration: 5*30*1000 
 }));
 

@@ -144,7 +144,7 @@
 				
 				{{# each einsatz}}
 				<div class="dragElement w3-container w3-white w3-card w3-round w3-hover-shadow" id="{{ _id }}" draggable="true">
-					<button class="w3-center w3-button w3-block w3-blue-grey w3-half" style="height:30px; width:75%; font-size:12px;">{{ meldebild }}</button>
+					<button class="w3-center w3-button w3-block w3-blue-grey w3-half" style="height:30px; width:75%; font-size:12px;" title="Bearbeiten">{{ meldebild }}</button>
 					<button type="submit" class="w3-center w3-button w3-block w3-blue-grey w3-quarter" style="height:30px; font-size:10px; border-left: 1px solid white;" title="abschließen"><i class="fa fa-check-square-o"></i></button>
 					<p style="font-size:11px"><i class="fa fa-clock-o fa-fw w3-margin-right"></i>{{ status }}</p>
 					<p style="font-size:11px"><i class="fa fa-clock-o fa-fw w3-margin-right"></i><span class="timestamp">{{ timestamp }}</span> Uhr</p>
@@ -416,7 +416,7 @@
 											</div>
 										</div>
 										<p style="font-size:11px"><i class="fa fa-user-md fa-fw w3-margin-right"></i>Zugeteilte Kräfte: &emsp;{{ rettungskraefte.funkruf }} {{ posten.funkruf  }} {{ rettungsmittel.funkruf  }}</p>
-										<p style="font-size:11px"><i class="fa fa-info-circle fa-fw w3-margin-right"></i>Erweiterte Informationen: &emsp;<div style="font-size:11px; padding-left:30px;" >{{ text }}</div></p>
+										<p style="font-size:11px"><i class="fa fa-info-circle fa-fw w3-margin-right"></i>Allgemeine Lage: &emsp;<div style="font-size:11px; padding-left:30px;" >{{ text }}</div></p>
 									</div> <!-- id="{{ _id }}" -->
 										
 									<p></p>
