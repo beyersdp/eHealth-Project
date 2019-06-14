@@ -72,64 +72,77 @@ function addHistory(args) {
 	}
 	
 	if (args.ereignis == "Funkspruch") {
+		var art = "Funkspruch";
 		var ereignis_grouping = args.ereignis + " von [" + args.sender + "] an [" + args.empfaenger + "]. "
 								+ "Zum Thema [" + args.kategorie + "] folgende Kommunikation: " + args.text;
 	}
 	
 	if (args.ereignis == "Notfalleinsatz") {
-		
+		var art = "Notfalleinsatz";
 		var ereignis_grouping = args.ereignis + " " + args.meldebild + " (gemeldet durch " + args.sender + ").\nDerzeitiger Bearbeitungsgrad = " 
 								+ args.status + "\nDerzeitige zugeteilte Kräfte = " + kraefte_grouping.slice(0,-2)
 								+ "\nDerzeitige Anmerkungen: " + args.text + "\nDerzeitiger Verbleib des Patienten: " + args.verbleibPatient;
 	}
 	
 	if (args.ereignis == "Rettungskraft hat Ihre Schicht begonnen") {
+		var art = "Rettungskraft";
 		var ereignis_grouping = args.ereignis + ":\n" + args.vorname + " " + args.nachname + " (" + args.quali + ")\nHilfsorganisation: " + args.hiorg
 								+ "\nErreichbarkeiten: Telefonnummer = " + args.tel + ", Funkrufname = " + args.funkruf;
 	}
 	
 	if (args.ereignis == "Personaldaten einer Rettungskraft wurden bearbeitet") {
+		var art = "Rettungskraft";
 		var ereignis_grouping = args.ereignis + ":\n" + args.vorname + " " + args.nachname + " (" + args.quali + ")\nHilfsorganisation: " + args.hiorg
 								+ "\nErreichbarkeiten: Telefonnummer = " + args.tel + ", Funkrufname = " + args.funkruf;
 	}
 	
 	if (args.ereignis == "Sanitätsposten wurde erstellt") {
+		var art = "Sanitätsposten";
 		var ereignis_grouping = args.ereignis + ": " + args.funkruf + "\nDerzeitige zugeteilte Kräfte = " + kraefte_grouping.slice(0,-2);
 	}
 	
 	if (args.ereignis == "Sanitätsposten wurde bearbeitet") {
+		var art = "Sanitätsposten";
 		var ereignis_grouping = args.ereignis + ": " + args.funkruf + "\nDerzeitige zugeteilte Kräfte = " + kraefte_grouping.slice(0,-2);
 	}
 	
 	if (args.ereignis == "Fahrzeug wurde besetzt") {
+		var art = "Fahrzeug";
 		var ereignis_grouping = args.ereignis + ": " + args.funkruf + " (" + args.art + ")\nDerzeitige zugeteilte Kräfte = " + kraefte_grouping.slice(0,-2);
 	}
 	
 	if (args.ereignis == "Fahrzeug-Konstellation wurde angepasst") {
+		var art = "Fahrzeug";
 		var ereignis_grouping = args.ereignis + ": " + args.funkruf + " (" + args.art + ")\nDerzeitige zugeteilte Kräfte = " + kraefte_grouping.slice(0,-2);
 	}
 	
 	if (args.ereignis == "Standort aktualisiert") {
+		var art = "Standort";
 		var ereignis_grouping = args.ereignis + ": " + args.funkruf + " befindet sich nun an den Koordinaten (" + args.position.lat + ", " + args.position.lng + ")";
 	}
 	
 	if (args.ereignis == "hat den Dienst beendet") {
+		var art = "Rettungskraft";
 		var ereignis_grouping = args.funkruf + " " + args.ereignis;
 	}
 	
 	if (args.ereignis == "wurde stillgelegt") {
+		var art = "Fahrzeug / Sanitätsposten";
 		var ereignis_grouping = args.funkruf + " " + args.ereignis;
 	}
 	
 	if (args.ereignis == "Einsatzleiters gewählt") {
+		var art = "Einsatzleitung";
 		var ereignis_grouping = args.fuehrungskraft_vorname + " " + args.fuehrungskraft_nachname + " hat die Position des " + args.ereignis;
 	}
 	
 	if (args.ereignis == "Fuehrungsassistenten gewählt") {
+		var art = "Einsatzleitung";
 		var ereignis_grouping = args.fuehrungskraft_vorname + " " + args.fuehrungskraft_nachname + " hat die Position des " + args.ereignis;
 	}
 	
 	if (args.ereignis == "Gesamteinsatz wurde begonnen") {
+		var art = "Einsatzleitung";
 		var ereignis_grouping = args.ereignis;
 	}
 	
@@ -137,6 +150,7 @@ function addHistory(args) {
 	
 	var history_data = {timestamp: moment().format('YYYYMMDDHHmmss'),
 						ereignis: ereignis_grouping,
+						art: art,
 						fuehrungskraft: args.fuehrungskraft_nachname};
 	
 	mongodbClient.connect(url, { useNewUrlParser: true }, function(err, dbClient) {
@@ -1901,7 +1915,23 @@ server.post('/mapstate', urlencodedParser, function(req, res){
 server.get('/gesamtdoku', function(req, res){
 	console.log("L2-Info: GET-REQUEST for /gesamtdoku");
 	
-	res.render('gesamtdoku', {title: "automatische Gesamtdoku - Digitaler Führungsassistent"});
+	mongodbClient.connect(url, { useNewUrlParser: true }, function(err, dbClient) {
+		if (err) throw err;
+		var db = dbClient.db('DigitalerFuehrungsassistent');
+		console.log("L2-Info: DB-Connection true");
+		
+		db.collection('Kerndaten').findOneAndUpdate({}, {$set: {end: moment().format('YYYYMMDDHHmmss')}}, function(err, updated) {
+					if (err) throw err;
+		});
+		
+		db.collection('Historie').find().sort({timestamp: 1}).toArray(function(err, queryHistorie) {
+			if (err) throw err;
+		
+			res.render('gesamtdoku', {title: "automatische Gesamtdoku - Digitaler Führungsassistent",
+									  historie: queryHistorie});
+			dbClient.close();
+		});
+	});
 });	
 
 
