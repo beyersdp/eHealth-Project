@@ -105,12 +105,12 @@
 							<p style="font-size:10px; color:gray;">
 								<select class="w3-input w3-border" placeholder="Status" name="einsatz_status" style="height:30px;">
 									<option value="" hidden>Bitte auswählen</option>
-									<option>Eingegangen</option>
-									<option>Kräfte alarmiert</option>
-									<option>Auftrag übernommen</option>
-									<option>An Einsatzstelle angekommen</option>
-									<option>Patient/in aufgenommen</option>
-									<option>Transportziel erreicht</option>
+									<option style="color:#e60000;">Eingegangen</option>
+									<option style="color:#e60000;">Kräfte alarmiert</option>
+									<option style="color:#00cccc;">Auftrag übernommen</option>
+									<option style="color:#00cccc;">An Einsatzstelle angekommen</option>
+									<option style="color:#00cccc;">Patient/in aufgenommen</option>
+									<option style="color:#607d8b;">Transportziel erreicht</option>
 								</select>
 							</p>
 							<p style="font-size:9px"><i class="fa fa-heartbeat w3-small w3-margin-right"></i>Verbleib des Patienten:</p>
@@ -167,6 +167,33 @@
 					{{/if}}
 				</div> <!-- id="{{ _id }}" -->
 					
+				<!---->
+				<p></p>
+				<div class="dragElement w3-container w3-white w3-card w3-round w3-hover-shadow" id="{{ _id }}" draggable="true">
+					<button class="w3-center w3-button w3-block w3-blue-grey w3-half" style="height:30px; width:75%; font-size:12px; border-left: 6px solid #e60000;" title="Bearbeiten">X</button>
+					<button type="submit" class="w3-center w3-button w3-block w3-blue-grey w3-quarter" style="height:30px; font-size:10px; border-left: 1px solid white;" title="abschließen"><i class="fa fa-check-square-o"></i></button>
+					<p style="font-size:11px"><i class="fa fa-arrow-right fa-fw w3-margin-right"></i>Eingegangen</p>
+					<p style="font-size:11px"><i class="fa fa-clock-o fa-fw w3-margin-right"></i><span class="timestamp">hh:mm</span> Uhr</p>
+				</div> <!-- BSP:Eingegangen -->
+				
+				<p></p>
+				
+				<div class="dragElement w3-container w3-white w3-card w3-round w3-hover-shadow" id="{{ _id }}" draggable="true">
+					<button class="w3-center w3-button w3-block w3-blue-grey w3-half" style="height:30px; width:75%; font-size:12px; border-left: 6px solid #00cccc;" title="Bearbeiten">Y</button>
+					<button type="submit" class="w3-center w3-button w3-block w3-blue-grey w3-quarter" style="height:30px; font-size:10px; border-left: 1px solid white;" title="abschließen"><i class="fa fa-check-square-o"></i></button>
+					<p style="font-size:11px"><i class="fa fa-arrow-right fa-fw w3-margin-right"></i>Patient/in aufgenommen</p>
+					<p style="font-size:11px"><i class="fa fa-clock-o fa-fw w3-margin-right"></i><span class="timestamp">hh:mm</span> Uhr</p>
+				</div> <!-- BSP:Patient/in aufgenommen -->
+				
+				<p></p>
+				
+				<div class="dragElement w3-container w3-white w3-card w3-round w3-hover-shadow" id="{{ _id }}" draggable="true">
+					<button class="w3-center w3-button w3-block w3-blue-grey w3-half" style="height:30px; width:75%; font-size:12px; border-left: 6px solid #607d8b;" title="Bearbeiten">Z</button>
+					<button type="submit" class="w3-center w3-button w3-block w3-blue-grey w3-quarter" style="height:30px; font-size:10px; border-left: 1px solid white;" title="abschließen"><i class="fa fa-check-square-o"></i></button>
+					<p style="font-size:11px"><i class="fa fa-arrow-right fa-fw w3-margin-right"></i>Transportziel erreicht</p>
+					<p style="font-size:11px"><i class="fa fa-clock-o fa-fw w3-margin-right"></i><span class="timestamp">hh:mm</span> Uhr</p>
+				</div> <!-- BSP:Transportziel erreicht 607d8b == w3-blue-grey-->
+				<!---->
 				<p></p>
 				{{/each}}
 			</div> <!-- id="left_scrollbar -->
@@ -337,8 +364,14 @@
 											  <p style="font-size:12px"><i class="fa fa-plus-square fa-fw w3-margin-right"></i>{{ titel }}</p>
 											</div>
 										</div>
-									<p style="font-size:11px"><i class="fa fa-marker fa-fw w3-margin-right"></i>Adresse: <div style="font-size:11px; padding-left:30px;"> {{ strasse }}, {{ plz }} {{ ort }}</div></p>
-									<p style="font-size:11px"><i class="fa fa-exclamation-triangle fa-fw w3-margin-right"></i>Risikoeinstufung: <div style="font-size:11px; padding-left:30px;"> {{ risiko }} </div></p>
+										<div class="w3-row w3-left-align">
+											<div class="w3-half">
+											  <p style="font-size:11px"><i class="fa fa-map-marker fa-fw w3-margin-right"></i>Adresse:  &emsp; {{ strasse }}, {{ plz }} {{ ort }}</p>
+											</div>
+											<div class="w3-half">
+											  <p style="font-size:11px"><i class="fa fa-exclamation-triangle fa-fw w3-margin-right"></i>Risikoeinstufung: &emsp; {{ risiko }} </p>
+											</div>
+										</div>
 									<p style="font-size:11px"><i class="fa fa-info-circle fa-fw w3-margin-right"></i>Beschreibung: <div style="font-size:11px; padding-left:30px;"> {{ lage }}</div></p>
 								</div> <!-- id="{{ _id }}" -->
 									
