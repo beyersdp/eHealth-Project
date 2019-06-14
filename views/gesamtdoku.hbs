@@ -1,20 +1,10 @@
-<!-- Navbar -->
-<div class="w3-top">
-    <div class="w3-bar w3-theme-d2 w3-left-align w3-large">
-		<a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-theme-d2" href="javascript:void(0);" onclick="openNav()"><i class="fa fa-bars"></i></a>
-  
-        <div class="w3-dropdown-hover w3-hide-small">
-			<button class="w3-button w3-padding-large" title="help"><i class="fa fa-question-circle w3-margin-right"></i>Digitaler Führungsassistent</i></button>     
-			<div class="w3-dropdown-content w3-card-4 w3-bar-block w3-light-grey" >
-			  <a href="#" class="w3-bar-item w3-button" style="font-size:15px">Fragen zur Gesamtdokumentation</a>
-			</div>
-		</div>
-    </div>
-</div>
-
 
 <div class="w3-display-container w3-container w3-margin-top" style="background-image: url(./img/example.jpg); height:100%; width:100%;">
     <div class="w3-center" style="padding:24px 48px; margin-left: auto; margin-right: auto;height:85%; width:90%;">
+		
+		<div id="ueberschrift_gesamtdoku" class="w3-center w3-container w3-padding w3-blue-grey w3-round w3-border w3-hover-shadow" style="margin-top:40px; width:100%;">						
+			<h4> Dokument des Gesamteinsatzes </h4>
+		</div>
 		
 		<div id="kerndaten_gesamtdoku" class="w3-center w3-container w3-padding w3-white w3-round w3-border w3-hover-shadow" style="margin-top:40px; width:100%;">						
 			<h6 class="w3-blue-grey" style="height:30px; padding-top:3px;"><i class="fa fa-plus-square w3-large w3-margin-right"> <span class="fa fa-info-circle w3-right w3-small"></span></i>  Kerndaten des Gesamteinsatzes</h6>
@@ -25,7 +15,7 @@
 				<div class="w3-container w3-white w3-card w3-round w3-hover-shadow w3-display-container"> 
 						<div class="w3-row w3-center w3-block w3-light-grey" style="height:30px; font-size:12px; LINE-HEIGHT:0px;">
 							<div class="w3-third w3-left-align">
-							  <p style="font-size:11px;">&emsp; [Datum]</p>
+							  <p style="font-size:11px;">&emsp;<i class="fa fa-calendar fa-fw w3-margin-right"></i> [Datum] &emsp;&emsp;&emsp;<i class="fa fa-clock-o fa-fw w3-margin-right"></i> [von-bis] Uhr</p>
 							</div>
 							<div class="w3-third">
 							  <p style="font-size:12px"><i class="fa fa-plus-square fa-fw w3-margin-right"></i>[ Titel }</p>
@@ -51,42 +41,34 @@
 		
 		
 		<div id="rettungsmittel_gesamtdoku" class="w3-center w3-container w3-padding w3-white w3-round w3-border w3-hover-shadow" style="margin-top:40px; width:100%;">						
-			<h6 class="w3-orange" style="height:30px; padding-top:3px;"><i class="fa fa-ambulance w3-large w3-margin-right"> </i> Übersicht über alle Rettungsmittel mit Besatzung</h6>
+			<h6 class="w3-orange" style="height:30px; padding-top:3px;"><i class="fa fa-ambulance w3-large w3-margin-right"> </i> Übersicht über alle Rettungsmittel</h6>
 			
 			<div class="w3-card w3-round w3-light-grey w3-container w3-display-container">
-				<p></p> <!-- Uebersicht aller Rettungsmittel mit Besatzung-->
+				<p></p> <!-- Uebersicht aller Rettungsmittel-->
 				
 				<div class="w3-container w3-white w3-card w3-round w3-hover-shadow w3-display-container"> 
-						<div class="w3-row w3-center w3-block w3-light-grey" style="height:30px; font-size:12px; LINE-HEIGHT:0px;">
-							<p style="font-size:12px"><i class="fa fa-bullhorn w3-small w3-margin-right"></i>Funkrufname: &emsp; [Funkrufname]  </p>
+					<div class="w3-row w3-left-align">
+						<div class="w3-half">
+						  <p style="font-size:12px"><i class="fa fa-bullhorn w3-small w3-margin-right"></i>Funkrufname: &emsp; [Funkrufname]  </p>
 						</div>
-						
-						<div class="w3-row w3-left-align">
-							<div class="w3-half">
-							  <p style="font-size:11px"><i class="fa fa-ambulance fa-fw w3-margin-right"></i>Fahrzeugart: &emsp; [art]</p>
-							</div>
-							<div class="w3-half">
-							  <p style="font-size:11px"><i class="fa fa-user-md fa-fw w3-margin-right"></i>Besatzung: &emsp; [kraefte]</p>
-							</div>
+						<div class="w3-half">
+						   <p class="w3-left-align" style="font-size:11px"><i class="fa fa-ambulance fa-fw w3-margin-right"></i>Fahrzeugart: &emsp; [art]</p>
 						</div>
+					</div>
 				</div>
 				
 				<p></p>
 				
 				<!-- zur Veranschaulichung ein zweites Fahrzeug:-->
 				<div class="w3-container w3-white w3-card w3-round w3-hover-shadow w3-display-container"> 
-						<div class="w3-row w3-center w3-block w3-light-grey" style="height:30px; font-size:12px; LINE-HEIGHT:0px;">
-							<p style="font-size:12px"><i class="fa fa-bullhorn w3-small w3-margin-right"></i>Funkrufname: &emsp; [Funkrufname]  </p>
+					<div class="w3-row w3-left-align">
+						<div class="w3-half">
+						  <p style="font-size:12px"><i class="fa fa-bullhorn w3-small w3-margin-right"></i>Funkrufname: &emsp; [Funkrufname]  </p>
 						</div>
-						
-						<div class="w3-row w3-left-align">
-							<div class="w3-half">
-							  <p style="font-size:11px"><i class="fa fa-ambulance fa-fw w3-margin-right"></i>Fahrzeugart: &emsp; [art]</p>
-							</div>
-							<div class="w3-half">
-							  <p style="font-size:11px"><i class="fa fa-user-md fa-fw w3-margin-right"></i>Besatzung: &emsp; [kraefte]</p>
-							</div>
+						<div class="w3-half">
+						   <p class="w3-left-align" style="font-size:11px"><i class="fa fa-ambulance fa-fw w3-margin-right"></i>Fahrzeugart: &emsp; [art]</p>
 						</div>
+					</div>
 				</div>
 				
 				<p></p>
@@ -94,25 +76,15 @@
 		</div>
 		
 		<div id="posten_gesamtdoku" class="w3-center w3-container w3-padding w3-white w3-round w3-border w3-hover-shadow" style="margin-top:40px; width:100%;">						
-			<h6 class="w3-yellow" style="height:30px; padding-top:3px;"><i class="fa fa-flag w3-large w3-margin-right"> </i> Übersicht über alle Sanitätsposten mit Besatzung</h6>
+			<h6 class="w3-yellow" style="height:30px; padding-top:3px;"><i class="fa fa-flag w3-large w3-margin-right"> </i> Übersicht über alle Sanitätsposten</h6>
 			
 			<div class="w3-card w3-round w3-light-grey w3-container w3-display-container">
-				<p></p> <!-- Uebersicht aller Sanitätsposten mit Besatzung-->
+				<p></p> <!-- Uebersicht aller Sanitätsposten-->
 				
-				<div class="w3-container w3-white w3-card w3-round w3-hover-shadow w3-display-container"> 
-						<div class="w3-row w3-center w3-block w3-light-grey" style="height:30px; font-size:12px; LINE-HEIGHT:0px;">
-							<p style="font-size:12px"><i class="fa fa-bullhorn w3-small w3-margin-right"></i>Funkrufname: &emsp; [Funkrufname]  </p>
-						</div>
-						
-						<div class="w3-row w3-left-align">
-							<div class="w3-half">
-							  <p style="font-size:11px"><i class="fa fa-map-marker fa-fw w3-margin-right"></i>Position: &emsp; [Position]</p>
-							</div>
-							<div class="w3-half">
-							   <p style="font-size:11px"><i class="fa fa-user-md fa-fw w3-margin-right"></i>Besatzung: &emsp; [kraefte]</p>
-							</div>
-						</div>
+				<div class="w3-container w3-white w3-card w3-round w3-hover-shadow w3-display-container"> 						
+						<p class="w3-left-align" style="font-size:12px"><i class="fa fa-bullhorn w3-small w3-margin-right"></i>Funkrufname: &emsp; [Funkrufname]  </p>
 				</div>
+				
 				<p></p>
 			</div>
 		</div>
@@ -124,9 +96,6 @@
 				<p></p> <!-- Uebersicht über alle Einsatzkräfte-->
 				
 				<div class="w3-container w3-white w3-card w3-round w3-hover-shadow w3-display-container"> 
-						<div class="w3-row w3-center w3-block w3-light-grey" style="height:30px; font-size:12px; LINE-HEIGHT:0px;">
-							<p style="font-size:12px"><i class="fa fa-bullhorn w3-small w3-margin-right"></i>Funkrufname: &emsp; [Funkrufname]  </p>
-						</div>
 						
 						<div class="w3-row w3-left-align">
 							<div class="w3-half">
@@ -139,21 +108,22 @@
 						
 						<div class="w3-row w3-left-align">
 							<div class="w3-half">
-							  <p style="font-size:11px"><i class="fa fa-phone-square fa-fw w3-margin-right"></i>Telefonnummer: &emsp; [tel]</p>
+							  <p style="font-size:12px"><i class="fa fa-bullhorn w3-small w3-margin-right"></i>Funkrufname: &emsp; [Funkrufname]  </p>
 							</div>
 							<div class="w3-half">
-							  <p style="font-size:11px"><i class="fa fa-graduation-cap fa-fw w3-margin-right"></i>Medizinische Qualifikation: &emsp; [quali]</p>
+							  <p style="font-size:11px"><i class="fa fa-phone-square fa-fw w3-margin-right"></i>Telefonnummer: &emsp; [tel]</p>
 							</div>
 						</div>
 						
 						<div class="w3-row w3-left-align">
 							<div class="w3-half">
-							  <p style="font-size:11px"><i class="fa fa-home fa-fw w3-margin-right"></i>Hilfsorganisation: &emsp; [hiorg]</p>
+							  <p style="font-size:11px"><i class="fa fa-graduation-cap fa-fw w3-margin-right"></i>Medizinische Qualifikation: &emsp; [quali]</p>
 							</div>
 							<div class="w3-half">
-							  <p style="font-size:11px"><i class="fa fa-ambulance fa-fw"></i> <i class="fa fa-flag fa-fw w3-margin-right"></i>Rettungsmittel/Posten: &emsp; [Funkrufname des Rettungsmittels/Postens falls zugeteilt]</p>
+							  <p class="w3-left-align" style="font-size:11px"><i class="fa fa-home fa-fw w3-margin-right"></i>Hilfsorganisation: &emsp; [hiorg]</p>
 							</div>
 						</div>
+						
 				</div>
 				<p></p>
 				
@@ -191,6 +161,7 @@
 			</div>
 		</div>
 		{{/if}}
+		
 		<div id="get_gesamtdoku" class="w3-center w3-container w3-padding w3-white w3-round w3-border w3-hover-shadow" style="margin-top:40px; width:100%;">						
 			<h6 class="w3-blue-grey w3-button " style="height:30px; padding-top:3px;"><i class="fa fa-download w3-large w3-margin-right"></i> Gesamteinsatz als PDF drucken bzw. herunterladen</h6>
 		</div>
