@@ -84,6 +84,13 @@ function addHistory(args) {
 								+ "\nDerzeitige Anmerkungen: " + args.text + "\nDerzeitiger Verbleib des Patienten: " + args.verbleibPatient;
 	}
 	
+	if (args.ereignis == "Notfalleinsatz ABGESCHLOSSEN") {
+		var art = "Notfalleinsatz";
+		var ereignis_grouping = args.ereignis + " " + args.meldebild + " (gemeldet durch " + args.sender + ").\nDerzeitiger Bearbeitungsgrad = " 
+								+ args.status + "\nDerzeitige zugeteilte Kräfte = " + kraefte_grouping.slice(0,-2)
+								+ "\nDerzeitige Anmerkungen: " + args.text + "\nDerzeitiger Verbleib des Patienten: " + args.verbleibPatient;
+	}
+	
 	if (args.ereignis == "Rettungskraft hat Ihre Schicht begonnen") {
 		var art = "Rettungskraft";
 		var ereignis_grouping = args.ereignis + ":\n" + args.vorname + " " + args.nachname + " (" + args.quali + ")\nHilfsorganisation: " + args.hiorg
@@ -624,7 +631,8 @@ server.post('/einsatz', urlencodedParser, function(req, res){
 												rettungskraefte: queryRettungskrafte1,
 												posten: queryPosten1,
 												rettungsmittel: queryRettungsmittel1,
-												fuehrungskraft: queryFuehrungskraft[0]};
+												fuehrungskraft: queryFuehrungskraft[0],
+												aktiv: true};
 					
 								db.collection('Einsatz').insertOne(einsatz_data, function(err, inserted) {
 									if (err) throw err;
@@ -720,6 +728,86 @@ server.post('/einsatz', urlencodedParser, function(req, res){
 				});
 			});
 		}
+	}
+	
+	else {
+		console.log("L1-Info: Cookie false");
+		res.send("Cookie false");
+	}
+});
+
+
+
+/* /einsatzClose - Empfangen eines POST-Requests ueber Port 8080  */
+server.post('/einsatzClose', urlencodedParser, function(req, res){
+	console.log("L2-Info: POST-REQUEST for /einsatzClose");
+	//console.log(req.body); //DEBUG Kontrollausgabe
+	
+	if(req.session && req.session.user) { 
+		console.log("L1-Info: Cookie true");
+		
+		mongodbClient.connect(url, { useNewUrlParser: true }, function(err, dbClient) {
+			if (err) throw err;
+			var db = dbClient.db('DigitalerFuehrungsassistent');
+			console.log("L2-Info: DB-Connection true");
+			
+			db.collection('Einsatz').find({_id: ObjectID(req.body.einsatz_id)}).toArray(function(err, queryEinsatz1) {
+				if (err) throw err;
+			
+				db.collection('Einsatz').findOneAndUpdate({_id: ObjectID(req.body.einsatz_id)}, {$set: {aktiv: false}}, function(err, deleted) {
+					if (err) throw err;
+					
+					db.collection('Fuehrungskraft').find({cookie: req.session.user}).toArray(function(err, queryFuehrungskraft) {
+					if (err) throw err;
+					
+						db.collection('Einsatz').find().sort({timestamp: 1}).toArray(function(err, queryEinsatz2) {
+							if (err) throw err;
+							
+							db.collection('Rettungskraft').find({rettungsmittel: false, aktiv: true}).toArray(function(err, queryRettungskraefte) {
+								if (err) throw err;
+								
+								db.collection('Rettungsmittel').find({aktiv: true}).toArray(function(err, queryRettungsmittel) {
+									
+									db.collection('Posten').find({aktiv: true}).toArray(function(err, queryPosten) {
+										if (err) throw err;
+										
+										db.collection('Notiz').find().toArray(function(err, queryNotiz) {
+											
+											db.collection('Funkspruch').find().sort({timestamp: 1}).toArray(function(err, queryFunkspruch) {
+												
+												db.collection('Kerndaten').find().toArray(function(err, queryKerndaten) {
+													
+													addHistory({ereignis: "Notfalleinsatz ABGESCHLOSSEN", sender: queryEinsatz1[0].sender, meldebild: queryEinsatz1[0].meldebild,
+																verbleibPatient: queryEinsatz1[0].verbleibPatient, status: queryEinsatz1[0].status, text: queryEinsatz1[0].text,
+																fuehrungskraft_nachname: queryFuehrungskraft[0].nachname, fuehrungskraft_cookie: req.session.user});
+													
+													res.render('mainpage', {title: "Hauptseite - Digitaler Führungsassistent",
+																	einsatz: queryEinsatz2,
+																	rettungskraft: queryRettungskraefte,
+																	rettungsmittel: queryRettungsmittel,
+																	posten: queryPosten,
+																	notiz: queryNotiz,
+																	funkspruch: queryFunkspruch,
+																	kerndaten: queryKerndaten,
+																	fuehrungskraft_nachname: queryFuehrungskraft[0].nachname,
+																	fuehrungskraft_quali: queryFuehrungskraft[0].quali,
+																	fuehrungskraft_mapstate: queryFuehrungskraft[0].position,
+																	fuehrungskraft_mapzoom: queryFuehrungskraft[0].zoom,
+																	fuehrungskraft_istEL: queryFuehrungskraft[0].ist_EL,
+																	fuehrungskraft_setEL: queryFuehrungskraft[0].set_EL});
+																	
+													dbClient.close();
+												});
+											});
+										});
+									});
+								});
+							});
+						});
+					});
+				});
+			});
+		});
 	}
 	
 	else {
