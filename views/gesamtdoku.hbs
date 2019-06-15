@@ -2,7 +2,7 @@
 <div class="w3-display-container w3-container w3-margin-top" style="background-image: url(./img/example.jpg); height:100%; width:100%;">
     <div class="w3-center" style="padding:24px 48px; margin-left: auto; margin-right: auto;height:85%; width:90%;">
 		
-		<div id="ueberschrift_gesamtdoku" class="w3-center w3-container w3-padding w3-blue-grey w3-round w3-border w3-hover-shadow" style="margin-top:40px; width:100%;">						
+		<div id="ueberschrift_gesamtdoku" class="w3-center w3-container w3-padding w3-blue-grey w3-round w3-border w3-hover-shadow" style="margin-top:30px; width:100%;">						
 			<h4> Dokument des Gesamteinsatzes </h4>
 		</div>
 		
@@ -46,20 +46,6 @@
 			<div class="w3-card w3-round w3-light-grey w3-container w3-display-container">
 				<p></p> <!-- Uebersicht aller Rettungsmittel-->
 				
-				<div class="w3-container w3-white w3-card w3-round w3-hover-shadow w3-display-container"> 
-					<div class="w3-row w3-left-align">
-						<div class="w3-half">
-						  <p style="font-size:12px"><i class="fa fa-bullhorn w3-small w3-margin-right"></i>Funkrufname: &emsp; [Funkrufname]  </p>
-						</div>
-						<div class="w3-half">
-						   <p class="w3-left-align" style="font-size:11px"><i class="fa fa-ambulance fa-fw w3-margin-right"></i>Fahrzeugart: &emsp; [art]</p>
-						</div>
-					</div>
-				</div>
-				
-				<p></p>
-				
-				<!-- zur Veranschaulichung ein zweites Fahrzeug:-->
 				<div class="w3-container w3-white w3-card w3-round w3-hover-shadow w3-display-container"> 
 					<div class="w3-row w3-left-align">
 						<div class="w3-half">
@@ -162,7 +148,7 @@
 		</div>
 		{{/if}}
 		
-		<div id="get_gesamtdoku" class="w3-center w3-container w3-padding w3-white w3-round w3-border w3-hover-shadow" style="margin-top:40px; width:100%;">						
+		<div id="get_gesamtdoku" onclick="window.print()" class="w3-center w3-container w3-padding w3-white w3-round w3-border w3-hover-shadow" style="margin-top:40px; width:100%;">						
 			<h6 class="w3-blue-grey w3-button " style="height:30px; padding-top:3px;"><i class="fa fa-download w3-large w3-margin-right"></i> Gesamteinsatz als PDF drucken bzw. herunterladen</h6>
 		</div>
 		
@@ -197,6 +183,34 @@ function openNav() {
     x.className = x.className.replace(" w3-show", "");
   }
 }
+
+//download:
+/*
+//Download-Funktion erstellt eine PDF-Seite:
+function download() {
+	let doc = new jsPDF('p','mm','a4');
+		//'landscape' -> Querformat | 'p' --> Hochformat
+		// unit - We can tell jsPDF in which units we want to work. Use on of the following: "pt" (points), "mm" (default), "cm", "in".
+	//doc.addHTML(document.body, 50, 2, {},function() {
+	//doc.addPage(210,297);//mm
+	doc.addHTML(document.body, 0, 2, {pagesplit:true},function() { // {} or {pagesplit:true}
+		// ohne pagesplit passt der komplette Inhalt auf eine Seite (allerdings verzerrt --> d.h. je mehr Inhalt, desto unleserlich wird es..)
+		// mit pagesplit ist es nicht verzerrt & der komplette Inhalt wird dargestellt, allerdings werden Seiten umständlich gesplitted.. dadurch auch unleserlich..
+		doc.save('Gesamtdokumentation.pdf');
+	}); //TEST1: schneidet die Webpage ab... bzw. erweitert PDF um keine weiteren Seiten
+}*/
+
+/* evtl. für workaround hilfreich:
+function download(){
+	var doc = new jsPDF();
+	doc.text(20, 20, document.getElementById('kerndaten_gesamtdoku'));
+	doc.text(20, 30, 'This is client-side Javascript, pumping out a PDF.');
+	doc.addPage('a6','l');
+	doc.text(20, 20, 'Do you like that?');
+	doc.save('text.pdf');
+}
+*/
 </script>
+
 <script type="text/javascript" src="script/moment.js"></script>
 <script type="text/javascript" src="script/gesamt.js"></script>
