@@ -1966,34 +1966,6 @@ server.get('/gesamtdoku', function(req, res){
 														  posten: queryPosten,
 														  rettungskraft: queryRettungskraefte,
 														  fuehrungskraft: queryFuehrungskraft});
-								/*
-								db.collection('Kerndaten').drop(function(err, delAck) {
-									if (err) throw err;
-								});
-								db.collection('Rettungskraft').drop(function(err, delAck) {
-									if (err) throw err;
-								});
-								db.collection('Posten').drop(function(err, delAck) {
-									if (err) throw err;
-								});
-								db.collection('Rettungsmittel').drop(function(err, delAck) {
-									if (err) throw err;
-								});
-								db.collection('Einsatz').drop(function(err, delAck) {
-									if (err) throw err;
-								});
-								db.collection('Funkspruch').drop(function(err, delAck) {
-									if (err) throw err;
-								});
-								db.collection('Historie').drop(function(err, delAck) {
-									if (err) throw err;
-								});
-								db.collection('Notiz').drop(function(err, delAck) {
-									if (err) throw err;
-								});*/
-								db.collection('Fuehrungskraft').findOneAndUpdate({}, {$set: {aktiv: false, lastHistory: ""}}, function(err, updated) {
-									if (err) throw err;
-								});
 								
 								dbClient.close();
 							});
@@ -2006,6 +1978,58 @@ server.get('/gesamtdoku', function(req, res){
 });	
 
 
+
+/* /resetDB - Empfangen eines GET-Requests ueber Port 8080  */
+server.get('/resetDB', function(req, res){
+	console.log("L2-Info: GET-REQUEST for /resetDB");
+	
+	if(req.session && req.session.user) { 
+		console.log("L1-Info: Cookie true");
+		
+		mongodbClient.connect(url, { useNewUrlParser: true }, function(err, dbClient) {
+			if (err) throw err;
+			var db = dbClient.db('DigitalerFuehrungsassistent');
+			console.log("L2-Info: DB-Connection true");
+			
+			db.collection('Kerndaten').deleteMany({}, function(err, delAck) {
+				if (err) throw err;
+			});
+			db.collection('Rettungskraft').deleteMany({}, function(err, delAck) {
+				if (err) throw err;
+			});
+			db.collection('Posten').deleteMany({}, function(err, delAck) {
+				if (err) throw err;
+			});
+			db.collection('Rettungsmittel').deleteMany({}, function(err, delAck) {
+				if (err) throw err;
+			});
+			db.collection('Einsatz').deleteMany({}, function(err, delAck) {
+				if (err) throw err;
+			});
+			db.collection('Funkspruch').deleteMany({}, function(err, delAck) {
+				if (err) throw err;
+			});
+			db.collection('Historie').deleteMany({}, function(err, delAck) {
+				if (err) throw err;
+			});
+			db.collection('Notiz').deleteMany({}, function(err, delAck) {
+				if (err) throw err;
+			});
+			db.collection('Fuehrungskraft').findOneAndUpdate({}, {$set: {aktiv: false, lastHistory: ""}}, function(err, updated) {
+				if (err) throw err;
+			});
+			
+			res.send("OK");
+		});
+	}
+	
+	else {
+		console.log("L1-Info: Cookie false");
+		res.send("Cookie false");
+	}
+	
+});	
+	
 
 // Debuggin Routing-Funktionen
 
