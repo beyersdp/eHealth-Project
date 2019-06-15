@@ -6,129 +6,170 @@
 			<h4> Dokument des Gesamteinsatzes </h4>
 		</div>
 		
+		{{# if kerndaten}}
 		<div id="kerndaten_gesamtdoku" class="w3-center w3-container w3-padding w3-white w3-round w3-border w3-hover-shadow" style="margin-top:40px; width:100%;">						
 			<h6 class="w3-blue-grey" style="height:30px; padding-top:3px;"><i class="fa fa-plus-square w3-large w3-margin-right"> <span class="fa fa-info-circle w3-right w3-small"></span></i>  Kerndaten des Gesamteinsatzes</h6>
 			
 			<div class="w3-card w3-round w3-light-grey w3-container w3-display-container">
 				<p></p> <!-- Uebersicht aller Kerndaten ueber den Gesamteinsatz -->
-				
+				{{# each kerndaten}}
 				<div class="w3-container w3-white w3-card w3-round w3-hover-shadow w3-display-container"> 
 						<div class="w3-row w3-center w3-block w3-light-grey" style="height:30px; font-size:12px; LINE-HEIGHT:0px;">
 							<div class="w3-third w3-left-align">
-							  <p style="font-size:11px;">&emsp;<i class="fa fa-calendar fa-fw w3-margin-right"></i> [Datum] &emsp;&emsp;&emsp;<i class="fa fa-clock-o fa-fw w3-margin-right"></i> [von-bis] Uhr</p>
+							  <p style="font-size:11px;">&emsp;<i class="fa fa-calendar fa-fw w3-margin-right"></i> {{ datum }} &emsp;&emsp;&emsp;<i class="fa fa-clock-o fa-fw w3-margin-right"></i> von <span class="timestamp">{{ start }}</span> bis <span class="timestamp">{{ end }}</span> Uhr</p>
 							</div>
 							<div class="w3-third">
-							  <p style="font-size:12px"><i class="fa fa-plus-square fa-fw w3-margin-right"></i>[ Titel }</p>
-							</div>
-							<div class="w3-third w3-right-align">
-							  <p style="font-size:11px"><img class="icon w3-margin-right" src="./img/icons/einsatzleiter.png" alt="EL" style="width:15px; height:15px;">Führungskraft: &emsp; [Führungskraft]&emsp;</p>
+							  <p style="font-size:12px"><i class="fa fa-plus-square fa-fw w3-margin-right"></i>{{ titel }}</p>
 							</div>
 						</div>
 						
 						<div class="w3-row w3-left-align">
 							<div class="w3-half">
-							  <p style="font-size:11px"><i class="fa fa-map-marker fa-fw w3-margin-right"></i>Adresse/Position: &emsp; [Adresse]</p>
+							  <p style="font-size:11px"><i class="fa fa-map-marker fa-fw w3-margin-right"></i>Adresse: &emsp; {{ strasse }}, {{ plz }} {{ ort }}</p>
 							</div>
 							<div class="w3-half">
-							  <p style="font-size:11px"><i class="fa fa-exclamation-triangle fa-fw w3-margin-right"></i>Risikoeinstufung: &emsp; [Risikoeinstufung] </p>
+							  <p style="font-size:11px"><i class="fa fa-exclamation-triangle fa-fw w3-margin-right"></i>Risikoeinstufung: &emsp; {{ risiko }} </p>
 							</div>
 						</div>
-						<p style="font-size:11px" class="w3-left-align"><i class="fa fa-info-circle fa-fw w3-margin-right"></i>Erweiterte Informationen: <div style="font-size:11px; padding-left:30px;" class="w3-left-align"> [Erweiterte Informationen | Erweiterte Informationen | Erweiterte Informationen| ...]</div></p>
+						<p style="font-size:11px" class="w3-left-align"><i class="fa fa-info-circle fa-fw w3-margin-right"></i>Erweiterte Informationen: <div style="font-size:11px; padding-left:30px;" class="w3-left-align"> {{ lage }}</div></p>
 				</div>
 				<p></p>
+				{{/each}}
 			</div>
 		</div>
+		{{/if}}
 		
+		{{# if fuehrungskraft}}
+		<div id="rettungskraft_gesamtdoku" class="w3-center w3-container w3-padding w3-white w3-round w3-border w3-hover-shadow" style="margin-top:40px; width:100%;">						
+			<h6 class="w3-light-green" style="height:30px; padding-top:3px;"><i class="fa fa-user-md w3-large w3-margin-right"> </i> Übersicht der Einsatzleitung</h6>
+			
+			<div class="w3-card w3-round w3-light-grey w3-container w3-display-container">
+				<p></p> <!-- Uebersicht über alle Einsatzkräfte-->
+				{{# each fuehrungskraft}}
+				<div class="w3-container w3-white w3-card w3-round w3-hover-shadow w3-display-container"> 
+						
+						<div class="w3-row w3-left-align">
+							<div class="w3-half">
+							  <p style="font-size:11px"><i class="fa fa-address-book fa-fw w3-margin-right"></i>Vorname: &emsp; {{ vorname }}</p>
+							</div>
+							<div class="w3-half">
+							  <p style="font-size:11px"><i class="fa fa-address-book fa-fw w3-margin-right"></i>Nachname: &emsp; {{ nachname }}</p>
+							</div>
+						</div>
+						
+						<div class="w3-row w3-left-align">
+							<div class="w3-half">
+							  <p style="font-size:12px"><i class="fa fa-bullhorn w3-small w3-margin-right"></i>Rolle: &emsp; {{# if ist_EL }} Einsatzleiter/in {{else}} Führungsassistent/in {{/if}}</p>
+							</div>
+							<div class="w3-half">
+							  <p style="font-size:11px"><i class="fa fa-phone-square fa-fw w3-margin-right"></i>Telefonnummer: &emsp; {{ tel }}</p>
+							</div>
+						</div>
+						
+						<div class="w3-row w3-left-align">
+							<div class="w3-half">
+							  <p style="font-size:11px"><i class="fa fa-graduation-cap fa-fw w3-margin-right"></i>Führungsqualifikation: &emsp; {{ quali }}</p>
+							</div>
+							<div class="w3-half">
+							  <p class="w3-left-align" style="font-size:11px"><i class="fa fa-home fa-fw w3-margin-right"></i>Hilfsorganisation: &emsp; {{ hiorg }}</p>
+							</div>
+						</div>
+						<p class="w3-left-align" style="font-size:12px"><i class="fa fa-clock-o w3-small w3-margin-right"></i>Dienstbeginn: &emsp; <span class="timestamp">{{ start }}</span> Uhr</p>
+						<p class="w3-left-align" style="font-size:12px"><i class="fa fa-clock-o w3-small w3-margin-right"></i>Dienstende: &emsp; <span class="timestamp">{{ end }}</span> Uhr</p>
+				</div>
+				<p></p>
+				{{/each}}
+			</div>
+		</div>
+		{{/if}}
 		
+		{{# if rettungsmittel}}
 		<div id="rettungsmittel_gesamtdoku" class="w3-center w3-container w3-padding w3-white w3-round w3-border w3-hover-shadow" style="margin-top:40px; width:100%;">						
 			<h6 class="w3-orange" style="height:30px; padding-top:3px;"><i class="fa fa-ambulance w3-large w3-margin-right"> </i> Übersicht über alle Rettungsmittel</h6>
 			
 			<div class="w3-card w3-round w3-light-grey w3-container w3-display-container">
 				<p></p> <!-- Uebersicht aller Rettungsmittel-->
-				
+				{{# each rettungsmittel}}
 				<div class="w3-container w3-white w3-card w3-round w3-hover-shadow w3-display-container"> 
 					<div class="w3-row w3-left-align">
 						<div class="w3-half">
-						  <p style="font-size:12px"><i class="fa fa-bullhorn w3-small w3-margin-right"></i>Funkrufname: &emsp; [Funkrufname]  </p>
+						  <p style="font-size:12px"><i class="fa fa-bullhorn w3-small w3-margin-right"></i>Funkrufname: &emsp; {{ funkruf }}  </p>
 						</div>
 						<div class="w3-half">
-						   <p class="w3-left-align" style="font-size:11px"><i class="fa fa-ambulance fa-fw w3-margin-right"></i>Fahrzeugart: &emsp; [art]</p>
+						   <p class="w3-left-align" style="font-size:11px"><i class="fa fa-ambulance fa-fw w3-margin-right"></i>Fahrzeugart: &emsp; {{ art }}</p>
 						</div>
+						<p class="w3-left-align" style="font-size:12px"><i class="fa fa-clock-o w3-small w3-margin-right"></i>Dienstbeginn: &emsp; <span class="timestamp">{{ start }}</span> Uhr</p>
+						<p class="w3-left-align" style="font-size:12px"><i class="fa fa-clock-o w3-small w3-margin-right"></i>Dienstende: &emsp; <span class="timestamp">{{ end }}</span> Uhr</p>
 					</div>
 				</div>
-				
 				<p></p>
-				
-				<!-- zur Veranschaulichung ein zweites Fahrzeug:-->
-				<div class="w3-container w3-white w3-card w3-round w3-hover-shadow w3-display-container"> 
-					<div class="w3-row w3-left-align">
-						<div class="w3-half">
-						  <p style="font-size:12px"><i class="fa fa-bullhorn w3-small w3-margin-right"></i>Funkrufname: &emsp; [Funkrufname]  </p>
-						</div>
-						<div class="w3-half">
-						   <p class="w3-left-align" style="font-size:11px"><i class="fa fa-ambulance fa-fw w3-margin-right"></i>Fahrzeugart: &emsp; [art]</p>
-						</div>
-					</div>
-				</div>
-				
-				<p></p>
+				{{/each}}
 			</div>
 		</div>
+		{{/if}}
 		
+		{{# if posten}}
 		<div id="posten_gesamtdoku" class="w3-center w3-container w3-padding w3-white w3-round w3-border w3-hover-shadow" style="margin-top:40px; width:100%;">						
 			<h6 class="w3-yellow" style="height:30px; padding-top:3px;"><i class="fa fa-flag w3-large w3-margin-right"> </i> Übersicht über alle Sanitätsposten</h6>
 			
 			<div class="w3-card w3-round w3-light-grey w3-container w3-display-container">
 				<p></p> <!-- Uebersicht aller Sanitätsposten-->
-				
+				{{# each posten}}
 				<div class="w3-container w3-white w3-card w3-round w3-hover-shadow w3-display-container"> 						
-						<p class="w3-left-align" style="font-size:12px"><i class="fa fa-bullhorn w3-small w3-margin-right"></i>Funkrufname: &emsp; [Funkrufname]  </p>
+						<p class="w3-left-align" style="font-size:12px"><i class="fa fa-bullhorn w3-small w3-margin-right"></i>Funkrufname: &emsp; {{ funkruf }}</p>
+						<p class="w3-left-align" style="font-size:12px"><i class="fa fa-clock-o w3-small w3-margin-right"></i>Dienstbeginn: &emsp; <span class="timestamp">{{ start }}</span> Uhr</p>
+						<p class="w3-left-align" style="font-size:12px"><i class="fa fa-clock-o w3-small w3-margin-right"></i>Dienstende: &emsp; <span class="timestamp">{{ end }}</span> Uhr</p>
 				</div>
-				
 				<p></p>
+				{{/each}}
 			</div>
 		</div>
+		{{/if}}
 		
+		{{# if rettungskraft}}
 		<div id="rettungskraft_gesamtdoku" class="w3-center w3-container w3-padding w3-white w3-round w3-border w3-hover-shadow" style="margin-top:40px; width:100%;">						
 			<h6 class="w3-light-green" style="height:30px; padding-top:3px;"><i class="fa fa-user-md w3-large w3-margin-right"> </i> Übersicht über alle Einsatzkräfte</h6>
 			
 			<div class="w3-card w3-round w3-light-grey w3-container w3-display-container">
 				<p></p> <!-- Uebersicht über alle Einsatzkräfte-->
-				
+				{{# each rettungskraft}}
 				<div class="w3-container w3-white w3-card w3-round w3-hover-shadow w3-display-container"> 
 						
 						<div class="w3-row w3-left-align">
 							<div class="w3-half">
-							  <p style="font-size:11px"><i class="fa fa-address-book fa-fw w3-margin-right"></i>Vorname: &emsp; [Vorname]</p>
+							  <p style="font-size:11px"><i class="fa fa-address-book fa-fw w3-margin-right"></i>Vorname: &emsp; {{ vorname }}</p>
 							</div>
 							<div class="w3-half">
-							  <p style="font-size:11px"><i class="fa fa-address-book fa-fw w3-margin-right"></i>Nachname: &emsp; [Nachname]</p>
+							  <p style="font-size:11px"><i class="fa fa-address-book fa-fw w3-margin-right"></i>Nachname: &emsp; {{ nachname }}</p>
 							</div>
 						</div>
 						
 						<div class="w3-row w3-left-align">
 							<div class="w3-half">
-							  <p style="font-size:12px"><i class="fa fa-bullhorn w3-small w3-margin-right"></i>Funkrufname: &emsp; [Funkrufname]  </p>
+							  <p style="font-size:12px"><i class="fa fa-bullhorn w3-small w3-margin-right"></i>Funkrufname: &emsp; {{ funkruf }} </p>
 							</div>
 							<div class="w3-half">
-							  <p style="font-size:11px"><i class="fa fa-phone-square fa-fw w3-margin-right"></i>Telefonnummer: &emsp; [tel]</p>
+							  <p style="font-size:11px"><i class="fa fa-phone-square fa-fw w3-margin-right"></i>Telefonnummer: &emsp; {{ tel }}</p>
 							</div>
 						</div>
 						
 						<div class="w3-row w3-left-align">
 							<div class="w3-half">
-							  <p style="font-size:11px"><i class="fa fa-graduation-cap fa-fw w3-margin-right"></i>Medizinische Qualifikation: &emsp; [quali]</p>
+							  <p style="font-size:11px"><i class="fa fa-graduation-cap fa-fw w3-margin-right"></i>Medizinische Qualifikation: &emsp; {{ quali }}</p>
 							</div>
 							<div class="w3-half">
-							  <p class="w3-left-align" style="font-size:11px"><i class="fa fa-home fa-fw w3-margin-right"></i>Hilfsorganisation: &emsp; [hiorg]</p>
+							  <p class="w3-left-align" style="font-size:11px"><i class="fa fa-home fa-fw w3-margin-right"></i>Hilfsorganisation: &emsp; {{ hiorg }}</p>
 							</div>
 						</div>
-						
+						<p class="w3-left-align" style="font-size:12px"><i class="fa fa-clock-o w3-small w3-margin-right"></i>Dienstbeginn: &emsp; <span class="timestamp">{{ start }}</span> Uhr</p>
+						<p class="w3-left-align" style="font-size:12px"><i class="fa fa-clock-o w3-small w3-margin-right"></i>Dienstende: &emsp; <span class="timestamp">{{ end }}</span> Uhr</p>
 				</div>
 				<p></p>
-				
+				{{/each}}
 			</div>
 		</div>
+		{{/if}}
+		
 		{{# if historie}}
 		<div id="historie_gesamtdoku" class="w3-center w3-container w3-padding w3-white w3-round w3-border w3-hover-shadow" style="margin-top:40px; width:100%;">						
 			<h6 class="w3-blue-grey" style="height:30px; padding-top:3px;"><i class="fa fa-clipboard w3-large w3-margin-right"> <span class="fa fa-info-circle w3-right w3-small"></span> </i> Historie des Gesamteinsatzes</h6>

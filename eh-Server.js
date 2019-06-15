@@ -223,30 +223,35 @@ server.post('/login', urlencodedParser, function(req, res){
 							if (err) throw err;
 						});
 						
-						db.collection('Fuehrungskraft').findOneAndUpdate({mail: req.body.login_mail}, {$set: {cookie: req.session.user}}, function(err, queryFuehrungskraft) {
+						db.collection('Fuehrungskraft').findOneAndUpdate({mail: req.body.login_mail}, {$set: {cookie: req.session.user, aktiv: true, start: moment().format('YYYYMMDDHHmmss')}}, function(err, queryFuehrungskraft) {
 							if (err) throw err;
 							
 							db.collection('Einsatz').find().sort({timestamp: 1}).toArray(function(err, queryEinsatz) {
 								if (err) throw err;
 								
-								db.collection('Rettungskraft').find({rettungsmittel: false}).toArray(function(err, queryRettungskrafte) {
+								db.collection('Rettungskraft').find({rettungsmittel: false, aktiv: true}).toArray(function(err, queryRettungskrafte) {
 									if (err) throw err;
 									
-									db.collection('Rettungsmittel').find().toArray(function(err, queryRettungsmittel) {
+									db.collection('Rettungsmittel').find({aktiv: true}).toArray(function(err, queryRettungsmittel) {
 										if (err) throw err;
 										
-										db.collection('Posten').find().toArray(function(err, queryPosten) {
+										db.collection('Posten').find({aktiv: true}).toArray(function(err, queryPosten) {
 											if (err) throw err;
+											
+											db.collection('Kerndaten').find().toArray(function(err, queryKerndaten) {
+												if (err) throw err;
 							
-											res.render('mainpage', {title: "Einsatz - Digitaler Führungsassistent",
-																	einsatz: queryEinsatz,
-																	rettungskraft: queryRettungskrafte,
-																	rettungsmittel: queryRettungsmittel,
-																	posten: queryPosten,
-																	fuehrungskraft_nachname: queryFuehrungskraft.value.nachname,
-																	fuehrungskraft_quali: queryFuehrungskraft.value.quali});
-								
-											dbClient.close();
+												res.render('mainpage', {title: "Einsatz - Digitaler Führungsassistent",
+																		einsatz: queryEinsatz,
+																		rettungskraft: queryRettungskrafte,
+																		rettungsmittel: queryRettungsmittel,
+																		posten: queryPosten,
+																		kerndaten: queryKerndaten,
+																		fuehrungskraft_nachname: queryFuehrungskraft.value.nachname,
+																		fuehrungskraft_quali: queryFuehrungskraft.value.quali});
+									
+												dbClient.close();
+											});
 										});
 									});
 								});
@@ -443,12 +448,12 @@ server.post('/el', urlencodedParser, function(req, res){
 				db.collection('Einsatz').find().sort({timestamp: 1}).toArray(function(err, queryEinsatz) {
 					if (err) throw err;
 					
-					db.collection('Rettungskraft').find({rettungsmittel: false}).toArray(function(err, queryRettungskrafte) {
+					db.collection('Rettungskraft').find({rettungsmittel: false, aktiv: true}).toArray(function(err, queryRettungskrafte) {
 						if (err) throw err;
 						
-						db.collection('Rettungsmittel').find().toArray(function(err, queryRettungsmittel) {
+						db.collection('Rettungsmittel').find({aktiv: true}).toArray(function(err, queryRettungsmittel) {
 							
-							db.collection('Posten').find().toArray(function(err, queryPosten) {
+							db.collection('Posten').find({aktiv: true}).toArray(function(err, queryPosten) {
 								if (err) throw err;
 								
 								db.collection('Notiz').find().toArray(function(err, queryNotiz) {
@@ -526,12 +531,12 @@ server.get('/elNEW', function(req, res){
 					db.collection('Einsatz').find().sort({timestamp: 1}).toArray(function(err, queryEinsatz) {
 						if (err) throw err;
 						
-						db.collection('Rettungskraft').find({rettungsmittel: false}).toArray(function(err, queryRettungskrafte) {
+						db.collection('Rettungskraft').find({rettungsmittel: false, aktiv: true}).toArray(function(err, queryRettungskrafte) {
 							if (err) throw err;
 							
-							db.collection('Rettungsmittel').find().toArray(function(err, queryRettungsmittel) {
+							db.collection('Rettungsmittel').find({aktiv: true}).toArray(function(err, queryRettungsmittel) {
 								
-								db.collection('Posten').find().toArray(function(err, queryPosten) {
+								db.collection('Posten').find({aktiv: true}).toArray(function(err, queryPosten) {
 									if (err) throw err;
 									
 									db.collection('Notiz').find().toArray(function(err, queryNotiz) {
@@ -627,13 +632,13 @@ server.post('/einsatz', urlencodedParser, function(req, res){
 									db.collection('Einsatz').find().sort({timestamp: 1}).toArray(function(err, queryEinsatz) {
 										if (err) throw err;
 										
-										db.collection('Rettungskraft').find({rettungsmittel: false}).toArray(function(err, queryRettungskrafte2) {
+										db.collection('Rettungskraft').find({rettungsmittel: false, aktiv: true}).toArray(function(err, queryRettungskrafte2) {
 											if (err) throw err;
 											
-											db.collection('Rettungsmittel').find().toArray(function(err, queryRettungsmittel2) {
+											db.collection('Rettungsmittel').find({aktiv: true}).toArray(function(err, queryRettungsmittel2) {
 												if (err) throw err;
 												
-												db.collection('Posten').find().toArray(function(err, queryPosten2) {
+												db.collection('Posten').find({aktiv: true}).toArray(function(err, queryPosten2) {
 													if (err) throw err;
 													
 													db.collection('Notiz').find().toArray(function(err, queryNotiz) {
@@ -754,13 +759,13 @@ server.post('/funkspruch', urlencodedParser, function(req, res){
 					db.collection('Einsatz').find().sort({timestamp: 1}).toArray(function(err, queryEinsatz) {
 						if (err) throw err;
 						
-						db.collection('Rettungskraft').find({rettungsmittel: false}).toArray(function(err, queryRettungskrafte) {
+						db.collection('Rettungskraft').find({rettungsmittel: false, aktiv: true}).toArray(function(err, queryRettungskrafte) {
 							if (err) throw err;
 								
-							db.collection('Rettungsmittel').find().toArray(function(err, queryRettungsmittel) {
+							db.collection('Rettungsmittel').find({aktiv: true}).toArray(function(err, queryRettungsmittel) {
 								if (err) throw err;
 								
-								db.collection('Posten').find().toArray(function(err, queryPosten) {
+								db.collection('Posten').find({aktiv: true}).toArray(function(err, queryPosten) {
 									if (err) throw err;
 									
 									db.collection('Notiz').find().toArray(function(err, queryNotiz) {
@@ -831,7 +836,9 @@ server.post('/rettungskraft', urlencodedParser, function(req, res){
 											  quali: req.body.rettungskraft_quali,
 											  funkruf: req.body.rettungskraft_vorname + " " + req.body.rettungskraft_nachname,
 											  tel: req.body.rettungskraft_tel,
-											  rettungsmittel: false};
+											  rettungsmittel: false,
+											  aktiv: true,
+											  start: moment().format('YYYYMMDDHHmmss')};
 					
 					
 				}
@@ -844,7 +851,9 @@ server.post('/rettungskraft', urlencodedParser, function(req, res){
 											  quali: req.body.rettungskraft_quali,
 											  funkruf: req.body.rettungskraft_funkruf,
 											  tel: req.body.rettungskraft_tel,
-											  rettungsmittel: false};
+											  rettungsmittel: false,
+											  aktiv: true,
+											  start: moment().format('YYYYMMDDHHmmss')};
 				}
 										  
 				db.collection('Rettungskraft').insertOne(rettungskraft_data, function(err, inserted) {
@@ -856,13 +865,13 @@ server.post('/rettungskraft', urlencodedParser, function(req, res){
 						db.collection('Fuehrungskraft').find({cookie: req.session.user}).toArray(function(err, queryFuehrungskraft) {
 							if (err) throw err;
 							
-							db.collection('Rettungskraft').find({rettungsmittel: false}).toArray(function(err, queryRettungskrafte) {
+							db.collection('Rettungskraft').find({rettungsmittel: false, aktiv: true}).toArray(function(err, queryRettungskrafte) {
 								if (err) throw err;
 									
-								db.collection('Rettungsmittel').find().toArray(function(err, queryRettungsmittel) {
+								db.collection('Rettungsmittel').find({aktiv: true}).toArray(function(err, queryRettungsmittel) {
 									if (err) throw err;
 									
-									db.collection('Posten').find().toArray(function(err, queryPosten) {
+									db.collection('Posten').find({aktiv: true}).toArray(function(err, queryPosten) {
 										if (err) throw err;
 										
 										db.collection('Notiz').find().toArray(function(err, queryNotiz) {
@@ -946,12 +955,12 @@ server.post('/rettungskraft', urlencodedParser, function(req, res){
 						db.collection('Fuehrungskraft').find({cookie: req.session.user}).toArray(function(err, queryFuehrungskraft) {
 							if (err) throw err;
 							
-							db.collection('Rettungskraft').find({rettungsmittel: false}).toArray(function(err, queryRettungskraefte) {
+							db.collection('Rettungskraft').find({rettungsmittel: false, aktiv: true}).toArray(function(err, queryRettungskraefte) {
 								if (err) throw err;
 								
-								db.collection('Rettungsmittel').find().toArray(function(err, queryRettungsmittel) {
+								db.collection('Rettungsmittel').find({aktiv: true}).toArray(function(err, queryRettungsmittel) {
 									
-									db.collection('Posten').find().toArray(function(err, queryPosten) {
+									db.collection('Posten').find({aktiv: true}).toArray(function(err, queryPosten) {
 										if (err) throw err;
 										
 										db.collection('Notiz').find().toArray(function(err, queryNotiz) {
@@ -1035,7 +1044,9 @@ server.post('/posten', urlencodedParser, function(req, res){
 				db.collection('Rettungskraft').find({funkruf: {$in: queryArray}}).toArray(function(err, queryRettungskraefte1) {
 					
 					posten_data = {funkruf: req.body.posten_funkruf,
-								   kraefte: queryRettungskraefte1};
+								   kraefte: queryRettungskraefte1,
+								   aktiv: true,
+								   start: moment().format('YYYYMMDDHHmmss')};
 					
 					db.collection('Posten').insertOne(posten_data, function(err, inserted) {
 						if (err) throw err;
@@ -1046,13 +1057,13 @@ server.post('/posten', urlencodedParser, function(req, res){
 							db.collection('Fuehrungskraft').find({cookie: req.session.user}).toArray(function(err, queryFuehrungskraft) {
 								if (err) throw err;
 								
-								db.collection('Rettungskraft').find({rettungsmittel: false}).toArray(function(err, queryRettungskraefte2) {
+								db.collection('Rettungskraft').find({rettungsmittel: false, aktiv: true}).toArray(function(err, queryRettungskraefte2) {
 									if (err) throw err;
 									
-									db.collection('Rettungsmittel').find().toArray(function(err, queryRettungsmittel) {
+									db.collection('Rettungsmittel').find({aktiv: true}).toArray(function(err, queryRettungsmittel) {
 										if (err) throw err;
 										
-										db.collection('Posten').find().toArray(function(err, queryPosten) {
+										db.collection('Posten').find({aktiv: true}).toArray(function(err, queryPosten) {
 											if (err) throw err;
 											
 											db.collection('Notiz').find().toArray(function(err, queryNotiz) {
@@ -1131,12 +1142,12 @@ server.post('/posten', urlencodedParser, function(req, res){
 									db.collection('Fuehrungskraft').find({cookie: req.session.user}).toArray(function(err, queryFuehrungskraft) {
 										if (err) throw err;
 										
-										db.collection('Rettungskraft').find({rettungsmittel: false}).toArray(function(err, queryRettungskraefte2) {
+										db.collection('Rettungskraft').find({rettungsmittel: false, aktiv: true}).toArray(function(err, queryRettungskraefte2) {
 											if (err) throw err;
 											
-											db.collection('Rettungsmittel').find().toArray(function(err, queryRettungsmittel) {
+											db.collection('Rettungsmittel').find({aktiv: true}).toArray(function(err, queryRettungsmittel) {
 												
-												db.collection('Posten').find().toArray(function(err, queryPosten2) {
+												db.collection('Posten').find({aktiv: true}).toArray(function(err, queryPosten2) {
 													if (err) throw err;
 													
 													db.collection('Notiz').find().toArray(function(err, queryNotiz) {
@@ -1215,7 +1226,9 @@ server.post('/rettungsmittel', urlencodedParser, function(req, res){
 					
 					rettungsmittel_data = {art: req.body.rettungsmittel_art,
 									funkruf: req.body.rettungsmittel_funkruf,
-									kraefte: queryRettungskraefte1};
+									kraefte: queryRettungskraefte1,
+									aktiv: true,
+								    start: moment().format('YYYYMMDDHHmmss')};
 					
 					db.collection('Rettungsmittel').insertOne(rettungsmittel_data, function(err, inserted) {
 						if (err) throw err;
@@ -1226,12 +1239,12 @@ server.post('/rettungsmittel', urlencodedParser, function(req, res){
 							db.collection('Fuehrungskraft').find({cookie: req.session.user}).toArray(function(err, queryFuehrungskraft) {
 								if (err) throw err;
 								
-								db.collection('Rettungskraft').find({rettungsmittel: false}).toArray(function(err, queryRettungskrafte2) {
+								db.collection('Rettungskraft').find({rettungsmittel: false, aktiv: true}).toArray(function(err, queryRettungskrafte2) {
 									if (err) throw err;
 									
-									db.collection('Rettungsmittel').find().toArray(function(err, queryRettungsmittel) {
+									db.collection('Rettungsmittel').find({aktiv: true}).toArray(function(err, queryRettungsmittel) {
 										
-										db.collection('Posten').find().toArray(function(err, queryPosten) {
+										db.collection('Posten').find({aktiv: true}).toArray(function(err, queryPosten) {
 											if (err) throw err;
 											
 											db.collection('Notiz').find().toArray(function(err, queryNotiz) {
@@ -1309,12 +1322,12 @@ server.post('/rettungsmittel', urlencodedParser, function(req, res){
 									db.collection('Fuehrungskraft').find({cookie: req.session.user}).toArray(function(err, queryFuehrungskraft) {
 										if (err) throw err;
 										
-										db.collection('Rettungskraft').find({rettungsmittel: false}).toArray(function(err, queryRettungskraefte2) {
+										db.collection('Rettungskraft').find({rettungsmittel: false, aktiv: true}).toArray(function(err, queryRettungskraefte2) {
 											if (err) throw err;
 											
-											db.collection('Rettungsmittel').find().toArray(function(err, queryRettungsmittel) {
+											db.collection('Rettungsmittel').find({aktiv: true}).toArray(function(err, queryRettungsmittel) {
 												
-												db.collection('Posten').find().toArray(function(err, queryPosten) {
+												db.collection('Posten').find({aktiv: true}).toArray(function(err, queryPosten) {
 													if (err) throw err;
 													
 													db.collection('Notiz').find().toArray(function(err, queryNotiz) {
@@ -1383,7 +1396,7 @@ server.post('/rettungskraftDel', urlencodedParser, function(req, res){
 			db.collection('Rettungskraft').find({_id: ObjectID(req.body.rettungskraft_id)}).toArray(function(err, queryRettungskraefte1) {
 				if (err) throw err;
 			
-				db.collection('Rettungskraft').deleteOne({_id: ObjectID(req.body.rettungskraft_id)}, function(err, deleted) {
+				db.collection('Rettungskraft').findOneAndUpdate({_id: ObjectID(req.body.rettungskraft_id)}, {$set: {aktiv: false, end: moment().format('YYYYMMDDHHmmss')}}, function(err, deleted) {
 					if (err) throw err;
 					
 					db.collection('Fuehrungskraft').find({cookie: req.session.user}).toArray(function(err, queryFuehrungskraft) {
@@ -1392,12 +1405,12 @@ server.post('/rettungskraftDel', urlencodedParser, function(req, res){
 						db.collection('Einsatz').find().sort({timestamp: 1}).toArray(function(err, queryEinsatz) {
 							if (err) throw err;
 							
-							db.collection('Rettungskraft').find({rettungsmittel: false}).toArray(function(err, queryRettungskrafte2) {
+							db.collection('Rettungskraft').find({rettungsmittel: false, aktiv: true}).toArray(function(err, queryRettungskrafte2) {
 								if (err) throw err;
 								
-								db.collection('Rettungsmittel').find().toArray(function(err, queryRettungsmittel) {
+								db.collection('Rettungsmittel').find({aktiv: true}).toArray(function(err, queryRettungsmittel) {
 									
-									db.collection('Posten').find().toArray(function(err, queryPosten) {
+									db.collection('Posten').find({aktiv: true}).toArray(function(err, queryPosten) {
 										if (err) throw err;
 										
 										db.collection('Notiz').find().toArray(function(err, queryNotiz) {
@@ -1462,7 +1475,7 @@ server.post('/postenDel', urlencodedParser, function(req, res){
 				
 				db.collection('Rettungskraft').updateMany({funkruf: {$in: queryPosten1[0].kraefte.map(x => x.funkruf)}}, {$set: {rettungsmittel: false, position: queryPosten1[0].position}});   
 			
-				db.collection('Posten').deleteOne({_id: ObjectID(req.body.posten_id)}, function(err, deleted) {
+				db.collection('Posten').findOneAndUpdate({_id: ObjectID(req.body.posten_id)}, {$set: {aktiv: false, end: moment().format('YYYYMMDDHHmmss')}}, function(err, deleted) {
 					if (err) throw err;
 					
 					db.collection('Fuehrungskraft').find({cookie: req.session.user}).toArray(function(err, queryFuehrungskraft) {
@@ -1471,12 +1484,12 @@ server.post('/postenDel', urlencodedParser, function(req, res){
 						db.collection('Einsatz').find().sort({timestamp: 1}).toArray(function(err, queryEinsatz) {
 							if (err) throw err;
 							
-							db.collection('Rettungskraft').find({rettungsmittel: false}).toArray(function(err, queryRettungskrafte) {
+							db.collection('Rettungskraft').find({rettungsmittel: false, aktiv: true}).toArray(function(err, queryRettungskrafte) {
 								if (err) throw err;
 								
-								db.collection('Rettungsmittel').find().toArray(function(err, queryRettungsmittel) {
+								db.collection('Rettungsmittel').find({aktiv: true}).toArray(function(err, queryRettungsmittel) {
 									
-									db.collection('Posten').find().toArray(function(err, queryPosten2) {
+									db.collection('Posten').find({aktiv: true}).toArray(function(err, queryPosten2) {
 										if (err) throw err;
 										
 										db.collection('Notiz').find().toArray(function(err, queryNotiz) {
@@ -1541,7 +1554,7 @@ server.post('/rettungsmittelDel', urlencodedParser, function(req, res){
 				
 				db.collection('Rettungskraft').updateMany({funkruf: {$in: queryRettungsmittel1[0].kraefte.map(x => x.funkruf)}}, {$set: {rettungsmittel: false,position: queryRettungsmittel1[0].position}});   
 			
-				db.collection('Rettungsmittel').deleteOne({_id: ObjectID(req.body.rettungsmittel_id)}, function(err, deleted) {
+				db.collection('Rettungsmittel').findOneAndUpdate({_id: ObjectID(req.body.rettungsmittel_id)}, {$set: {aktiv: false, end: moment().format('YYYYMMDDHHmmss')}}, function(err, deleted) {
 					if (err) throw err;
 					
 					db.collection('Fuehrungskraft').find({cookie: req.session.user}).toArray(function(err, queryFuehrungskraft) {
@@ -1550,12 +1563,12 @@ server.post('/rettungsmittelDel', urlencodedParser, function(req, res){
 						db.collection('Einsatz').find().sort({timestamp: 1}).toArray(function(err, queryEinsatz) {
 							if (err) throw err;
 							
-							db.collection('Rettungskraft').find({rettungsmittel: false}).toArray(function(err, queryRettungskrafte) {
+							db.collection('Rettungskraft').find({rettungsmittel: false, aktiv: true}).toArray(function(err, queryRettungskrafte) {
 								if (err) throw err;
 								
-								db.collection('Rettungsmittel').find().toArray(function(err, queryRettungsmittel) {
+								db.collection('Rettungsmittel').find({aktiv: true}).toArray(function(err, queryRettungsmittel) {
 									
-									db.collection('Posten').find().toArray(function(err, queryPosten2) {
+									db.collection('Posten').find({aktiv: true}).toArray(function(err, queryPosten2) {
 										if (err) throw err;
 										
 										db.collection('Notiz').find().toArray(function(err, queryNotiz) {
@@ -1708,12 +1721,12 @@ server.post('/notizNew', urlencodedParser, function(req, res){
 					db.collection('Einsatz').find().sort({timestamp: 1}).toArray(function(err, queryEinsatz) {
 						if (err) throw err;
 						
-						db.collection('Rettungskraft').find({rettungsmittel: false}).toArray(function(err, queryRettungskrafte) {
+						db.collection('Rettungskraft').find({rettungsmittel: false, aktiv: true}).toArray(function(err, queryRettungskrafte) {
 							if (err) throw err;
 							
-							db.collection('Rettungsmittel').find().toArray(function(err, queryRettungsmittel) {
+							db.collection('Rettungsmittel').find({aktiv: true}).toArray(function(err, queryRettungsmittel) {
 								
-								db.collection('Posten').find().toArray(function(err, queryPosten) {
+								db.collection('Posten').find({aktiv: true}).toArray(function(err, queryPosten) {
 									if (err) throw err;
 									
 									db.collection('Notiz').find().toArray(function(err, queryNotiz) {
@@ -1776,12 +1789,12 @@ server.get('/mainpage', function(req, res){
 				db.collection('Einsatz').find().sort({timestamp: 1}).toArray(function(err, queryEinsatz) {
 					if (err) throw err;
 					
-					db.collection('Rettungskraft').find({rettungsmittel: false}).toArray(function(err, queryRettungskrafte) {
+					db.collection('Rettungskraft').find({rettungsmittel: false, aktiv: true}).toArray(function(err, queryRettungskraefte) {
 						if (err) throw err;
 						
-						db.collection('Rettungsmittel').find().toArray(function(err, queryRettungsmittel) {
+						db.collection('Rettungsmittel').find({aktiv: true}).toArray(function(err, queryRettungsmittel) {
 							
-							db.collection('Posten').find().toArray(function(err, queryPosten) {
+							db.collection('Posten').find({aktiv: true}).toArray(function(err, queryPosten) {
 								if (err) throw err;
 								
 								db.collection('Notiz').find().toArray(function(err, queryNotiz) {
@@ -1792,7 +1805,7 @@ server.get('/mainpage', function(req, res){
 									
 											res.render('mainpage', {title: "Hauptseite - Digitaler Führungsassistent",
 															einsatz: queryEinsatz,
-															rettungskraft: queryRettungskrafte,
+															rettungskraft: queryRettungskraefte,
 															rettungsmittel: queryRettungsmittel,
 															posten: queryPosten,
 															notiz: queryNotiz,
@@ -1924,12 +1937,70 @@ server.get('/gesamtdoku', function(req, res){
 					if (err) throw err;
 		});
 		
+		db.collection('Fuehrungskraft').findOneAndUpdate({}, {$set: {end: moment().format('YYYYMMDDHHmmss')}}, function(err, updated) {
+					if (err) throw err;
+		});
+		
 		db.collection('Historie').find().sort({timestamp: 1}).toArray(function(err, queryHistorie) {
 			if (err) throw err;
+			
+			db.collection('Rettungskraft').find().toArray(function(err, queryRettungskraefte) {
+				if (err) throw err;
+				
+				db.collection('Rettungsmittel').find().toArray(function(err, queryRettungsmittel) {
+					if (err) throw err;
+					
+					db.collection('Posten').find().toArray(function(err, queryPosten) {
+						if (err) throw err;
+						
+						db.collection('Kerndaten').find().toArray(function(err, queryKerndaten) {
+							if (err) throw err;
+							
+							db.collection('Fuehrungskraft').find({aktiv: true}).toArray(function(err, queryFuehrungskraft) {
+								if (err) throw err;
 		
-			res.render('gesamtdoku', {title: "automatische Gesamtdoku - Digitaler Führungsassistent",
-									  historie: queryHistorie});
-			dbClient.close();
+								res.render('gesamtdoku', {title: "automatische Gesamtdoku - Digitaler Führungsassistent",
+														  kerndaten: queryKerndaten,
+														  historie: queryHistorie,
+														  rettungsmittel: queryRettungsmittel,
+														  posten: queryPosten,
+														  rettungskraft: queryRettungskraefte,
+														  fuehrungskraft: queryFuehrungskraft});
+								/*
+								db.collection('Kerndaten').drop(function(err, delAck) {
+									if (err) throw err;
+								});
+								db.collection('Rettungskraft').drop(function(err, delAck) {
+									if (err) throw err;
+								});
+								db.collection('Posten').drop(function(err, delAck) {
+									if (err) throw err;
+								});
+								db.collection('Rettungsmittel').drop(function(err, delAck) {
+									if (err) throw err;
+								});
+								db.collection('Einsatz').drop(function(err, delAck) {
+									if (err) throw err;
+								});
+								db.collection('Funkspruch').drop(function(err, delAck) {
+									if (err) throw err;
+								});
+								db.collection('Historie').drop(function(err, delAck) {
+									if (err) throw err;
+								});
+								db.collection('Notiz').drop(function(err, delAck) {
+									if (err) throw err;
+								});*/
+								db.collection('Fuehrungskraft').findOneAndUpdate({}, {$set: {aktiv: false, lastHistory: ""}}, function(err, updated) {
+									if (err) throw err;
+								});
+								
+								dbClient.close();
+							});
+						});
+					});
+				});
+			});
 		});
 	});
 });	

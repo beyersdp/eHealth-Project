@@ -4,10 +4,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>450</x>
-      <y>30</y>
+      <x>500</x>
+      <y>40</y>
       <w>170</w>
-      <h>180</h>
+      <h>220</h>
     </coordinates>
     <panel_attributes>lt=.
 Collection: Rettungskraft
@@ -21,6 +21,9 @@ Collection: Rettungskraft
 - tel: String
 - position: String
 - rettungsmittel: Boolean
+- aktiv: Boolean
+- start: String
+- end: String
 
 </panel_attributes>
     <additional_attributes/>
@@ -28,10 +31,10 @@ Collection: Rettungskraft
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>200</x>
-      <y>30</y>
+      <x>250</x>
+      <y>40</y>
       <w>190</w>
-      <h>210</h>
+      <h>270</h>
     </coordinates>
     <panel_attributes>lt=.
 Collection: Fuehrungskraft
@@ -47,6 +50,10 @@ Collection: Fuehrungskraft
 - passwort: String
 - ist_EL: Boolean
 - set_EL: Boolean
+- lastHistory: String
+- aktiv: Boolean
+- start: String
+- end: String
 
 </panel_attributes>
     <additional_attributes/>
@@ -54,54 +61,54 @@ Collection: Fuehrungskraft
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>210</x>
+      <x>260</x>
+      <y>20</y>
+      <w>210</w>
+      <h>300</h>
+    </coordinates>
+    <panel_attributes>lt=.</panel_attributes>
+    <additional_attributes>10.0;20.0;10.0;10.0;190.0;10.0;190.0;280.0;180.0;280.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>270</x>
       <y>10</y>
       <w>210</w>
-      <h>240</h>
+      <h>300</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
-    <additional_attributes>10.0;20.0;10.0;10.0;190.0;10.0;190.0;220.0;180.0;220.0</additional_attributes>
+    <additional_attributes>10.0;20.0;10.0;10.0;190.0;10.0;190.0;280.0;180.0;280.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>220</x>
-      <y>0</y>
-      <w>210</w>
-      <h>240</h>
+      <x>500</x>
+      <y>20</y>
+      <w>200</w>
+      <h>250</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
-    <additional_attributes>10.0;20.0;10.0;10.0;190.0;10.0;190.0;220.0;180.0;220.0</additional_attributes>
+    <additional_attributes>10.0;20.0;10.0;10.0;180.0;10.0;180.0;230.0;170.0;230.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>450</x>
+      <x>510</x>
       <y>10</y>
       <w>200</w>
-      <h>210</h>
+      <h>250</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
-    <additional_attributes>10.0;20.0;10.0;10.0;180.0;10.0;180.0;190.0;170.0;190.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>460</x>
-      <y>0</y>
-      <w>200</w>
-      <h>210</h>
-    </coordinates>
-    <panel_attributes>lt=.</panel_attributes>
-    <additional_attributes>10.0;20.0;10.0;10.0;180.0;10.0;180.0;190.0;170.0;190.0</additional_attributes>
+    <additional_attributes>10.0;20.0;10.0;10.0;180.0;10.0;180.0;230.0;170.0;230.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>680</x>
-      <y>70</y>
+      <x>730</x>
+      <y>40</y>
       <w>170</w>
-      <h>110</h>
+      <h>160</h>
     </coordinates>
     <panel_attributes>lt=.
 Collection: Rettungsmittel
@@ -111,6 +118,9 @@ Collection: Rettungsmittel
 - funkruf: String
 - position: String
 - kraefte: Object
+- aktiv: Boolean
+- start: String
+- end: String
 
 </panel_attributes>
     <additional_attributes/>
@@ -118,30 +128,30 @@ Collection: Rettungsmittel
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>680</x>
-      <y>50</y>
+      <x>730</x>
+      <y>20</y>
       <w>200</w>
-      <h>140</h>
+      <h>190</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
-    <additional_attributes>10.0;20.0;10.0;10.0;180.0;10.0;180.0;120.0;170.0;120.0</additional_attributes>
+    <additional_attributes>10.0;20.0;10.0;10.0;180.0;10.0;180.0;170.0;170.0;170.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>690</x>
-      <y>40</y>
+      <x>740</x>
+      <y>10</y>
       <w>200</w>
-      <h>140</h>
+      <h>190</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
-    <additional_attributes>10.0;20.0;10.0;10.0;180.0;10.0;180.0;120.0;170.0;120.0</additional_attributes>
+    <additional_attributes>10.0;20.0;10.0;10.0;180.0;10.0;180.0;170.0;170.0;170.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>200</x>
-      <y>270</y>
+      <x>250</x>
+      <y>350</y>
       <w>150</w>
       <h>70</h>
     </coordinates>
@@ -157,8 +167,8 @@ Collection: HiOrgKey
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>400</x>
-      <y>560</y>
+      <x>710</x>
+      <y>590</y>
       <w>150</w>
       <h>70</h>
     </coordinates>
@@ -174,10 +184,10 @@ Collection: Notiz
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>200</x>
-      <y>350</y>
+      <x>250</x>
+      <y>470</y>
       <w>150</w>
-      <h>160</h>
+      <h>190</h>
     </coordinates>
     <panel_attributes>lt=.
 Collection: Kerndaten
@@ -187,9 +197,11 @@ Collection: Kerndaten
 - strasse: String
 - plz: String
 - ort: String
-- text: String
+- lage: String
 - risiko: String
 - datum: String
+- start: String
+- end: String
 
 </panel_attributes>
     <additional_attributes/>
@@ -197,8 +209,8 @@ Collection: Kerndaten
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>400</x>
-      <y>260</y>
+      <x>710</x>
+      <y>430</y>
       <w>170</w>
       <h>150</h>
     </coordinates>
@@ -219,8 +231,8 @@ Collection: Funkspruch
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>400</x>
-      <y>240</y>
+      <x>710</x>
+      <y>410</y>
       <w>200</w>
       <h>180</h>
     </coordinates>
@@ -230,8 +242,8 @@ Collection: Funkspruch
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>410</x>
-      <y>230</y>
+      <x>720</x>
+      <y>400</y>
       <w>200</w>
       <h>180</h>
     </coordinates>
@@ -241,8 +253,8 @@ Collection: Funkspruch
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>640</x>
-      <y>370</y>
+      <x>480</x>
+      <y>300</y>
       <w>170</w>
       <h>220</h>
     </coordinates>
@@ -268,8 +280,8 @@ Collection: Einsatz
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>640</x>
-      <y>350</y>
+      <x>480</x>
+      <y>280</y>
       <w>200</w>
       <h>250</h>
     </coordinates>
@@ -279,8 +291,8 @@ Collection: Einsatz
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>650</x>
-      <y>340</y>
+      <x>490</x>
+      <y>270</y>
       <w>200</w>
       <h>250</h>
     </coordinates>
@@ -290,8 +302,8 @@ Collection: Einsatz
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>400</x>
-      <y>460</y>
+      <x>450</x>
+      <y>570</y>
       <w>150</w>
       <h>80</h>
     </coordinates>
@@ -308,8 +320,8 @@ Collection: Historie
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>400</x>
-      <y>440</y>
+      <x>450</x>
+      <y>550</y>
       <w>180</w>
       <h>110</h>
     </coordinates>
@@ -319,8 +331,8 @@ Collection: Historie
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>410</x>
-      <y>430</y>
+      <x>460</x>
+      <y>540</y>
       <w>180</w>
       <h>110</h>
     </coordinates>
@@ -330,10 +342,10 @@ Collection: Historie
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>670</x>
-      <y>220</y>
+      <x>720</x>
+      <y>250</y>
       <w>170</w>
-      <h>100</h>
+      <h>140</h>
     </coordinates>
     <panel_attributes>lt=.
 Collection: Posten
@@ -342,49 +354,33 @@ Collection: Posten
 - funkruf: String
 - position: String
 - kraefte: Object
-
-</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>670</x>
-      <y>200</y>
-      <w>200</w>
-      <h>130</h>
-    </coordinates>
-    <panel_attributes>lt=.</panel_attributes>
-    <additional_attributes>10.0;20.0;10.0;10.0;180.0;10.0;180.0;110.0;170.0;110.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>680</x>
-      <y>190</y>
-      <w>200</w>
-      <h>130</h>
-    </coordinates>
-    <panel_attributes>lt=.</panel_attributes>
-    <additional_attributes>10.0;20.0;10.0;10.0;180.0;10.0;180.0;110.0;170.0;110.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>200</x>
-      <y>530</y>
-      <w>150</w>
-      <h>100</h>
-    </coordinates>
-    <panel_attributes>lt=.
-Collection: Historie
---
-- _id: MongoDB-intern
-- titel: StartEnd
+- aktiv: Boolean
 - start: String
 - end: String
 
 </panel_attributes>
     <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>720</x>
+      <y>230</y>
+      <w>200</w>
+      <h>170</h>
+    </coordinates>
+    <panel_attributes>lt=.</panel_attributes>
+    <additional_attributes>10.0;20.0;10.0;10.0;180.0;10.0;180.0;150.0;170.0;150.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>730</x>
+      <y>220</y>
+      <w>200</w>
+      <h>170</h>
+    </coordinates>
+    <panel_attributes>lt=.</panel_attributes>
+    <additional_attributes>10.0;20.0;10.0;10.0;180.0;10.0;180.0;150.0;170.0;150.0</additional_attributes>
   </element>
 </diagram>
