@@ -28,3 +28,24 @@ function updateEinsatz(id) {
 	}
 	
 }
+
+// Einsaetze je nach Status entsprechend visualisieren
+function showEinsatzStatus() {
+	
+	var einsaetze = document.getElementsByClassName("einsatz");
+	console.log(einsaetze);
+	
+	Array.prototype.forEach.call(einsaetze, function(einsatz) {
+		
+		if (einsatz.childNodes[5].innerText == "Eingegangen" || einsatz.childNodes[5].innerText == "Kräfte alarmiert") {
+			einsatz.childNodes[1].style.cssText = "height:30px; width:75%; font-size:12px; border-left: 6px solid #e60000;";
+		}
+		if (einsatz.childNodes[5].innerText == "Auftrag übernommen" || einsatz.childNodes[5].innerText == "An Einsatzstelle angekommen" || einsatz.childNodes[5].innerText == "Patient/in aufgenommen") {
+			einsatz.childNodes[1].style.cssText = "height:30px; width:75%; font-size:12px; border-left: 6px solid #00cccc;";
+		}
+	});
+	
+}
+
+// Direkt startende Funktionen:
+showEinsatzStatus();

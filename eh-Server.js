@@ -591,7 +591,7 @@ server.get('/elNEW', function(req, res){
 /* /einsatz - Empfangen eines POST-Requests ueber Port 8080  */
 server.post('/einsatz', urlencodedParser, function(req, res){
 	console.log("L2-Info: POST-REQUEST for /einsatz");
-	console.log(req.body); //DEBUG Kontrollausgabe
+	//console.log(req.body); //DEBUG Kontrollausgabe
 	
 	if(req.session && req.session.user) { 
 		console.log("L1-Info: Cookie true");
@@ -2098,7 +2098,7 @@ server.get('/gesamtdoku', function(req, res){
 							db.collection('Fuehrungskraft').find({aktiv: true}).toArray(function(err, queryFuehrungskraft) {
 								if (err) throw err;
 		
-								res.render('gesamtdoku', {title: "automatische Gesamtdoku - Digitaler Führungsassistent",
+								res.render('gesamtdoku', {title: "Gesamtdoku - Digitaler Führungsassistent",
 														  kerndaten: queryKerndaten,
 														  historie: queryHistorie,
 														  rettungsmittel: queryRettungsmittel,
