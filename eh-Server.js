@@ -591,7 +591,7 @@ server.get('/elNEW', function(req, res){
 /* /einsatz - Empfangen eines POST-Requests ueber Port 8080  */
 server.post('/einsatz', urlencodedParser, function(req, res){
 	console.log("L2-Info: POST-REQUEST for /einsatz");
-	//console.log(req.body); //DEBUG Kontrollausgabe
+	console.log(req.body); //DEBUG Kontrollausgabe
 	
 	if(req.session && req.session.user) { 
 		console.log("L1-Info: Cookie true");
@@ -613,7 +613,7 @@ server.post('/einsatz', urlencodedParser, function(req, res){
 						var queryArray = req.body.einsatz_kraefte.split();
 					}
 					
-					db.collection('Rettungskraft').find({funkruf: {$in: queryArray}}).toArray(function(err, queryRettungskrafte1) {
+					db.collection('Rettungskraft').find({funkruf: {$in: queryArray}}).toArray(function(err, queryRettungskraefte1) {
 						if (err) throw err;
 						
 						db.collection('Posten').find({funkruf: {$in: queryArray}}).toArray(function(err, queryPosten1) {
@@ -628,7 +628,7 @@ server.post('/einsatz', urlencodedParser, function(req, res){
 												status: req.body.einsatz_status,
 												verbleibPatient: req.body.einsatz_verbleibPatient,
 												timestamp: moment().format('YYYYMMDDHHmmss'),
-												rettungskraefte: queryRettungskrafte1,
+												rettungskraefte: queryRettungskraefte1,
 												posten: queryPosten1,
 												rettungsmittel: queryRettungsmittel1,
 												fuehrungskraft: queryFuehrungskraft[0],
@@ -640,7 +640,7 @@ server.post('/einsatz', urlencodedParser, function(req, res){
 									db.collection('Einsatz').find().sort({timestamp: 1}).toArray(function(err, queryEinsatz) {
 										if (err) throw err;
 										
-										db.collection('Rettungskraft').find({rettungsmittel: false, aktiv: true}).toArray(function(err, queryRettungskrafte2) {
+										db.collection('Rettungskraft').find({rettungsmittel: false, aktiv: true}).toArray(function(err, queryRettungskraefte2) {
 											if (err) throw err;
 											
 											db.collection('Rettungsmittel').find({aktiv: true}).toArray(function(err, queryRettungsmittel2) {
@@ -657,12 +657,12 @@ server.post('/einsatz', urlencodedParser, function(req, res){
 													
 																addHistory({ereignis: "Notfalleinsatz", sender: req.body.einsatz_sender, meldebild: req.body.einsatz_meldebild,
 																			verbleibPatient: req.body.einsatz_verbleibPatient, status: req.body.einsatz_status, text: req.body.einsatz_text,
-																			rettungskraefte: queryRettungskrafte1, posten: queryPosten1, rettungsmittel: queryRettungsmittel1,
-																			fuehrungskraft_nachname: queryFuehrungskraft[0].nachname, fuehrungskraft_cookie: req.session.user})
+																			rettungskraefte: queryRettungskraefte1, posten: queryPosten1, rettungsmittel: queryRettungsmittel1,
+																			fuehrungskraft_nachname: queryFuehrungskraft[0].nachname, fuehrungskraft_cookie: req.session.user});
 																
 																res.render('mainpage', {title: "Einsatz - Digitaler Führungsassistent",
 																						einsatz: queryEinsatz,
-																						rettungskraft: queryRettungskrafte2,
+																						rettungskraft: queryRettungskraefte2,
 																						rettungsmittel: queryRettungsmittel2,
 																						posten: queryPosten2,
 																						notiz: queryNotiz,
@@ -686,8 +686,6 @@ server.post('/einsatz', urlencodedParser, function(req, res){
 							});
 						});
 					});
-					
-					db.collection('Rettungskraft').updateMany({funkruf: {$in: queryArray}}, {$set: {rettungsmittel: true}});
 				});
 			});
 		}
@@ -698,35 +696,88 @@ server.post('/einsatz', urlencodedParser, function(req, res){
 				if (err) throw err;
 				var db = dbClient.db('DigitalerFuehrungsassistent');
 				console.log("L2-Info: DB-Connection true II");
-		
-				db.collection('Fuehrungskraft').find({cookie: req.session.user}).toArray(function(err, queryFuehrungskraft) {
+				
+				if (Array.isArray(req.body.einsatz_kraefte)) {
+					var queryArray = req.body.einsatz_kraefte;
+				}
+				else {
+					var queryArray = req.body.einsatz_kraefte.split();
+				}
+				
+				console.log(queryArray);
+				
+				db.collection('Rettungskraft').find({funkruf: {$in: queryArray}}).toArray(function(err, queryRettungskraefte1) {
 					if (err) throw err;
-			
-					db.collection('Einsatz').findOneAndUpdate({_id: ObjectID(req.body.einsatz_id)}, {$set: {sender: req.body.einsatz_sender,
-																						position: req.body.einsatz_position,
-																						meldebild: req.body.einsatz_meldebild,
-																						text: req.body.einsatz_text,
-																						status: req.body.einsatz_status,
-																						fuehrungskraft: queryFuehrungskraft[0]}}, function(err, updated){
-																							
-						addHistory({ereignis: "Notfalleinsatz", sender: req.body.einsatz_sender, meldebild: req.body.einsatz_meldebild,
-																anzVerletzte: req.body.einsatz_anzVerletzte, status: req.body.einsatz_status, text: req.body.einsatz_text,
-																rettungskraefte: queryRettungskrafte1, posten: queryPosten1, rettungsmittel: queryRettungsmittel1,
-																fuehrungskraft_nachname: queryFuehrungskraft[0].nachname, fuehrungskraft_cookie: req.session.user})
-
-						res.render('html_form_dummy', {title: "Einsatz - Digitaler Führungsassistent",
-													   einsatz_id: req.body.einsatz_id,
-													   einsatz_sender: req.body.einsatz_sender,
-													   einsatz_position: req.body.einsatz_position,
-													   einsatz_meldebild: req.body.einsatz_meldebild,
-													   einsatz_text: req.body.einsatz_text,
-													   einsatz_status: req.body.einsatz_status,
-													   einsatz_timestamp: moment(updated.value.timestamp, 'YYYYMMDDHHmmss').format('HH:mm:ss'),
-													   einsatz_fuehrungskraft: queryFuehrungskraft[0].nachname});
-						dbClient.close();
+					
+					db.collection('Posten').find({funkruf: {$in: queryArray}}).toArray(function(err, queryPosten1) {
+						if (err) throw err;
+					
+						db.collection('Rettungsmittel').find({funkruf: {$in: queryArray}}).toArray(function(err, queryRettungsmittel1) {
+							if (err) throw err;
+							
+							db.collection('Einsatz').findOneAndUpdate({_id: ObjectID(req.body.einsatz_id)}, {$set: {sender: req.body.einsatz_sender,
+																												    meldebild: req.body.einsatz_meldebild,
+																												    text: req.body.einsatz_text,
+																												    status: req.body.einsatz_status,
+																												    verbleibPatient: req.body.einsatz_verbleibPatient,
+																												    rettungskraefte: queryRettungskraefte1,
+																												    posten: queryPosten1,
+																												    rettungsmittel: queryRettungsmittel1}},
+																												    function(err, updated) {
+																														
+								db.collection('Einsatz').find().sort({timestamp: 1}).toArray(function(err, queryEinsatz) {
+									if (err) throw err;
+									
+									db.collection('Fuehrungskraft').find({cookie: req.session.user}).toArray(function(err, queryFuehrungskraft) {
+										if (err) throw err;
+										
+										db.collection('Rettungskraft').find({rettungsmittel: false, aktiv: true}).toArray(function(err, queryRettungskraefte2) {
+											if (err) throw err;
+											
+											db.collection('Rettungsmittel').find({aktiv: true}).toArray(function(err, queryRettungsmittel) {
+												
+												db.collection('Posten').find({aktiv: true}).toArray(function(err, queryPosten2) {
+													if (err) throw err;
+													
+													db.collection('Notiz').find().toArray(function(err, queryNotiz) {
+														
+														db.collection('Funkspruch').find().sort({timestamp: 1}).toArray(function(err, queryFunkspruch) {
+															
+															db.collection('Kerndaten').find().toArray(function(err, queryKerndaten) {
+													
+																addHistory({ereignis: "Notfalleinsatz", sender: req.body.einsatz_sender, meldebild: req.body.einsatz_meldebild,
+																			verbleibPatient: req.body.einsatz_verbleibPatient, status: req.body.einsatz_status, text: req.body.einsatz_text,
+																			rettungskraefte: queryRettungskraefte1, posten: queryPosten1, rettungsmittel: queryRettungsmittel1,
+																			fuehrungskraft_nachname: queryFuehrungskraft[0].nachname, fuehrungskraft_cookie: req.session.user});
+																			
+																res.render('mainpage', {title: "Hauptseite - Digitaler Führungsassistent",
+																						einsatz: queryEinsatz,
+																						rettungskraft: queryRettungskraefte2,
+																						rettungsmittel: queryRettungsmittel,
+																						posten: queryPosten2,
+																						notiz: queryNotiz,
+																						funkspruch: queryFunkspruch,
+																						kerndaten: queryKerndaten, 
+																						fuehrungskraft_nachname: queryFuehrungskraft[0].nachname,
+																						fuehrungskraft_quali: queryFuehrungskraft[0].quali,
+																						fuehrungskraft_mapstate: queryFuehrungskraft[0].position,
+																						fuehrungskraft_mapzoom: queryFuehrungskraft[0].zoom,
+																						fuehrungskraft_istEL: queryFuehrungskraft[0].ist_EL,
+																						fuehrungskraft_setEL: queryFuehrungskraft[0].set_EL});
+																dbClient.close();
+															});
+														});
+													});
+												});
+											});
+										});
+									});
+								});
+							});
+						});
 					});
 				});
-			});
+			});	
 		}
 	}
 	

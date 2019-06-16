@@ -9,10 +9,7 @@ function updateEinsatz(id) {
 	document.getElementById("einsatz_meldebild").value = einsatz.childNodes[1].innerText;
 	document.getElementById("einsatz_text").value = einsatz.childNodes[11].innerText;
 	document.getElementById("einsatz_status").value = einsatz.childNodes[5].innerText;
-	document.getElementById("einsatz_verbleibPatient").value = einsatz.childNodes[13].innerText;
-	
-	console.log(document.getElementById("einsatz_verbleibPatient"));
-	console.log(einsatz.childNodes);
+	document.getElementById("einsatz_verbleibPatient").value = einsatz.childNodes[13].innerText.slice(0,-1);
 
 	for (var i = 15; i < einsatz.childNodes.length; i+=2) {
 		
@@ -22,12 +19,12 @@ function updateEinsatz(id) {
 	}
 	
 	var inputElements = document.getElementsByClassName("einsatz_kraefte");
-	console.log(inputElements);
 	var index = 15;
 	
 	for (var i = 0; i < inputElements.length; i++) {
 
-		inputElements[i].value = einsatz.childNodes[index].childNodes[1].data.slice(0,-1)
+		inputElements[i].value = einsatz.childNodes[index].childNodes[1].data.slice(0,-1);
 		index += 2;
 	}
+	
 }
