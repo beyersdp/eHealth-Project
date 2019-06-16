@@ -4,7 +4,6 @@ function updateRettungsmittel(id) {
 	document.getElementById("rettungsmittelNew_button").click();
 	
 	var rettungsmittel = document.getElementById(id);
-	console.log(rettungsmittel.childNodes);
 	
 	document.getElementById("rettungsmittel_id").value = id;
 	document.getElementById("rettungsmittel_art").value = rettungsmittel.childNodes[7].childNodes[1].data;

@@ -65,7 +65,6 @@ function updateRettungskraft(id) {
 	document.getElementById("rettungskraftNew_button").click();
 	
 	var rettungskraft = document.getElementById(id);
-	console.log(rettungskraft.childNodes);
 	
 	document.getElementById("rettungskraft_id").value = id;
 	document.getElementById("rettungskraft_vorname").value = rettungskraft.childNodes[7].childNodes[1].innerText;

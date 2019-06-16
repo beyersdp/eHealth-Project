@@ -7,8 +7,6 @@ function updatePosten(id) {
 	document.getElementById("posten_id").value = id;
 	document.getElementById("posten_funkruf").value = posten.childNodes[1].innerText;
 	
-	console.log(posten.childNodes);
-	
 	for (var i = 7; i < posten.childNodes.length; i+=2) {
 		
 		if (i != 7) {
@@ -17,7 +15,6 @@ function updatePosten(id) {
 	}
 	
 	var inputElements = document.getElementsByClassName("posten_kraefte");
-	console.log(inputElements);
 	var index = 7;
 	
 	for (var i = 0; i < inputElements.length; i++) {
