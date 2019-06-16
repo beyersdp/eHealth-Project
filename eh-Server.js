@@ -2103,7 +2103,7 @@ server.get('/resetDB', function(req, res){
 			db.collection('Notiz').deleteMany({}, function(err, delAck) {
 				if (err) throw err;
 			});
-			db.collection('Fuehrungskraft').findOneAndUpdate({}, {$set: {aktiv: false, lastHistory: ""}}, function(err, updated) {
+			db.collection('Fuehrungskraft').findOneAndUpdate({}, {$set: {aktiv: false, lastHistory: "", set_EL: false}}, function(err, updated) {
 				if (err) throw err;
 			});
 			
