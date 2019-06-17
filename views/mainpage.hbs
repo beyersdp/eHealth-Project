@@ -146,7 +146,7 @@
 				{{# each einsatz}}
 				{{# if aktiv}}
 				<div class="einsatz dragElement w3-container w3-white w3-card w3-round w3-hover-shadow" id="{{ _id }}" draggable="true">
-					<button class="w3-center w3-button w3-block w3-blue-grey w3-half" onclick="updateEinsatz('{{ _id }}')" style="height:30px; width:75%; font-size:12px;" title="Bearbeiten">{{ meldebild }}</button>
+					<button class="w3-center w3-button w3-block w3-blue-grey w3-half" onclick="updateEinsatz('{{ _id }}')" style="height:30px; width:75%; font-size:12px;" title="Bearbeiten" id="{{ meldebild }}">{{ meldebild }}</button>
 					<form method="POST" action="/einsatzClose" id="einsatzClose_form">
 						<input type="hidden" name="einsatz_id" value="{{ _id }}"></input>
 						<button type="submit" class="w3-center w3-button w3-block w3-blue-grey w3-quarter" style="height:30px; font-size:10px; border-left: 1px solid white;" title="Abschließen"><i class="fa fa-check-square-o"></i></button>
@@ -423,7 +423,7 @@
 											  <p style="font-size:11px"><i class="fa fa-heartbeat fa-fw w3-margin-right"></i>Verbleib des Patienten: &emsp;{{ verbleibPatient }}</p>
 											</div>
 											<div class="w3-half">
-											  <p style="font-size:11px"><i class="fa fa-map-marker fa-fw w3-margin-right"></i>Standort: &emsp;{{ position }}</p>  
+											  <p style="font-size:11px"><i class="fa fa-map-marker fa-fw w3-margin-right"></i>Standort: &emsp;({{ position.lat }}, {{ position.lng }})</p>  
 											</div>
 										</div>
 										<p style="font-size:11px"><i class="fa fa-ambulance fa-fw w3-margin-right"></i>Zugeteilte Rettungsmittel: &emsp;{{# if rettungsmittel}} {{# each rettungsmittel}} {{ funkruf }} <span class="fahrzeugArt">{{ art }}</span>{{/each}},{{/if}}</p>
@@ -779,6 +779,8 @@
 		
 		if (e.toElement.id == "map") {
 			
+			console.log(document.getElementById(e.dataTransfer.getData('text')));
+			
 			if (getMarker().includes(e.dataTransfer.getData('text'))) {
 				alert(e.dataTransfer.getData('text') + " befindet sich schon auf der Karte!");
 			}
@@ -792,9 +794,14 @@
 				else if (document.getElementById(e.dataTransfer.getData('text')).childNodes[0].className == 'fa fa-flag w3-small w3-margin-right') {
 					nextSibling = 'Posten';
 				}
+				else if (document.getElementById(e.dataTransfer.getData('text')).parentElement.className == 'einsatz dragElement w3-container w3-white w3-card w3-round w3-hover-shadow') {
+					nextSibling = 'Einsatz';
+				}
 				else {
 					nextSibling = document.getElementById(e.dataTransfer.getData('text')).nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.innerText;
 				}
+				
+				
 				
 				var coordinates = map.containerPointToLatLng(L.point([e.clientX - 250,e.clientY - 50]));
 				L.marker(coordinates, {icon: getIcon(nextSibling), draggable: true, keyboard: true, contextmenu: true, 
@@ -875,6 +882,20 @@
 				.addTo(map)
 				.bindPopup("<b>" + "{{ funkruf }}" + "</b>");
 				
+		{{/if}}
+	{{/each}}
+	{{/if}}
+	
+	{{# if einsatz }}
+	{{# each einsatz }}
+		{{# if aktiv}}
+		{{# if position}}
+			L.marker([{{ position.lat }}, {{ position.lng }}], {icon: getIcon('Einsatz'), draggable: true, keyboard: true, contextmenu: true, 
+				contextmenuItems: [{text: 'Marker entfernen', index: 0, callback: markerEntfernen},
+								   {text: 'Position setzen', index: 1, callback: positionSenden}]})
+				.addTo(map)
+				.bindPopup("<b>" + "{{ meldebild }}" + "</b>");
+		{{/if}}
 		{{/if}}
 	{{/each}}
 	{{/if}}

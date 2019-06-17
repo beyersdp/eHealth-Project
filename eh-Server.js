@@ -1822,7 +1822,7 @@ server.post('/position', urlencodedParser, function(req, res){
 					db.collection('Fuehrungskraft').find({cookie: req.session.user}).toArray(function(err, queryFuehrungskraft) {
 						if (err) throw err;
 						
-						addHistory({ereignis: "Standort aktualisiert", funkruf: updated.value.meldebild, position: validData.position, fuehrungskraft_nachname: queryFuehrungskraft[0].nachname, fuehrungskraft_cookie: req.session.user});
+						addHistory({ereignis: "Standort aktualisiert", funkruf: updated.value.meldebild + " (Einsatz)", position: validData.position, fuehrungskraft_nachname: queryFuehrungskraft[0].nachname, fuehrungskraft_cookie: req.session.user});
 						dbClient.close();
 					});
 				}

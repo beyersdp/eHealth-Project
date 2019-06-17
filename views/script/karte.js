@@ -62,6 +62,15 @@ var rettungskraftIcon  = L.icon({
 		popupAnchor:  [1, -41] // point from which the popup should open relative to the iconAnchor
 });
 
+var einsatzIcon  = L.icon({
+		iconUrl: './img/icons/marker_red.png',
+		iconSize:     [25, 41], // size of the icon
+		// den Anker in das Zentrum der angegebenen Pixelgroesse setzen:
+		iconAnchor:   [12, 41], // point of the icon which will correspond to marker's location
+		popupAnchor:  [1, -41] // point from which the popup should open relative to the iconAnchor
+});
+
+
 
 
 
@@ -91,6 +100,9 @@ function getIcon(indicator) {
 	}
 	if (indicator == "Rettungskraft") {
 		return rettungskraftIcon;
+	}
+	if (indicator == "Einsatz") {
+		return einsatzIcon;
 	}
 }
 

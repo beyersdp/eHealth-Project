@@ -33,7 +33,6 @@ function updateEinsatz(id) {
 function showEinsatzStatus() {
 	
 	var einsaetze = document.getElementsByClassName("einsatz");
-	console.log(einsaetze);
 	
 	Array.prototype.forEach.call(einsaetze, function(einsatz) {
 		
