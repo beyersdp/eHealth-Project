@@ -461,15 +461,17 @@
 										</div>
 										
 										<div class="w3-row">
-											<div class="w3-half">
+											<div class="w3-third w3-left-align">
 											  <p style="font-size:11px"><i class="fa fa-send fa-fw w3-margin-right"></i>Sender: &emsp; {{ sender }}</p>
 											</div>
-											<div class="w3-half">
+											<div class="w3-third">
 											  <p style="font-size:11px"><i class="fa fa-envelope-open fa-fw w3-margin-right"></i>Empfänger: &emsp; {{ empfaenger }} </p>
+											</div>
+											<div class="w3-third w3-right-align">
+											  <p style="font-size:11px"><i class="fa fa-envelope-open fa-fw w3-margin-right"></i>Führungskraft: &emsp; {{ fuehrungskraft.vorname }}  {{ fuehrungskraft.nachname }} ({{ fuehrungskraft.quali }})</p>
 											</div>
 										</div>
 										
-										<p style="font-size:11px"><i class="fa fa-envelope-open fa-fw w3-margin-right"></i>Führungskraft: &emsp; {{ fuehrungskraft.vorname }}  {{ fuehrungskraft.nachname }} ({{ fuehrungskraft.quali }})</p>
 										<p style="font-size:11px"><i class="fa fa-file-o fa-fw w3-margin-right"></i>Erweiterte Informationen: &emsp;<div style="font-size:11px; padding-left:30px;" >{{ text }}</div></p>
 									</div> <!-- id="{{ _id }}" -->
 										
