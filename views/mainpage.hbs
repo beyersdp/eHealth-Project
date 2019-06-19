@@ -130,6 +130,15 @@
 							</p>
 							<p style="font-size:9px"><i class="fa fa-ambulance w3-small w3-margin-right"></i>Zugeteilte Kräfte: <i class="fa fa-plus fa-fw w3-small w3-hover-blue-grey" onclick="addInputField('div_einsatzNew', 'einsatz_kraefte')" id="einsatz_addInputField"></i><i class="fa fa-minus fa-fw w3-small w3-hover-blue-grey" onclick="removeInputField('div_einsatzNew', 'einsatz_kraefte')"></i></p>
 							<p style="font-size:10px"><input class="einsatz_kraefte w3-input w3-border dropElement" type="text"  list="funkrufDataList" placeholder="Tippen oder Drag&Drop" name="einsatz_kraefte" value="" style="height:25px; margin-left:auto; margin-right:auto;"></p>
+							
+							
+							<!--Try-->
+							<!-- PROBLEM:
+							dieser Button führt zwar seine onClick-Funktion aus, allerdings submitted dies auch die FORM...
+							<p style="font-size:10px"><input class="einsatz_kraefte w3-input w3-border dropElement w3-half" type="text"  list="funkrufDataList" placeholder="Tippen oder Drag&Drop" name="einsatz_kraefte" value="" style="height:25px; width:75%; margin-left:auto; margin-right:auto;"></p>
+							<button  onclick="removeInputField('div_einsatzNew', 'einsatz_kraefte')" class="w3-center w3-button w3-block w3-blue-grey w3-quarter" style="height:25px; font-size:10px; border-left: 1px solid white;" title="Input-Feld löschen"><i class="fa fa-minus"></i></button>
+							--><!--EndTRY-->
+							
 							<div id="div_einsatzNew">
 							</div>
 							<!-- + Rettungsmittel und Position>-->
