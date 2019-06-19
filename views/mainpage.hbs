@@ -7,12 +7,12 @@
 		<!-- 1 Funktion = ueber Einstellungen sind nochmals alle moeglichen Aktionen, wie zum Beispiel das Anlegen eines Einsatzes aufgelistet und hierueber ebenfalls ausfuehrbar -->
 		<div class="w3-dropdown-hover w3-hide-small" id="navbar_element1">
 			<button class="w3-button w3-padding-larger" style="height:45px; font-size:14px;" title="Funktionalitäten"><i class="fa fa-gear fa-fw"></i>Funktionen</button>
-			<div class="w3-dropdown-content w3-card-4 w3-bar-block" style="width:250px" id="navbar_element1_dropdown">
-				<a href="javascript:void(0)"  onclick="clickOn('einsatzNew_button')"  style="font-size:12px" class="w3-bar-item w3-button"><i class="fa fa-plus w3-small w3-margin-right"> <span class="fa fa-medkit w3-right w3-large"></span></i>Notfalleinsatz anlegen</a>
-				<a href="javascript:void(0)"  onclick="clickOn('funkNew_button')" style="font-size:12px" class="w3-bar-item w3-button"><i class="fa fa-plus w3-small w3-margin-right"> <span class="fa fa-comments w3-right w3-large"></span></i>Funkspruch anlegen</a>
-				<a href="javascript:void(0)"  onclick="clickOn('rettungsmittelNew_button')" style="font-size:12px" class="w3-bar-item w3-button"><i class="fa fa-plus w3-small w3-margin-right"> <span class="fa fa-ambulance w3-right w3-large"></span></i>Rettungsfahrzeug hinzufügen</a>
-				<a href="javascript:void(0)"  onclick="clickOn('postenNew_button')" style="font-size:12px" class="w3-bar-item w3-button"><i class="fa fa-plus w3-small w3-margin-right"> <span class="fa fa-flag w3-right w3-large"></span></i> Sanitätsposten hinzufügen</a>
-				<a href="javascript:void(0)"  onclick="clickOn('rettungskraftNew_button')" style="font-size:12px" class="w3-bar-item w3-button"><i class="fa fa-plus w3-small w3-margin-right"> <span class="fa fa-user-md w3-right w3-large"></span></i> Rettungskraft hinzufügen</a>
+			<div class="w3-dropdown-content w3-card-4 w3-bar-block" style="width:270px" id="navbar_element1_dropdown">
+				<a href="javascript:void(0)"  onclick="clickOn('funkNew_button')" style="font-size:12px" class="w3-bar-item w3-button"><i class="fa fa-plus w3-small w3-margin-right"> <span class="fa fa-comments w3-right w3-large"></span></i>Funkspruch anlegen (F2)</a>
+				<a href="javascript:void(0)"  onclick="clickOn('einsatzNew_button')"  style="font-size:12px" class="w3-bar-item w3-button"><i class="fa fa-plus w3-small w3-margin-right"> <span class="fa fa-medkit w3-right w3-large"></span></i>Notfalleinsatz anlegen (F4)</a>
+				<a href="javascript:void(0)"  onclick="clickOn('rettungsmittelNew_button')" style="font-size:12px" class="w3-bar-item w3-button"><i class="fa fa-plus w3-small w3-margin-right"> <span class="fa fa-ambulance w3-right w3-large"></span></i>Rettungsfahrzeug hinzufügen (F7)</a>
+				<a href="javascript:void(0)"  onclick="clickOn('postenNew_button')" style="font-size:12px" class="w3-bar-item w3-button"><i class="fa fa-plus w3-small w3-margin-right"> <span class="fa fa-flag w3-right w3-large"></span></i> Sanitätsposten hinzufügen (F8)</a>
+				<a href="javascript:void(0)"  onclick="clickOn('rettungskraftNew_button')" style="font-size:12px" class="w3-bar-item w3-button"><i class="fa fa-plus w3-small w3-margin-right"> <span class="fa fa-user-md w3-right w3-large"></span></i> Rettungskraft hinzufügen (F9)</a>
 				<a href="/elNEW" style="font-size:12px" class="w3-bar-item w3-button"><i class="fa fa-address-card w3-large w3-margin-right"> <span class="fa fa-pencil w3-right w3-small"></span></i>Führungsposition ändern</a>
 			</div> <!-- id="navbar_element1_dropdown -->
 		</div> <!-- id="navbar_element1" -->
@@ -20,7 +20,7 @@
 		<!-- 2 Funktion = Ueber dieses Icon gelangt man zu all den wichtigen Informationen des Großeinsatzes -->
 		<div class="w3-dropdown-hover w3-hide-small" id="navbar_element2">
 			<button class="w3-button w3-padding-larger" style="height:45px; font-size:14px;" title="Details zum Gesamteinsatz"><i class="fa fa-info-circle fa-fw"></i>Informationen</button>
-			<div class="w3-dropdown-content w3-card-4 w3-bar-block" style="width:250px" id="navbar_element2_dropdown">
+			<div class="w3-dropdown-content w3-card-4 w3-bar-block" style="width:270px" id="navbar_element2_dropdown">
 				<a href="javascript:void(0)" onclick="switchInfoDisplayNavBar('kerndaten')" style="font-size:12px"class="w3-bar-item w3-button"><i class="fa fa-plus-square w3-large w3-margin-right"> <span class="fa fa-info-circle w3-right w3-small"></span></i> Steckbrief Gesamteinsatz</a>
 				<a href="javascript:void(0)" onclick="switchInfoDisplayNavBar('notiz')"  style="font-size:12px"class="w3-bar-item w3-button"><i class="fa fa-folder-open w3-large w3-margin-right"> <span class="fa fa-clipboard w3-right w3-small"></span></i>Gemeinsame Notizen</a>
 				<a href="javascript:void(0)" onclick="switchInfoDisplayNavBar('einsatzChronik')"  style="font-size:12px"class="w3-bar-item w3-button"><i class="fa fa-folder-open w3-large w3-margin-right"> <span class="fa fa-medkit w3-right w3-small"></span></i>Chronik Notfalleinsätze</a>
@@ -690,7 +690,7 @@
 			
 			<p class="w3-light-grey"><strong>Verwaltung eine(s/r) Rettungsfahrzeuges/ Sanitätspostens/ Rettungskraft/ Funkspruches/ Notfalleinsatzes </strong></p>
 			<p><b>Anlegen</b></p>
-			<p>Zu Beginn des Gesamteinsatzes sollten zuerst auf der rechten Seite (durch Anklicken der Buttons) alle Rettungsfahrzeuge, Sanitätsposten und Rettungskräfte angelegt werden. Das Anlegen kann alternativ zum Beispiel auch über den Reiter "Funktionen"->“Rettungsfahrzeug hinzufügen“ getan werden.</p>
+			<p>Zu Beginn des Gesamteinsatzes sollten zuerst auf der rechten Seite (durch Anklicken der Buttons) alle Rettungsfahrzeuge, Sanitätsposten und Rettungskräfte angelegt werden. Das Anlegen kann alternativ zum Beispiel auch über den Reiter "Funktionen"->“Rettungsfahrzeug hinzufügen (F7)“ getan werden oder auch über die jeweils angegebenen Shortcuts, wie in diesem Falle das Drücken der Taste F7, um ein Rettungsfahrzeug anzulegen.</p>
 			<p>Analog dazu können ebenfalls Funksprüche und Notfalleinsätze auf der linken Seite angelegt werden.</p>
 			<p><b>Bearbeiten & Abschließen</b></p>
 			<p>Angelegte Rettungsfahrzeuge, Sanitätsposten und Rettungskräfte sind unterhalb der Buttons auf der rechten Seite zu sehen. Notfalleinsätze hingegen erscheinen analog dazu auf der linken Seite. Durch Anklicken eines angelegten Objekts kann dieses bearbeitet werden (zum Beispiel im Falle einer Statusänderung eines Notfalleinsatzes). Die Objekte lassen sich über Drag&Drop nutzen, d.h. eine Rettungskraft kann z.B. über Drag&Drop im Anlegeprozess eines Rettungsfahrzeuges diesem zugeteilt werden.</p>
@@ -970,6 +970,30 @@
 		{{/if}}
 	{{/each}}
 	{{/if}}
+</script>
+
+<script>
+window.addEventListener("keydown", checkKeyPress, false);
+//Hinweis: diese Variante ueberschreibt nicht die vom Browser aus bestehenden Shortcuts --> daher sollten unbelegte Tasten genutzt werden
+function checkKeyPress(key){
+	if(key.keyCode == "113"){ //F2
+		//alert(" F2 "); 
+		clickOn('funkNew_button');
+	}
+	if(key.keyCode == "115"){ //F4
+		clickOn('einsatzNew_button'); 
+	}
+	if(key.keyCode == "118"){ //F7
+		clickOn('rettungsmittelNew_button');
+	}
+	if(key.keyCode == "119"){ //F8
+		clickOn('postenNew_button');
+	}
+	if(key.keyCode == "120"){ //F9
+		clickOn('rettungskraftNew_button');
+	}
+}
+
 </script>
 
 <!-- Include von externen Funktionen -->
