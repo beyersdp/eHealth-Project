@@ -10,9 +10,9 @@
 			<div class="w3-dropdown-content w3-card-4 w3-bar-block" style="width:250px" id="navbar_element1_dropdown">
 				<a href="javascript:void(0)"  onclick="clickOn('einsatzNew_button')"  style="font-size:12px" class="w3-bar-item w3-button"><i class="fa fa-plus w3-small w3-margin-right"> <span class="fa fa-medkit w3-right w3-large"></span></i>Notfalleinsatz anlegen</a>
 				<a href="javascript:void(0)"  onclick="clickOn('funkNew_button')" style="font-size:12px" class="w3-bar-item w3-button"><i class="fa fa-plus w3-small w3-margin-right"> <span class="fa fa-comments w3-right w3-large"></span></i>Funkspruch anlegen</a>
-				<a href="javascript:void(0)"  onclick="clickOn('rettungsmittelNew_button')" style="font-size:12px" class="w3-bar-item w3-button"><i class="fa fa-plus w3-small w3-margin-right"> <span class="fa fa-ambulance w3-right w3-large"></span></i>Rettungsmittel hinzufügen</a>
+				<a href="javascript:void(0)"  onclick="clickOn('rettungsmittelNew_button')" style="font-size:12px" class="w3-bar-item w3-button"><i class="fa fa-plus w3-small w3-margin-right"> <span class="fa fa-ambulance w3-right w3-large"></span></i>Rettungsfahrzeug hinzufügen</a>
 				<a href="javascript:void(0)"  onclick="clickOn('postenNew_button')" style="font-size:12px" class="w3-bar-item w3-button"><i class="fa fa-plus w3-small w3-margin-right"> <span class="fa fa-flag w3-right w3-large"></span></i> Sanitätsposten hinzufügen</a>
-				<a href="javascript:void(0)"  onclick="clickOn('rettungskraftNew_button')" style="font-size:12px" class="w3-bar-item w3-button"><i class="fa fa-plus w3-small w3-margin-right"> <span class="fa fa-user-md w3-right w3-large"></span></i> Rettungskräfte hinzufügen</a>
+				<a href="javascript:void(0)"  onclick="clickOn('rettungskraftNew_button')" style="font-size:12px" class="w3-bar-item w3-button"><i class="fa fa-plus w3-small w3-margin-right"> <span class="fa fa-user-md w3-right w3-large"></span></i> Rettungskraft hinzufügen</a>
 				<a href="/elNEW" style="font-size:12px" class="w3-bar-item w3-button"><i class="fa fa-address-card w3-large w3-margin-right"> <span class="fa fa-pencil w3-right w3-small"></span></i>Führungsposition ändern</a>
 			</div> <!-- id="navbar_element1_dropdown -->
 		</div> <!-- id="navbar_element1" -->
@@ -28,7 +28,10 @@
 			</div> <!-- id="navbar_element2_dropdown -->
 		</div> <!-- id="navbar_element2" -->
 		
-		<!-- 3 Funktion = Beenden und Bericht erstellen -->
+		<!-- 3 Funktion = Hilfe zur Bedienung des Digitalen Führungsassistenten -->
+		<a  onclick="openOtherModal('modal_help')" class="w3-bar-item w3-button w3-padding-larger" style="height:45px; font-size:14px;" title="Hilfe zur Bedienung des Digitalen Führungsassistenten" id="beendenButton"><i class="fa fa-question-circle fa-fw"></i>Hilfe</a>
+		
+		<!-- 4 Funktion = Beenden und Bericht erstellen -->
 		<a  onclick="gesamteinsatzBeenden()" class="w3-bar-item w3-button w3-padding-larger" style="height:45px; font-size:14px;" title="Großeinsatz beenden & automatischen Bericht erstellen" id="beendenButton"><i class="fa fa-power-off fa-fw"></i>Beenden</a>
 		
 		<!-- Reload Button: -->
@@ -251,7 +254,7 @@
 					<form method="POST" action="/el" id="el_form">
 						<p>"Ich bin an dem Gesamteinsatz als... </p>
 						&emsp; <input id="EL_true" type="radio" name="fuehrungsposten" value="einsatzleiter" checked> Einsatzleiter/in<br>
-						&emsp; <input id="EL_false"type="radio" name="fuehrungsposten" value="fuehrungsassistent"> Fuehrungsassistent/in<br>
+						&emsp; <input id="EL_false"type="radio" name="fuehrungsposten" value="fuehrungsassistent"> Führungsassistent/in<br>
 						<p>...beteiligt."</p>
 						<br>
 						<div class="w3-modal-header w3-light-grey">
@@ -658,6 +661,63 @@
 	</div> <!-- id="total_page" -->
 </div>
 
+  <!-- Modal, um Hilfe zur Bedienung des Digitalen Fuehrungsassistenten zu gewaehrleisten -->
+	<div id="modal_help" class="w3-modal" style="z-index:5000;">
+		<div class="w3-modal-content w3-card w3-padding-small">
+		  <div class="w3-modal-header w3-light-grey">
+			<span onclick="closeOtherModal('modal_help')" class="w3-button w3-light-grey w3-display-topright w3-padding-small">
+					  <i class="fa fa-remove" ></i>
+			</span>	
+			<h3 style="font-size:26px;"><center>Hilfe zur Bedienung des Digitalen Fuehrungsassistenten:</center></h3>
+		  </div>
+		  <div class="w3-modal-body w3-white" style="font-size:14px;">
+			
+			<p class="w3-light-grey"><strong>Führungsposition festlegen und Kerndaten des Gesamteinsatzes angeben</strong></p>
+			<p>Wenn Sie von der LOGIN/REGISTRATION zur Mainpage geleitet werden, können sie anhand des erscheinenden Fensters</p>
+			<p>&emsp; - angeben, ob sie in der Position des Einsatzleiters oder die des Führungsassistenten an dem Gesamteinsatz beteiligt sind</p>
+			<p>&emsp; -	und zudem können in diesem Fenster zeitgleich die Informationen zum Gesamteinsatz gespeichert werden</p>
+			<p>Nach der Eingabe bzw. nach dem Speichern der geforderten Angaben wird der Gesamteinsatz automatisch gestartet.</p>
+			<p>Um Änderungen vorzunehmen, kann dieses Fenster jeder Zeit über den Reiter "Funktionen"->"Führungsposition ändern" in der oberen Leiste der Hauptseite geändert werden.</p>
+			
+			<p class="w3-light-grey"><strong>Verwaltung eine(s/r) Rettungsfahrzeuges/ Sanitätspostens/ Rettungskraft/ Funkspruches/ Notfalleinsatzes </strong></p>
+			<p><b>Anlegen</b></p>
+			<p>Zu Beginn des Gesamteinsatzes sollten zuerst auf der rechten Seite (durch Anklicken der Buttons) alle Rettungsfahrzeuge, Sanitätsposten und Rettungskräfte angelegt werden. Das Anlegen kann alternativ zum Beispiel auch über den Reiter "Funktionen"->“Rettungsfahrzeug hinzufügen“ getan werden.</p>
+			<p>Analog dazu können ebenfalls Funksprüche und Notfalleinsätze auf der linken Seite angelegt werden.</p>
+			<p><b>Bearbeiten & Abschließen</b></p>
+			<p>Angelegte Rettungsfahrzeuge, Sanitätsposten und Rettungskräfte sind unterhalb der Buttons auf der rechten Seite zu sehen. Notfalleinsätze hingegen erscheinen analog dazu auf der linken Seite. Durch Anklicken eines angelegten Objekts kann dieses bearbeitet werden (zum Beispiel im Falle einer Statusänderung eines Notfalleinsatzes). Die Objekte lassen sich über Drag&Drop nutzen, d.h. eine Rettungskraft kann z.B. über Drag&Drop im Anlegeprozess eines Rettungsfahrzeuges diesem zugeteilt werden.</p>
+			<p>Durch das Anklicken des dazugehörigen Mülleimersymbols bei Rettungsfahrzeugen, Sanitätsposten und Rettungskräften endet die jeweilige Schicht und das Rettungsfahrzeug, der Sanitätsposten oder die Rettungskraft wird nicht mehr auf der rechten Seite angezeigt.</p>
+			<p>Durch das Anklicken des Häkchen-Symbols eines Notfalleinsatzes schließt man diesen ab und wird ebenfalls nicht mehr länger auf der linken Seite angezeigt.</p>
+			<p>Funksprüche können nicht bearbeitet werden. (Mehr Infos zur Einsicht von Funksprüchen unter: „Ansicht von Informationen“)</p>
+			<p><b>Karteninteraktion</b></p>
+			<p>Die angelegten Rettungsfahrzeuge, Sanitätsposten, Rettungskräfte und Notfalleinsätze können über Drag&Drop auf der Karte platziert werden. </p>
+			
+			<p class="w3-light-grey"><strong>Anlegen von Notizen</strong></p>
+			<p>Eine Notiz kann direkt unterhalb der Karte angelegt und über die Enter-Taste gespeichert werden</p>
+			
+			<p class="w3-light-grey"><strong>Ansicht von Information</strong></p>
+			<p>Über den Reiter „Informationen“ können Informationen zum Gesamteinsatz, zu Notizen, getätigte Funksprüche und Notfalleinsätze eingesehen werden. Diese erscheinen unterhalb der Möglichkeit Notizen anzulegen und somit ebenfalls mittig unterhalb der Kartenansicht. Auch durch das Anklicken des Pfeilsymbols des weißen Feldes oben rechts im Eck, kann die Ansicht zwischen den verschiedenen Informationen gewechselt werden.</p>
+			
+			<p class="w3-light-grey"><strong>Neuladen der Seite / Tonsignal</strong></p>
+			<p>Das Neuladen der Seite kann über Anklicken des Buttons „Digitaler Führungsassistent“ oben links oder über das Reload-Symbol oben rechts, direkt neben der Anzeige wer momentan Einsatzleiter ist. </p>
+			<p>Wird der Digitale Führungsassistent mit mehr als einem Einsatzleiter über mehr als einen Rechner genutzt, dann gilt Folgendes zu beachten: Ertönt ein Tonsignal und blinkt das Reload-Symbol in der rechten oberen Ecke auf, dann sollte die Seite Ihrerseits neu geladen werden, damit der Einsatzleiter und die Führungsassistenten auf denselben und aktuellsten Änderungen weiterarbeiten können.</p>
+			
+			<p class="w3-light-grey"><strong>Beenden des Gesamteinsatzes</strong></p>
+			<p>Durch den Reiter „Beenden“ kann der Gesamteinsatz abgeschlossen werden. Zeitgleich werden Sie auf eine weitere Seite weitergeleitet: Die Ansicht der automatisch erstellten Dokumentation. Diese kann über den Button „Gesamteinsatz als PDF drucken.“ am Ende der Dokumentationsansicht als PDF gedruckt und somit auf Ihrem lokalen Rechner gespeichert werden. (Hinweis: Querformat ist hierbei zu empfehlen.)</p>
+		    <p>Sie werden automatisch abgemeldet, wenn Sie die Seite in Ihrem Browser schließen.</p>
+			
+			<h6 class="w3-light-grey" Style="font-size:12px;"> &emsp; </h6>
+			
+			<p style="font-size:10px;"><i class="fa fa-info-circle fa-fw w3-margin-right"></i> Bei weiteren Fragen schicken Sie uns bitte eine Nachricht an Patrick.Beyersdorffer@Student.Reutlingen-University.DE oder an Anita_Dorothee.Mueller@Student.Reutlingen-University.DE mit dem Betreff „Digitaler Führungsassistent - [Bitte füllen Sie hier ein Stichwort Ihres Anliegens ein]“.</p>
+			
+		  </div>
+		  <div class="w3-modal-footer">
+		  <!-- Falls es einen extra START-Button gibt-->
+			<h6 class="w3-light-grey" Style="font-size:12px;"> &emsp; </h6>
+		  </div>
+		</div>
+	</div>
+
+
 <!-- Data lists -->
 <datalist id="funkrufDataList">
 </datalist>
@@ -952,3 +1012,19 @@
 	openModal();
 </script>
 {{/if}}
+
+<script>
+	// für die Modals dieser Seite:
+
+	// Open
+	function openOtherModal(id) {
+	  var modal = document.getElementById(id);
+	  modal.style.display = 'block';
+	}
+
+	// Close
+	function closeOtherModal(id) {
+	  var modal = document.getElementById(id);
+	  modal.style.display = 'none';
+	}
+</script>
