@@ -7,9 +7,8 @@
         <div class="w3-dropdown-hover w3-hide-small"> <!--[w3-right"> style="float:right"] dann wäre es rechts oben in der Ecke und theoretisch würde das dropdown right-aligned sein..- funktioniert aber nicht-->
 			<button class="w3-button w3-padding-large" title="help"><i class="fa fa-question-circle w3-margin-right"></i>Digitaler Führungsassistent</i></button>     
 			<div class="w3-dropdown-content w3-card-4 w3-bar-block w3-light-grey">
-			  <a href="#" class="w3-bar-item w3-button" style="font-size:15px">Fragen zum Login</a>
-			  <a href="#" class="w3-bar-item w3-button" style="font-size:15px">Fragen zur Registration</a>
-			  <a href="#" class="w3-bar-item w3-button" style="font-size:15px">Datenschutz</a>
+			  <a onclick="openModal('modal_allgemeine_Info')"class="w3-bar-item w3-button" style="font-size:15px">Informationen zum Digitalen Führungsassistenten</a>
+			  <a onclick="openModal('modal_datenschutz')" class="w3-bar-item w3-button" style="font-size:15px">Datenschutz</a>
 			</div>
 		</div>
     </div>
@@ -45,6 +44,73 @@
 	</div>
 </div>
 
+
+<!-- Modal, um die Datenschutzerklärung anzuzeigen: -->
+<div id="modal_datenschutz" class="w3-modal" style="z-index:5000;">
+	<div class="w3-modal-content w3-card w3-padding-small">
+	  <div class="w3-modal-header w3-light-grey">
+		<span onclick="closeModal('modal_datenschutz')" class="w3-button w3-light-grey w3-display-topright w3-padding-small">
+				  <i class="fa fa-remove" ></i>
+		</span>	
+		<h3 style="font-size:26px;"><center>Datenschutzerklärung:</center></h3>
+	  </div>
+	  <div class="w3-modal-body w3-white" style="font-size:14px;">
+		<p>Verantwortlich im Sinne des Datenschutzgesetzes:</p>
+		<p>Hochschule Reutlingen / Reutlingen University<br>Alteburgstraße 150<br>72762 Reutlingen</p>
+		<p><strong>Anmeldung auf unserer Webseite</strong></p>
+		<p>Bei der Anmeldung für die Nutzung des Digitalen Führungsassistenten erfragen wir einige persönliche Daten wie Name, Führungsqualifikation, Hilfsorganisation, Telefonnummer und E-Mail-Adresse. Für angemeldete Nutzer ist der Gebrauch des Digitalen Führungsassistenten kostenlos. Angemeldete Nutzer haben die Möglichkeit, alle angegebenen persönlichen Daten zu jedem Zeitpunkt zu ändern oder löschen zu lassen. Sie können auch jederzeit die von ihnen gespeicherten Daten bei uns erfragen. Soweit gesetzlich keine Frist für die Aufbewahrung der Daten besteht, können diese geändert oder gelöscht werden. Bitte kontaktieren Sie uns dazu über die angegebene Kontaktperson hierfür.</p>
+		<p><strong>Kontaktformular</strong></p>
+		<p>Wenn Sie uns über die angegebnene Kontaktperson kontaktieren oder uns eine E-Mail schicken werden die entsprechenden Daten zur Bearbeitung gespeichert.</p>
+		<p><strong>Löschung oder Sperrung von Daten</strong></p>
+		<p>Ihre persönlichen Daten werden nur so lange gespeichert, wie dies absolut notwendig ist um die angegebenen Dienste zu leisten und es vom Gesetz vorgeschrieben ist. Nach Ablauf dieser Fristen werden die persönlichen Daten der Nutzer regelmäßig gesperrt oder gelöscht.</p>
+		<p><strong>Cookies</strong></p>
+		<p>Unsere Webseite verwendet „Cookies“. Cookies sind Textdateien, die vom Server einer Webseite auf Ihren Rechner übertragen werden. Bestimmte Daten wie IP-Adresse, Browser, Betriebssystem und Internet Verbindung werden dabei übertragen.</p>
+		<p>Cookies starten keine Programme und übertragen keine Viren. Die durch Cookies gesammelten Informationen dienen dazu, Ihnen die Navigation zu erleichtern und die Anzeige unserer Webseiten zu optimieren.</p>
+		<p>Daten, die von uns erfasst werden, werden niemals ohne Ihre Einwilligung an Daten an Dritte weitergegeben oder mit personenbezogenen Daten verknüpft.</p>
+		<p>Die Verwendung von Cookies kann über Einstellungen in ihrem Browser verhindert werden. In den Erläuterungen zu Ihrem Internetbrowsers finden Sie Informationen darüber, wie man diese Einstellungen verändern kann. Einzelne Funktionen unserer Website können unter Umständen nicht richtig funktionieren, wenn die Verwendung von Cookies desaktiviert ist.</p>
+		<p><strong>Auskunft, Berichtigung, Sperre, Löschung und Widerspruch</strong></p>
+		<p>Sie können zu jedem Zeitpunkt Informationen über Ihre bei uns gespeicherten Daten erbitten. Diese können auch berichtigt, gesperrt oder, sofern die vorgeschriebene Zeiträume der Datenspeicherung zur Geschäftsabwicklung abgelaufen sind, gelöscht werden. Unsere Kontaktperson hilft Ihnen bei allen entsprechenden Fragen. Ihre Kontaktdaten finden Sie weiter unten.</p>
+		<p>Gesperrte Daten werden in einer speziellen Sperrdatei zu Kontrollzwecken verwahrt. Wenn die gesetzliche Archivierungsverpflichtung abgelaufen ist können Sie auch die Löschung der Daten verlangen. Innerhalb der Archivierungsverpflichtung können wir Ihre Daten auf Wunsch sperren.</p>
+		<p>Änderungen oder Widerruf von Einwilligungen können durch eine Mitteilung an uns vorgenommen werden. Dies ist auch für zukünftige Aktionen möglich.</p>
+		<p><strong>Änderung der Datenschutzbestimmungen</strong></p>
+		<p>Unsere Datenschutzerklärung können in unregelmäßigen Abständen angepasst werden, damit sie den aktuellen rechtlichen Anforderungen entsprechen oder um Änderungen unserer Dienstleistungen umzusetzen, z. B. bei der Einfügung neuer Funktionalitäten. Für Ihren nächsten Besuch gilt dann automatisch die neue Datenschutzerklärung.</p>
+		<p><strong>Daten zur Kontaktperson</strong></p>
+		<p>Für Fragen zum Datenschutz schicken Sie uns bitte eine Nachricht an Patrick.Beyersdorffer@Student.Reutlingen-University.DE oder an Anita_Dorothee.Mueller@Student.Reutlingen-University.DE mit dem Betreff „Digitaler Führungsassistent - [Bitte füllen Sie hier ein Stichwort Ihres Anliegens ein]“.</p>
+		<p style="font-size:10px;">Diese Widerrufsbelehrung Seite wurde bei <a href="https://datenschutzerklärunggenerator.de/" target="_blank">datenschutzerklärunggenerator.de</a>&nbsp;erstellt.</p>
+		
+		<p class="w3-yellow" style="font-size:12px;"><i class="fa fa-info-circle fa-fw w3-margin-right"></i>Mit der Nutzung des Digitalen Führungsassistenten stimmen Sie dieser Datenschutzerklärung automatisch zu.</p>
+	  </div>
+	  <div class="w3-modal-footer">
+	  <!-- Falls es einen extra START-Button gibt-->
+		<h6 class="w3-light-grey" Style="font-size:12px;"> &emsp; </h6>
+	  </div>
+	</div>
+</div>
+
+<!-- Modal, um eine Kurzbeschreibung des DigitalenFuehrungsassistenten anzuzeigen: -->
+<div id="modal_allgemeine_Info" class="w3-modal" style="z-index:5000;">
+	<div class="w3-modal-content w3-card w3-padding-small">
+	  <div class="w3-modal-header w3-light-grey">
+		<span onclick="closeModal('modal_allgemeine_Info')" class="w3-button w3-light-grey w3-display-topright w3-padding-small">
+				  <i class="fa fa-remove" ></i>
+		</span>	
+		<h3 style="font-size:26px;"><center>Der Digitale Führungsassistent:</center></h3>
+	  </div>
+	  <div class="w3-modal-body w3-white" style="font-size:14px;">
+		<p>Dieses System ist im Rahmen eines studentischen Projekts (im Studienfach "eHealth" an der Hochschule Reutlingen im Rahmen des Studienganges Medizinisch-Technische Informatik) entstanden und stellt somit auch keine fest angestellten Mitarbeiter oder dergleichen. Der Digitale Führungsassistent soll, kurz gesagt, auf kostenloser Basis einer Hilfsorganisation dabei helfen die Führungsqualität bei einem Gesamteinsatz einer großen Veranstalltung zu verbessern und soll durch eine automatische Berichterstattung ebenfalls einen Zeitvorteil gegenüber der bisher papiergebundenen Vorgehensweise gewährleisten.</p>
+		<p>Unter der Verwendung von Chrome kann eine funktionierende Nutzung versichert werden. Was andere Webbrowser betrifft, können wir keine problemfreie Nutzung garantieren, da das System auf der Verwendung mit Chrome entwickelt worden ist.</p>
+		<p>Das System versendet keine Werbung und birgt kein kommerzielles Ziel.</p>
+		
+		
+	  </div>
+	  <div class="w3-modal-footer">
+	  <!-- Falls es einen extra START-Button gibt-->
+		<h6 class="w3-light-grey" Style="font-size:12px;"> &emsp; </h6>
+	  </div>
+	</div>
+</div>
+
+
 <!-- Footer -->
 <footer class="w3-container color:#faffe6">
   <p style="font-size:12px;"><i class="fa fa-copyright" style="font-size:12px;"></i> 2019</p>
@@ -74,6 +140,22 @@ function openNav() {
   }
 }
 
+</script>
+
+<script>
+	// für die Modals dieser Seite:
+
+	// Open
+	function openModal(id) {
+	  var modal = document.getElementById(id);
+	  modal.style.display = 'block';
+	}
+
+	// Close
+	function closeModal(id) {
+	  var modal = document.getElementById(id);
+	  modal.style.display = 'none';
+	}
 </script>
 
 <!-- Include von externen Funktionen -->
