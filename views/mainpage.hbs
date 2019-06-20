@@ -128,19 +128,20 @@
 									<option value="RTW-Transport in die Klinik">RTW-Transport in die Klinik</option>
 								</select>
 							</p>
-							<p style="font-size:9px"><i class="fa fa-ambulance w3-small w3-margin-right"></i>Zugeteilte Kräfte: <i class="fa fa-plus fa-fw w3-small w3-hover-blue-grey" onclick="addInputField('div_einsatzNew', 'einsatz_kraefte')" id="einsatz_addInputField"></i><i class="fa fa-minus fa-fw w3-small w3-hover-blue-grey" onclick="removeInputField('div_einsatzNew', 'einsatz_kraefte')"></i></p>
+							
+							<!--Ein Feld, um eine Rettungskraft hinzuzufuegen muss mindestens existieren:-->
+							<p style="font-size:9px"><i class="fa fa-ambulance w3-small w3-margin-right"></i>Zugeteilte Kräfte: <i class="fa fa-plus fa-fw w3-small w3-hover-blue-grey" style="height:25px; width:15%; padding-top:7px;" onclick="addInputField('div_einsatzNew', 'einsatz_kraefte')" id="einsatz_addInputField"></i></p>
 							<p style="font-size:10px"><input class="einsatz_kraefte w3-input w3-border dropElement" type="text"  list="funkrufDataList" placeholder="Tippen oder Drag&Drop" name="einsatz_kraefte" value="" style="height:25px; margin-left:auto; margin-right:auto;"></p>
 							
-							
-							<!--Try-->
-							<!-- PROBLEM:
-							dieser Button führt zwar seine onClick-Funktion aus, allerdings submitted dies auch die FORM...
-							<p style="font-size:10px"><input class="einsatz_kraefte w3-input w3-border dropElement w3-half" type="text"  list="funkrufDataList" placeholder="Tippen oder Drag&Drop" name="einsatz_kraefte" value="" style="height:25px; width:75%; margin-left:auto; margin-right:auto;"></p>
-							<button  onclick="removeInputField('div_einsatzNew', 'einsatz_kraefte')" class="w3-center w3-button w3-block w3-blue-grey w3-quarter" style="height:25px; font-size:10px; border-left: 1px solid white;" title="Input-Feld löschen"><i class="fa fa-minus"></i></button>
-							--><!--EndTRY-->
+							<!-- das folgende dient zur Veranschaulichung dessen, was durch die Funktion addInputField() hinzugefuegt wird:
+							<p style="font-size:10px"><input class="einsatz_kraefte w3-input w3-border dropElement w3-half" type="text"  list="funkrufDataList" placeholder="Tippen oder Drag&Drop" name="einsatz_kraefte" value="" style="height:25px; width:85%; margin-left:auto; margin-right:auto;"></p>
+							<i class="fa fa-minus fa-fw w3-small w3-hover-blue-grey w3-quarter" style="height:25px; width:15%; padding-top:7px;" ></i> <!--onclick="removeThisInputField('div_einsatzNew', 'einsatz_kraefte')"-->
+							<!-- Abstandshalter 
+							<div>&emsp;</div>-->
 							
 							<div id="div_einsatzNew">
 							</div>
+							<br>
 							<!-- + Rettungsmittel und Position>-->
 							<button style="margin-left:auto; margin-right:auto; height:25px;" type="submit" class="w3-button w3-block w3-blue-grey">Speichern</button>
 							<br>
@@ -527,7 +528,7 @@
 							</p>
 							<p style="font-size:9px"><i class="fa fa-bullhorn w3-small w3-margin-right"></i>Funkrufname:</p>
 							<p style="font-size:10px"><input class="w3-input w3-border" type="text"  placeholder="Funkrufname" name="rettungsmittel_funkruf" style="height:25px; margin-left:auto; margin-right:auto;" id="rettungsmittel_funkruf"></p>
-							<p style="font-size:9px"><i class="fa fa-user-md w3-small w3-margin-right"></i>Zugeteilte Kräfte:<i class="fa fa-plus fa-fw w3-small w3-hover-blue-grey" onclick="addInputField('div_rettungsmittelNew', 'rettungsmittel_kraefte')" id="rettungsmittel_addInputField"></i><i class="fa fa-minus fa-fw w3-small w3-hover-blue-grey" onclick="removeInputField('div_rettungsmittelNew', 'rettungsmittel_kraefte')" id="rettungsmittel_removeInputField"></i></p>
+							<p style="font-size:9px"><i class="fa fa-user-md w3-small w3-margin-right"></i>Zugeteilte Kräfte:<i class="fa fa-plus fa-fw w3-small w3-hover-blue-grey" style="height:25px; width:15%; padding-top:7px;" onclick="addInputField('div_rettungsmittelNew', 'rettungsmittel_kraefte')" id="rettungsmittel_addInputField"></i></p>
 							<p style="font-size:10px"><input class="dropElement w3-input w3-border rettungsmittel_kraefte" list="funkrufDataList" type="text"  placeholder="Tippen oder Drag&Drop" name="rettungsmittel_kraefte" value="" id="rettungsmittel_kraefte" style="height:25px; margin-left:auto; margin-right:auto;"></p>
 							<div id="div_rettungsmittelNew">
 							</div>
@@ -550,7 +551,7 @@
 							<input type="hidden" name="posten_id" value="" id="posten_id"></input>
 							<p style="font-size:9px"><i class="fa fa-bullhorn w3-small w3-margin-right"></i>Funkrufname:</p>
 							<p style="font-size:10px"><input class="w3-input w3-border" type="text" placeholder="Funkrufname" name="posten_funkruf" style="height:25px; margin-left:auto; margin-right:auto;" id="posten_funkruf"></p>
-							<p style="font-size:9px"><i class="fa fa-user-md w3-small w3-margin-right"></i>Zugeteilte Kräfte:<i class="fa fa-plus fa-fw w3-small w3-hover-blue-grey" onclick="addInputField('div_postenNew', 'posten_kraefte')" id="posten_addInputField"></i><i class="fa fa-minus fa-fw w3-small w3-hover-blue-grey" onclick="removeInputField('div_postenNew', 'posten_kraefte')" id="posten_removeInputField"></i></p>
+							<p style="font-size:9px"><i class="fa fa-user-md w3-small w3-margin-right"></i>Zugeteilte Kräfte:<i class="fa fa-plus fa-fw w3-small w3-hover-blue-grey" style="height:25px; width:15%; padding-top:7px;" onclick="addInputField('div_postenNew', 'posten_kraefte')" id="posten_addInputField"></i></p>
 							<p style="font-size:10px"><input class="posten_kraefte dropElement w3-input w3-border" list="funkrufDataList" type="text"  placeholder="Tippen oder Drag&Drop" name="posten_kraefte" value="" style="height:25px; margin-left:auto; margin-right:auto;" id="posten_kraefte"></p>
 							<div id="div_postenNew">
 							</div>

@@ -46,21 +46,21 @@ function toHour(className) {
 	});
 }
 
-// Einer HTML-Form ein weiteres Input-Feld hinzufuegen
+// Einer HTML-Form ein weiteres Input-Feld mit einem danebenstehenden Remove-Button hinzufuegen
 function addInputField(id, inputName) {
 
 	var newParagraph = document.createElement("p");
 	newParagraph.style = "font-size:10px";
 	
 	var newInput = document.createElement("input");
-	newInput.className = "w3-input w3-border dropElement " + inputName;
+	newInput.className = "w3-input w3-border dropElement w3-half " + inputName;
 	newInput.setAttribute("list", "funkrufDataList");
 	newInput.type = "text";
 	newInput.placeholder = "Tippen oder Drag&Drop";
 	newInput.name = inputName;
 	newInput.value = "";
-	newInput.id = id+id; //wichtig fuer removeInputField, sonst loescht es alle und es koennen auch keine neuen hinzugefuegt werden
-	newInput.style= "height:25px; margin-left:auto; margin-right:auto;"
+	newInput.id = id;
+	newInput.style= "height:25px; width:85%; margin-left:auto; margin-right:auto;"
 	
 	newInput.addEventListener('dragover', handleDragOver, false);
 	newInput.addEventListener('dragenter', handleDragEnter, false);
@@ -69,15 +69,25 @@ function addInputField(id, inputName) {
 	newInput.addEventListener('dragend', handleDragEnd, false);
 	
 	newParagraph.appendChild(newInput);
-	
 	document.getElementById(id).appendChild(newParagraph);
+	
+	var newRemoveButton = document.createElement("i");
+	newRemoveButton.className = "fa fa-minus fa-fw w3-small w3-hover-blue-grey w3-quarter";
+	newRemoveButton.style = "height:25px; width:15%; padding-top:7px;";
+	//newRemoveButton.onclick = "removeInputField('div_einsatzNew', 'einsatz_kraefte')"; //funktioniert so noch nicht..
+	document.getElementById(id).appendChild(newRemoveButton);
+	
+	var div = document.createElement("div");
+	div.innerHTML += '&emsp;';
+	document.getElementById(id).appendChild(div);
 }
 
-// Eine HTML-Form, um ein Input-Feld dezimieren
+/* muss noch angepasst werden
+// Eine HTML-Form, um ein Input-Feld zu dezimieren
 function removeInputField(id, inputName){
 	var elem = document.getElementById(id+id);
     elem.parentNode.removeChild(elem);
-} 
+}*/
 
 // Datalist erweitern nach Form-Eingabe
 function addDataList(listName, className) {
