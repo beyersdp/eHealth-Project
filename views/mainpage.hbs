@@ -35,7 +35,7 @@
 		<a  onclick="openOtherModal('modal_help')" class="w3-bar-item w3-button w3-padding-larger" style="height:45px; font-size:14px;" title="Hilfe zur Bedienung des Digitalen Führungsassistenten" id="beendenButton"><i class="fa fa-question-circle fa-fw"></i>Hilfe</a>
 		
 		<!-- Reload Button: -->
-		<a href="/mainpage" class="w3-bar-item w3-button w3-hide-small w3-right w3-padding-larger" style="height:45px; width:10px;;" title="Seite neuladen" id="reloadButton"><i class="fa fa-refresh w3-right"></i></a>
+		<a href="/mainpage" class="w3-bar-item w3-button w3-hide-small w3-right w3-padding-larger" style="height:45px; width:10px;;" title="Seite neuladen" id="reloadButton"><i class="fa fa-refresh w3-large w3-margin-right"><span id="SpanElementDesAusrufezeichens" class="fa fa-exclamation w3-small w3-red" style="visibility:hidden"></span></i></a>
 		
 		<!-- Information ueber aktive Fuehrungskraft -->
 		<button class="w3-bar-item w3-button w3-hide-small w3-right w3-padding-larger" style="height:45px; font-size:14px;" title="Einsatzleiter">{{# if fuehrungskraft_istEL }}<img class="icon" src="./img/icons/einsatzleiter.png" alt="Einsatzleiter" style="width:20px; height:20px;">{{/if}} {{ fuehrungskraft_nachname }} ({{ fuehrungskraft_quali }})</button>

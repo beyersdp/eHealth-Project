@@ -10,7 +10,7 @@ setInterval(function checkHistory(e) {
 				var audio = new Audio('sounds/reloadSound.wav');
 				audio.play();
 				document.getElementById("reloadButton").style.backgroundColor = "#607d8b";
-				//document.getElementById("SpanElementDesAusrufezeichens").hidden = false;
+				document.getElementById("SpanElementDesAusrufezeichens").style.visibility = "visible";
 			}
 		}
 	};
