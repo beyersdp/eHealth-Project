@@ -874,8 +874,8 @@
 				
 				var coordinates = map.containerPointToLatLng(L.point([e.clientX - 250,e.clientY - 50]));
 				L.marker(coordinates, {icon: getIcon(nextSibling), draggable: true, keyboard: true, contextmenu: true, 
-					contextmenuItems: [{text: 'Marker entfernen', index: 0, callback: markerEntfernen},
-									   {text: 'Position setzen', index: 1, callback: positionSenden}]})
+					contextmenuItems: [{text: 'Marker entfernen', index: 0, callback: markerEntfernen}]})
+					.on("mouseup", positionSenden)
 					.addTo(map)
 					.bindPopup("<b>" + e.dataTransfer.getData('text') + "</b>");
 			}
@@ -920,8 +920,8 @@
 	{{# each rettungsmittel }}
 		{{# if position}}
 			L.marker([{{ position.lat }}, {{ position.lng }}], {icon: getIcon("{{ art }}"), draggable: true, keyboard: true, contextmenu: true, 
-				contextmenuItems: [{text: 'Marker entfernen', index: 0, callback: markerEntfernen},
-								   {text: 'Position setzen', index: 1, callback: positionSenden}]})
+				contextmenuItems: [{text: 'Marker entfernen', index: 0, callback: markerEntfernen}]})
+				.on("mouseup", positionSenden)
 				.addTo(map)
 				.bindPopup("<b>" + "{{ funkruf }}" + "</b>");
 				
@@ -933,8 +933,8 @@
 	{{# each posten }}
 		{{# if position}}
 			L.marker([{{ position.lat }}, {{ position.lng }}], {icon: getIcon('Posten'), draggable: true, keyboard: true, contextmenu: true, 
-				contextmenuItems: [{text: 'Marker entfernen', index: 0, callback: markerEntfernen},
-								   {text: 'Position setzen', index: 1, callback: positionSenden}]})
+				contextmenuItems: [{text: 'Marker entfernen', index: 0, callback: markerEntfernen}]})
+				.on("mouseup", positionSenden)
 				.addTo(map)
 				.bindPopup("<b>" + "{{ funkruf }}" + "</b>");
 				
@@ -946,8 +946,8 @@
 	{{# each rettungskraft }}
 		{{# if position}}
 			L.marker([{{ position.lat }}, {{ position.lng }}], {icon: getIcon('Rettungskraft'), draggable: true, keyboard: true, contextmenu: true, 
-				contextmenuItems: [{text: 'Marker entfernen', index: 0, callback: markerEntfernen},
-								   {text: 'Position setzen', index: 1, callback: positionSenden}]})
+				contextmenuItems: [{text: 'Marker entfernen', index: 0, callback: markerEntfernen}]})
+				.on("mouseup", positionSenden)
 				.addTo(map)
 				.bindPopup("<b>" + "{{ funkruf }}" + "</b>");
 				
@@ -960,8 +960,8 @@
 		{{# if aktiv}}
 		{{# if position}}
 			L.marker([{{ position.lat }}, {{ position.lng }}], {icon: getIcon('Einsatz'), draggable: true, keyboard: true, contextmenu: true, 
-				contextmenuItems: [{text: 'Marker entfernen', index: 0, callback: markerEntfernen},
-								   {text: 'Position setzen', index: 1, callback: positionSenden}]})
+				contextmenuItems: [{text: 'Marker entfernen', index: 0, callback: markerEntfernen}]})
+				.on("mouseup", positionSenden)
 				.addTo(map)
 				.bindPopup("<b>" + "{{ meldebild }}" + "</b>");
 		{{/if}}

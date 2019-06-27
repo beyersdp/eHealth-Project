@@ -134,7 +134,10 @@ function mapZentrieren (e) {
 // Kontextmenu-Funktion - Position an Server senden
 function positionSenden(e) {
 	
-	var markerName = e.relatedTarget._popup._content.replace("<b>", "").replace("</b>","");
+	console.log(e);
+	
+	
+	var markerName = e.target._popup._content.replace("<b>", "").replace("</b>","");
 	var markerId = document.getElementById(markerName).parentElement.id;
 
 	var data = {'id': markerId, 'position': e.latlng};
@@ -178,55 +181,3 @@ function getMarker() {
 	
 	return marker;
 }
-
-/*
-
-// dragable default Marker:
-	//muss vor den Layern/Basemaps sein, ansonsten nicht sichtbar..
-	var marker = L.marker([48.506939, 9.203804], {draggable: true})
-		.addTo(map)
-		.on('dragend', function() {
-			var coord = String(marker.getLatLng()).split(',');
-				var lat = coord[0].split('(');
-				var lng = coord[1].split(')');
-				//marker.bindPopup("Moved to: " + lat[1] + ", " + lng[0] + ".");
-		});
-	//Popup zu dem obigen Marker:
-	marker.bindPopup("<b>Sitz der Führungskraft</b><br>J. Schuster (NFS)").openPopup();
-
-	// Popup, wenn die Karte irgendwo angeklickt wird: -->
-	//muss vor den Layern/Basemaps sein, ansonsten nicht sichtbar..
-	var popup = L.popup();
-	function onMapClick(e) {
-		popup
-			.setLatLng(e.latlng)
-			.setContent("Position: " + e.latlng.toString())
-			.openOn(map);
-	}
-	map.on('click', onMapClick);
-	
-	// personifizierter dragable Marker: -->
-	//muss vor den Layern/Basemaps sein, ansonsten nicht sichtbar..
-	var map_rtw = L.icon({
-		iconUrl: './img/icons/map_rtw.png',
-		//shadowUrl: 'leaf-shadow.png',
-
-		iconSize:     [100, 47], // size of the icon
-		//shadowSize:   [50, 64], // size of the shadow
-		// den Anker in das Zentrum der angegebenen Pixelgroesse setzen:
-		iconAnchor:   [50, 23.5], // point of the icon which will correspond to marker's location
-		//shadowAnchor: [4, 62],  // the same for the shadow
-		popupAnchor:  [-3, -16] // point from which the popup should open relative to the iconAnchor
-	});
-
-	var rtwMarker = L.marker([48.50, 9.18], {icon: map_rtw, draggable: true})
-		.addTo(map)
-		.on('dragend', function() {
-			var coord = String(rtwMarker.getLatLng()).split(',');
-				var lat = coord[0].split('(');
-				var lng = coord[1].split(')');
-				//marker.bindPopup("Moved to: " + lat[1] + ", " + lng[0] + ".");
-		});
-	rtwMarker.bindPopup("<b>RTW 63/23-1</b><br>Status 3");
-	// End personifizierter dragable Marker 
-*/
