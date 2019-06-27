@@ -2076,7 +2076,19 @@ server.get('/gesamtdoku', function(req, res){
 					if (err) throw err;
 		});
 		
-		db.collection('Fuehrungskraft').findOneAndUpdate({}, {$set: {end: moment().format('YYYYMMDDHHmmss')}}, function(err, updated) {
+		db.collection('Fuehrungskraft').updateMany({aktiv: true}, {$set: {end: moment().format('YYYYMMDDHHmmss')}}, function(err, updated) {
+					if (err) throw err;
+		});
+		
+		db.collection('Rettungskraft').updateMany({end: undefined}, {$set: {end: moment().format('YYYYMMDDHHmmss')}}, function(err, updated) {
+					if (err) throw err;
+		});
+		
+		db.collection('Posten').updateMany({end: undefined}, {$set: {end: moment().format('YYYYMMDDHHmmss')}}, function(err, updated) {
+					if (err) throw err;
+		});
+		
+		db.collection('Rettungsmittel').updateMany({end: undefined}, {$set: {end: moment().format('YYYYMMDDHHmmss')}}, function(err, updated) {
 					if (err) throw err;
 		});
 		
