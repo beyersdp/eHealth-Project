@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/beyersdp/eHealth-Project#readme",
   "dependencies": {
-    "bcrypt": "^3.0.6",
+    "bcrypt": "^5.0.0",
     "client-sessions": "^0.8.0",
     "express": "^4.17.1",
     "express-handlebars": "^3.1.0",
